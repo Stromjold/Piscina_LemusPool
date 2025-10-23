@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Piscina Lemus</title>
+    <link rel="stylesheet" href="Estilos/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#Calendario">Calendario</a>
+        <a href="#finansas">Finanzas</a>
+        <a href="#reportes">Reportes</a>
+    </nav>
+
+    <section class="section">
+        <h1 class="titleAdmin" id="Calendario">Calendario de Visitas</h1>
+        <div class="admin-container">
+            <h2>Calendario</h2>
+            <div class="calendar-header">
+                <button id="prevMonth">&lt; Anterior</button>
+                <h3 id="currentMonthYear"></h3>
+                <button id="nextMonth">Siguiente &gt;</button>
+            </div>
+            <div id="adminCalendar" class="calendar-grid"></div>
+        </div>
+        
+        <div class="admin-buttons">
+            <div id="addReservationBtn" class="admin-button-div">Añadir Reserva</div>
+            <div id="listReservationsBtn" class="admin-button-div">Ver Reservas</div>
+        </div>
+    </section>
+
+    <div id="newReservationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Nueva Reserva</h3>
+            <form id="newReservationForm">
+                <label for="reservationId-input">ID de Cliente:</label>
+                <input type="text" id="reservationId-input" maxlength="9" pattern="[0-9]*" required>
+                
+                <label for="clientName-input">Nombre del Cliente:</label>
+                <input type="text" id="clientName-input" required>
+                
+                <label for="startDate-input">Fecha de Inicio:</label>
+                <input type="date" id="startDate-input" required>
+                
+                <label for="newPeople-input">Cantidad de personas:</label>
+                <input type="text" id="newPeople-input" min="1" required>
+                
+                <label for="newDays-input">Días de estancia:</label>
+                <input type="text" id="newDays-input" min="1" required>
+                
+                <button type="submit">Agregar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="listReservationsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Lista de Reservas</h3>
+            <table id="reservationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Personas</th>
+                        <th>Días</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Detalle de Reserva</h3>
+            <form id="reservationForm">
+                <label for="date-input">Fecha:</label>
+                <input type="text" id="date-input" readonly>
+
+                <label for="people-input">Personas:</label>
+                <input type="number" id="people-input" min="1" required>
+
+                <label for="days-input">Días de estancia:</label>
+                <input type="number" id="days-input" min="1" required>
+
+                <button type="submit">Actualizar Reserva</button>
+                <button type="button" id="deleteButton">Eliminar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="section">
+    <h1 class="titleAdmin" id="finansas">Finanzas</h1>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                <p class="text-sm font-medium text-gray-600">Ingresos Totales</p>
+                <p class="text-2xl font-bold text-green-600" id="totalIngresos">$0</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
+                <p class="text-sm font-medium text-gray-600">Gastos Totales</p>
+                <p class="text-2xl font-bold text-red-600" id="totalGastos">$0</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                <p class="text-sm font-medium text-gray-600">Balance</p>
+                <p class="text-2xl font-bold text-blue-600" id="balance">$0</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="mr-2">💵</span> Agregar Ingreso
+            </h2>
+            <form id="formIngreso" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                    <input type="text" id="descripcionIngreso" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Ej: Venta de entrada, Reserva de evento, Venta de snack">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
+                    <input type="number" id="cantidadIngreso" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
+                    <input type="number" id="precioIngreso" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="0.00">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                    <select id="categoriaIngreso" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <option value="entradas">Entradas</option>
+                        <option value="reservas">Reservas</option>
+                        <option value="arriendo_eventos">Arriendo de Eventos</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 font-medium">
+                    Agregar Ingreso
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="mr-2">💸</span> Agregar Gasto
+            </h2>
+            <form id="formGasto" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+                    <input type="text" id="descripcionGasto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Ej: Compra de cloro, Pago de luz, Mantenimiento de bombas">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
+                    <input type="number" id="cantidadGasto" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
+                    <input type="number" id="precioGasto" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="0.00">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                    <select id="categoriaGasto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="quimicos">Químicos</option>
+                        <option value="servicios_basicos">Servicios Básicos</option>
+                        <option value="mantenimiento">Mantenimiento</option>
+                        <option value="salarios">Salarios</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-200 font-medium">
+                    Agregar Gasto
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <span class="mr-2">📊</span> Historial de Transacciones
+                </h2>
+                <button id="limpiarHistorial" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200 text-sm">
+                    Limpiar Historial
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Fecha</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Descripción</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Cantidad</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Precio</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Categoría</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Tipo</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-700">Total</th>
+                            <th class="text-center py-3 px-4 font-medium text-gray-700">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialTransacciones"></tbody>
+                </table>
+            </div>
+        </div>
+</section>
+
+    <section class="section" id="reportes">
+        <h1 class="titleAdmin">Reportes y Estadísticas</h1>
+        <div class="admin-container">
+            <h2 class="text-xl font-semibold mb-4">Ingresos por Categoría</h2>
+            <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                <canvas id="ingresosChart"></canvas>
+            </div>
+        </div>
+        <div class="admin-container mt-6">
+            <h2 class="text-xl font-semibold mb-4">Reservas por Mes</h2>
+            <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                <canvas id="reservasChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
