@@ -38,7 +38,8 @@ switch ($method) {
         } else { // CREAR
             $sql = "INSERT INTO reservas (cliente_id, nombre_cliente, fecha_inicio, dias_estancia, cantidad_personas) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssi", $cliente_id, $nombre_cliente, $fecha_inicio, $dias_estancia, $cantidad_personas);
+            // Tipos: cliente_id (s), nombre_cliente (s), fecha_inicio (s), dias_estancia (i), cantidad_personas (i)
+            $stmt->bind_param("sssii", $cliente_id, $nombre_cliente, $fecha_inicio, $dias_estancia, $cantidad_personas);
             $message = "Reserva creada con éxito.";
         }
 

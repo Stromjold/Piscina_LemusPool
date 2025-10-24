@@ -12,10 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Variables de Rutas de la API ===
     // *** CRÍTICO: Estas rutas deben coincidir con la ubicación de tus archivos PHP.
-    const API_RESERVAS = 'api/api_reservas.php'; 
-    const API_FINANZAS = 'api/api_finanzas.php?action=reportes'; 
-    const API_TRANSACCION = 'api/api_finanzas.php';
-    const API_MENSAJES = 'api/api_mensajes.php'; // NUEVA RUTA
+    // Rutas corregidas: los archivos PHP están en la carpeta `php/` en este proyecto
+    const API_RESERVAS = 'php/api_reservas.php'; 
+    const API_FINANZAS = 'php/api_finanzas.php?action=reportes'; 
+    const API_TRANSACCION = 'php/api_finanzas.php';
+    const API_MENSAJES = 'php/api_mensajes.php'; // NUEVA RUTA
     // ===================================
 
     // === UTILS ===
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Actualizar el título del mes/año
         const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         document.getElementById('currentMonthYear').textContent = `${monthNames[month]} ${year}`;
     }
 
@@ -252,7 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('deleteButton').addEventListener('click', async () => {
         if (!confirm('¿Está seguro de que desea eliminar esta reserva?')) return;
         
-        const result = await fetchData('api_reservas.php', 'DELETE', { id: reservaSeleccionada.id });
+        // Usar la constante API_RESERVAS (ruta consistente)
+        const result = await fetchData(API_RESERVAS, 'DELETE', { id: reservaSeleccionada.id });
         if (result.success) {
             alert('Reserva eliminada con éxito.');
             modalReserva.style.display = 'none';
@@ -283,29 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // === LÓGICA DE FINANZAS ===
-
-    async function loadFinanzasData() {
-        const result = await fetchData('api_finanzas.php?action=reportes', 'GET');
-        if (result.success) {
-            // Totales
-            document.getElementById('totalIngresos').textContent = formatCurrency(result.totales.total_ingresos);
-            document.getElementById('totalGastos').textContent = formatCurrency(result.totales.total_gastos);
-            document.getElementById('balance').textContent = formatCurrency(result.balance);
-
-            // Resumen de Categorías y Gráficos
-            categoriasResumen = result.categorias;
-            renderTablaEstadisticas();
-            updateCharts(result.categorias, result.reservas_mes);
-            
-            // Historial
-            transacciones = result.historial;
-            renderHistorialTransacciones();
-
-        } else {
-            console.error('Error al cargar finanzas:', result.message);
-            alert('Error al cargar finanzas: ' + result.message);
-        }
-    }
+    // Nota: `loadFinanzasData` ya está definida arriba usando la constante `API_FINANZAS`.
 
     function renderHistorialTransacciones() {
         const tbody = document.getElementById('historialTransacciones');
@@ -378,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoria: document.getElementById('categoriaIngreso').value,
             tipo: 'ingreso'
         };
-        const result = await fetchData('api_finanzas.php', 'POST', data);
+    const result = await fetchData(API_TRANSACCION, 'POST', data);
         if (result.success) {
             alert(result.message);
             document.getElementById('formIngreso').reset();
@@ -395,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoria: document.getElementById('categoriaGasto').value,
             tipo: 'gasto'
         };
-        const result = await fetchData('api_finanzas.php', 'POST', data);
+    const result = await fetchData(API_TRANSACCION, 'POST', data);
         if (result.success) {
             alert(result.message);
             document.getElementById('formGasto').reset();
@@ -415,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nuevo_monto_total: nuevo_monto_total
         };
 
-        const result = await fetchData('api_finanzas.php', 'PUT', data);
+    const result = await fetchData(API_TRANSACCION, 'PUT', data);
         if (result.success) {
             alert(result.message);
             document.getElementById('categoryEditModal').style.display = 'none';
@@ -425,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteTransaction(id) {
         if (!confirm('¿Está seguro de que desea eliminar esta transacción?')) return;
-        const result = await fetchData('api_finanzas.php', 'DELETE', { id: id });
+    const result = await fetchData(API_TRANSACCION, 'DELETE', { id: id });
         if (result.success) {
             alert(result.message);
             loadFinanzasData();
@@ -434,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('limpiarHistorial').addEventListener('click', async () => {
         if (!confirm('ADVERTENCIA: ¿Está seguro de que desea ELIMINAR TODAS las transacciones del historial? Esta acción es irreversible.')) return;
-        const result = await fetchData('api_finanzas.php', 'DELETE', { action: 'limpiar_historial' });
+    const result = await fetchData(API_TRANSACCION, 'DELETE', { action: 'limpiar_historial' });
         if (result.success) {
             alert(result.message);
             loadFinanzasData();
