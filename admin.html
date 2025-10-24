@@ -3,16 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - Piscina Lemus</title>
-    <link rel="stylesheet" href="Estilos/admin.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Administración - LemusPool</title>
+    <link rel="stylesheet" href="Estilos/admin.css"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="#Calendario">Calendario</a>
-        <a href="#finansas">Finanzas</a>
-        <a href="#reportes">Reportes</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">LemusPool Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Calendario">Calendario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('mensajes')">Mensajes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#finansas">Finanzas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reportes">Reportes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <section class="section">
@@ -20,10 +39,11 @@
         <div class="admin-container">
             <h2>Calendario</h2>
             <div class="calendar-header">
-                <button id="prevMonth">&lt; Anterior</button>
+                <button id="prevMonth" class="btn btn-secondary">&lt; Anterior</button>
                 <h3 id="currentMonthYear"></h3>
-                <button id="nextMonth">Siguiente &gt;</button>
+                <button id="nextMonth" class="btn btn-secondary">Siguiente &gt;</button>
             </div>
+            
             <div id="adminCalendar" class="calendar-grid"></div>
         </div>
         
@@ -48,10 +68,10 @@
                 <input type="date" id="startDate-input" required>
                 
                 <label for="newPeople-input">Cantidad de personas:</label>
-                <input type="text" id="newPeople-input" min="1" required>
+                <input type="number" id="newPeople-input" min="1" required>
                 
                 <label for="newDays-input">Días de estancia:</label>
-                <input type="text" id="newDays-input" min="1" required>
+                <input type="number" id="newDays-input" min="1" required>
                 
                 <button type="submit">Agregar Reserva</button>
             </form>
@@ -59,16 +79,18 @@
     </div>
 
     <div id="listReservationsModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <span class="close-button">&times;</span>
             <h3>Lista de Reservas</h3>
-            <table id="reservationsTable">
+            <table id="reservationsTable" class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Personas</th>
                         <th>Días</th>
+                        <th>Fecha Inicio</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,8 +104,9 @@
             <span class="close-button">&times;</span>
             <h3>Detalle de Reserva</h3>
             <form id="reservationForm">
+                <input type="hidden" id="editReservationId">
                 <label for="date-input">Fecha:</label>
-                <input type="text" id="date-input" readonly>
+                <input type="date" id="date-input" required>
 
                 <label for="people-input">Personas:</label>
                 <input type="number" id="people-input" min="1" required>
@@ -97,136 +120,235 @@
         </div>
     </div>
 
-    <section class="section">
-    <h1 class="titleAdmin" id="finansas">Finanzas</h1>
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
-                <p class="text-sm font-medium text-gray-600">Ingresos Totales</p>
-                <p class="text-2xl font-bold text-green-600" id="totalIngresos">$0</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
-                <p class="text-sm font-medium text-gray-600">Gastos Totales</p>
-                <p class="text-2xl font-bold text-red-600" id="totalGastos">$0</p>
-            </div>
-            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
-                <p class="text-sm font-medium text-gray-600">Balance</p>
-                <p class="text-2xl font-bold text-blue-600" id="balance">$0</p>
-            </div>
-        </div>
+    <section id="mensajes" class="section" style="display: none;"> 
+        <h1 class="titleAdmin">Mensajes de Contacto</h1>
 
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <span class="mr-2">💵</span> Agregar Ingreso
-            </h2>
-            <form id="formIngreso" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
-                    <input type="text" id="descripcionIngreso" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Ej: Venta de entrada, Reserva de evento, Venta de snack">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
-                    <input type="number" id="cantidadIngreso" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="1">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
-                    <input type="number" id="precioIngreso" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="0.00">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
-                    <select id="categoriaIngreso" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                        <option value="entradas">Entradas</option>
-                        <option value="reservas">Reservas</option>
-                        <option value="arriendo_eventos">Arriendo de Eventos</option>
-                        <option value="otros">Otros</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 font-medium">
-                    Agregar Ingreso
-                </button>
-            </form>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <span class="mr-2">💸</span> Agregar Gasto
-            </h2>
-            <form id="formGasto" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
-                    <input type="text" id="descripcionGasto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Ej: Compra de cloro, Pago de luz, Mantenimiento de bombas">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
-                    <input type="number" id="cantidadGasto" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="1">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
-                    <input type="number" id="precioGasto" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="0.00">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
-                    <select id="categoriaGasto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                        <option value="quimicos">Químicos</option>
-                        <option value="servicios_basicos">Servicios Básicos</option>
-                        <option value="mantenimiento">Mantenimiento</option>
-                        <option value="salarios">Salarios</option>
-                        <option value="otros">Otros</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-200 font-medium">
-                    Agregar Gasto
-                </button>
-            </form>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
-                    <span class="mr-2">📊</span> Historial de Transacciones
-                </h2>
-                <button id="limpiarHistorial" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200 text-sm">
-                    Limpiar Historial
-                </button>
-            </div>
+        <div class="admin-container">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Buzón de Mensajes</h2>
             
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="min-w-full table table-striped">
                     <thead>
-                        <tr class="border-b border-gray-200">
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Fecha</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Descripción</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Cantidad</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Precio</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Categoría</th>
-                            <th class="text-left py-3 px-4 font-medium text-gray-700">Tipo</th>
-                            <th class="text-right py-3 px-4 font-medium text-gray-700">Total</th>
-                            <th class="text-center py-3 px-4 font-medium text-gray-700">Acción</th>
+                        <tr>
+                            <th class="px-4 py-2">Fecha</th>
+                            <th class="px-4 py-2">Nombre</th>
+                            <th class="px-4 py-2">Email</th>
+                            <th class="px-4 py-2">Mensaje</th>
+                            <th class="px-4 py-2 text-center">Acción</th>
                         </tr>
                     </thead>
-                    <tbody id="historialTransacciones"></tbody>
+                    <tbody id="mensajesTableBody">
+                        </tbody>
                 </table>
-            </div>
-        </div>
-</section>
-
-    <section class="section" id="reportes">
-        <h1 class="titleAdmin">Reportes y Estadísticas</h1>
-        <div class="admin-container">
-            <h2 class="text-xl font-semibold mb-4">Ingresos por Categoría</h2>
-            <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                <canvas id="ingresosChart"></canvas>
-            </div>
-        </div>
-        <div class="admin-container mt-6">
-            <h2 class="text-xl font-semibold mb-4">Reservas por Mes</h2>
-            <div class="p-6 bg-gray-50 rounded-lg shadow-md">
-                <canvas id="reservasChart"></canvas>
             </div>
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <section class="section">
+        <h1 class="titleAdmin" id="finansas">Finanzas</h1>
+        <div class="container-fluid px-4 py-4">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-start border-success border-4 shadow">
+                        <div class="card-body">
+                            <p class="text-muted mb-1">Ingresos Totales</p>
+                            <p class="h3 text-success mb-0" id="totalIngresos">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-start border-danger border-4 shadow">
+                        <div class="card-body">
+                            <p class="text-muted mb-1">Gastos Totales</p>
+                            <p class="h3 text-danger mb-0" id="totalGastos">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-start border-primary border-4 shadow">
+                        <div class="card-body">
+                            <p class="text-muted mb-1">Balance</p>
+                            <p class="h3 text-primary mb-0" id="balance">$0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">💵 Agregar Ingreso</h5>
+                            <form id="formIngreso">
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <input type="text" id="descripcionIngreso" class="form-control" placeholder="Ej: Venta de entrada" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Cantidad</label>
+                                    <input type="number" id="cantidadIngreso" min="1" class="form-control" placeholder="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Precio</label>
+                                    <input type="number" id="precioIngreso" step="0.01" min="0.01" class="form-control" placeholder="0.00" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría</label>
+                                    <select id="categoriaIngreso" class="form-select" required>
+                                        <option value="entradas">Entradas</option>
+                                        <option value="reservas">Reservas</option>
+                                        <option value="arriendo_eventos">Arriendo de Eventos</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Agregar Ingreso</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">💸 Agregar Gasto</h5>
+                            <form id="formGasto">
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <input type="text" id="descripcionGasto" class="form-control" placeholder="Ej: Compra de cloro" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Cantidad</label>
+                                    <input type="number" id="cantidadGasto" min="1" class="form-control" placeholder="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Precio</label>
+                                    <input type="number" id="precioGasto" step="0.01" min="0.01" class="form-control" placeholder="0.00" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría</label>
+                                    <select id="categoriaGasto" class="form-select" required>
+                                        <option value="quimicos">Químicos</option>
+                                        <option value="servicios_basicos">Servicios Básicos</option>
+                                        <option value="mantenimiento">Mantenimiento</option>
+                                        <option value="salarios">Salarios</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-danger w-100">Agregar Gasto</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">📊 Historial de Transacciones</h5>
+                        <button id="limpiarHistorial" class="btn btn-secondary btn-sm">Limpiar Historial</button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Categoría</th>
+                                    <th>Tipo</th>
+                                    <th class="text-end">Total</th>
+                                    <th class="text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historialTransacciones"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div id="categoryEditModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Editar Monto de Categoría</h3>
+            <p class="text-muted mb-3">Edite el monto total de la categoría. Esto creará una transacción de ajuste para reflejar el nuevo total.</p>
+            <form id="categoryEditForm">
+                <input type="hidden" id="editCategoryId">
+                <div class="mb-3">
+                    <label class="form-label">Categoría:</label>
+                    <input type="text" id="editCategoryName" class="form-control" readonly>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Tipo:</label>
+                    <input type="text" id="editCategoryType" class="form-control" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nuevo Monto Total:</label>
+                    <input type="number" id="editCategoryMonto" step="0.01" min="0" required class="form-control">
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">Guardar Ajuste</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="section" id="reportes">
+        <h1 class="titleAdmin">Reportes y Estadísticas</h1>
+
+        <div class="admin-container mb-4">
+            <h5 class="mb-3">📈 Resumen de Categorías (Actualizable)</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Tipo</th>
+                            <th class="text-end">Monto Total ($)</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEstadisticas"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="admin-container">
+                    <h5 class="mb-3">Ingresos por Categoría</h5>
+                    <div class="chart-wrapper">
+                        <canvas id="ingresosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="admin-container">
+                    <h5 class="mb-3">Gastos por Categoría</h5>
+                    <div class="chart-wrapper">
+                        <canvas id="gastosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="admin-container">
+                    <h5 class="mb-3">Reservas por Mes</h5>
+                    <div class="chart-wrapper">
+                        <canvas id="reservasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="js/admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

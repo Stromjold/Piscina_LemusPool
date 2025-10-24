@@ -1,10 +1,16 @@
 /* Importar fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-body { 
-    font-family: 'Inter', sans-serif; 
+/* Estilos/admin.css */
+
+html, body {
+    margin: 0; /* quita el hueco superior del navegador */
+    padding: 0;
+    font-family: 'Inter', sans-serif;
     background-color: #f4f4f4;
-    padding-top: 80px;
+    /* Reservar espacio para el navbar fijo */
+    
 }
+
 /* Estilos adicionales para el cuerpo del apartado de finanzas */
 body.bg-gradient-to-br {
     background: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -32,35 +38,14 @@ body.bg-gradient-to-br {
 
 h1.titleAdmin {
     text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* --------------------
-    Navbar
-   -------------------- */
-.navbar {
-    background-color: #333;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1em;
-    padding: 0 15px;
-    transition: color 0.3s ease;
-}
-
-.navbar a:hover {
-    color: #8c8c8c;
+    color: #4a5568; /* Un gris oscuro para mayor legibilidad */
+    font-size: 2.5rem; /* Tamaño de fuente más grande */
+    font-weight: 700; /* Negrita */
+    text-transform: uppercase; /* Convertir a mayúsculas */
+    letter-spacing: 2px; /* Espaciado entre letras */
+    border-bottom: 3px solid #3b82f6; /* Línea azul debajo del título */
+    padding-bottom: 10px; /* Espacio entre el texto y la línea */
+    margin-bottom: 30px; /* Espacio debajo del título */
 }
 
 /* --------------------
@@ -225,7 +210,7 @@ form button:hover {
     background-color: #da190b;
 }
 
-/* Estilos para el historial de transacciones */
+/* Estilos para el historial de transacciones y tabla de estadísticas */
 .overflow-x-auto {
     overflow-x: auto;
 }
@@ -304,18 +289,6 @@ tr:hover {
 .bg-green-100 { background-color: #D1FAE5; }
 .bg-red-100 { background-color: #FEE2E2; }
 
-.titleAdmin {
-    text-align: center;
-    color: #4a5568; /* Un gris oscuro para mayor legibilidad */
-    font-size: 2.5rem; /* Tamaño de fuente más grande */
-    font-weight: 700; /* Negrita */
-    text-transform: uppercase; /* Convertir a mayúsculas */
-    letter-spacing: 2px; /* Espaciado entre letras */
-    border-bottom: 3px solid #3b82f6; /* Línea azul debajo del título */
-    padding-bottom: 10px; /* Espacio entre el texto y la línea */
-    margin-bottom: 30px; /* Espacio debajo del título */
-}
-
 /* --------------------
     Estilos de Gráficos
    -------------------- */
@@ -324,16 +297,15 @@ tr:hover {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    /* Se elimina margin-top ya que el layout grid lo maneja mejor */
 }
 
-/* Update the table styles */
-th, td {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-#formIngreso, #formGasto {
-    width: 50%; /* O el ancho que mejor se adapte a tu diseño */
+/* Navbar fijo arriba */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030; /* mayor que .modal (1001) */
+    width: 100%;
 }

@@ -95,4 +95,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Generar el calendario inicial
     createCalendar(currentMonth, currentYear);
+
+    // Manejo del formulario de contacto
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+
+            const dataToSend = {
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                message: document.getElementById('contactMessage').value
+            };
+
+            try {
+                const response = await fetch('api/api_mensajes.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('¡Mensaje enviado con éxito!');
+                    contactForm.reset();
+                } else {
+                    alert(`Error al enviar mensaje: ${result.message}`);
+                }
+            } catch (error) {
+                alert('Error al conectar con el servidor para enviar el mensaje. Revisa la consola para más detalles.');
+                console.error('Fetch error:', error);
+            }
+        });
+    }
 });

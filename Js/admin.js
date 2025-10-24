@@ -1,413 +1,615 @@
+// js/admin.js
+
 document.addEventListener('DOMContentLoaded', () => {
+    // === Variables de Estado Globales ===
+    let reservas = [];
+    let transacciones = [];
+    let mensajes = []; // Nuevo array para mensajes
+    let categoriasResumen = [];
+    let reservaSeleccionada = null;
+    let chartIngresos, chartGastos, chartReservas;
+    let currentDate = new Date(); // Fecha actual del calendario
 
-    // 🎯 SELECCIÓN DE ELEMENTOS DEL DOM
-    // ------------------------------------
-    const calendarGrid = document.getElementById('adminCalendar');
-    const monthYearDisplay = document.getElementById('currentMonthYear');
-    const prevMonthButton = document.getElementById('prevMonth');
-    const nextMonthButton = document.getElementById('nextMonth');
+    // === Variables de Rutas de la API ===
+    // *** CRÍTICO: Estas rutas deben coincidir con la ubicación de tus archivos PHP.
+    const API_RESERVAS = 'api/api_reservas.php'; 
+    const API_FINANZAS = 'api/api_finanzas.php?action=reportes'; 
+    const API_TRANSACCION = 'api/api_finanzas.php';
+    const API_MENSAJES = 'api/api_mensajes.php'; // NUEVA RUTA
+    // ===================================
 
-    // Modales y botones
-    const modal = document.getElementById('reservationModal');
-    const newReservationModal = document.getElementById('newReservationModal');
-    const listReservationsModal = document.getElementById('listReservationsModal');
+    // === UTILS ===
 
-    const addReservationBtn = document.getElementById('addReservationBtn');
-    const listReservationsBtn = document.getElementById('listReservationsBtn');
-    const closeButtons = document.querySelectorAll('.modal .close-button');
+    /**
+     * Función genérica para peticiones AJAX (fetch)
+     */
+    async function fetchData(url, method = 'GET', data = null) {
+        const options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
 
-    // Formularios
-    const reservationForm = document.getElementById('reservationForm');
-    const newReservationForm = document.getElementById('newReservationForm');
-
-    // Campos de formulario de reserva existente
-    const dateInput = document.getElementById('date-input');
-    const peopleInput = document.getElementById('people-input');
-    const daysInput = document.getElementById('days-input');
-    const deleteButton = document.getElementById('deleteButton');
-
-    // Campos de formulario de nueva reserva
-    const reservationIdInput = document.getElementById('reservationId-input');
-    const clientNameInput = document.getElementById('clientName-input');
-    const startDateInput = document.getElementById('startDate-input');
-    const newPeopleInput = document.getElementById('newPeople-input');
-    const newDaysInput = document.getElementById('newDays-input');
-    
-    // 🎯 FINANZAS: SELECCIÓN DE ELEMENTOS
-    // ------------------------------------
-    const totalIngresosEl = document.getElementById('totalIngresos');
-    const totalGastosEl = document.getElementById('totalGastos');
-    const balanceEl = document.getElementById('balance');
-    const historialTransaccionesEl = document.getElementById('historialTransacciones');
-    const formIngreso = document.getElementById('formIngreso');
-    const formGasto = document.getElementById('formGasto');
-    const limpiarHistorialBtn = document.getElementById('limpiarHistorial');
-    
-
-    // Add new DOM element selectors
-    const cantidadIngreso = document.getElementById('cantidadIngreso');
-    const precioIngreso = document.getElementById('precioIngreso');
-    const cantidadGasto = document.getElementById('cantidadGasto');
-    const precioGasto = document.getElementById('precioGasto');
-
-
-
-    // 🎯 ESTRUCTURAS DE DATOS
-    // ------------------------------------
-    let reservations = JSON.parse(localStorage.getItem('reservations')) || {};
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    let currentDayReservations = {};
-    
-    // 🎯 FINANZAS: ESTRUCTURAS DE DATOS
-    // ------------------------------------
-    let transacciones = JSON.parse(localStorage.getItem('transacciones')) || [];
-
-
-    // 🎯 LÓGICA DEL CALENDARIO
-    // ------------------------------------
-    const renderCalendar = () => {
-        calendarGrid.innerHTML = '';
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        monthYearDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-        
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            const emptyCell = document.createElement('div');
-            calendarGrid.appendChild(emptyCell);
+        if (data && (method !== 'GET' && method !== 'HEAD')) {
+            options.body = JSON.stringify(data);
         }
 
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayCell = document.createElement('div');
-            dayCell.textContent = day;
-            dayCell.classList.add('day-cell');
+        try {
+            const response = await fetch(url, options);
             
-            const dayKey = `${currentYear}-${currentMonth + 1}-${day}`;
-            if (reservations[dayKey]) {
-                dayCell.classList.add('reserved-day');
-                dayCell.innerHTML += `<br> <span class="reserved-count">(${reservations[dayKey].length})</span>`;
-            }
-
-            dayCell.addEventListener('click', () => {
-                if (reservations[dayKey]) {
-                    currentDayReservations = reservations[dayKey];
-                    showReservationsForDay(dayKey);
-                } else {
-                    alert('No hay reservas para este día.');
+            // CRÍTICO: Manejo de errores HTTP 404/500
+            if (!response.ok) {
+                try {
+                    const errorJson = await response.json();
+                    alert(`Error HTTP! Estado: ${response.status}. Mensaje: ${errorJson.message || 'Error desconocido del servidor.'}`);
+                    return { success: false, message: errorJson.message || 'Error del servidor.' };
+                } catch (e) {
+                    throw new Error(`Error HTTP! estado: ${response.status}. No se pudo parsear la respuesta de error.`);
                 }
-            });
-            
-            calendarGrid.appendChild(dayCell);
+            }
+            return await response.json();
+        } catch (error) {
+            alert('Error al conectar con el servidor: Falló la comunicación.');
+            console.error('Fallo en la comunicación con el servidor:', error);
+            return { success: false, message: 'Fallo la comunicación con el servidor.' };
         }
-    };
-
-    const showReservationsForDay = (dayKey) => {
-        dateInput.value = dayKey;
-        if (currentDayReservations && currentDayReservations.length > 0) {
-            peopleInput.value = currentDayReservations[0].people;
-            daysInput.value = currentDayReservations[0].days;
-        }
-        modal.style.display = 'block';
-    };
-
-    const saveReservations = () => {
-        localStorage.setItem('reservations', JSON.stringify(reservations));
-    };
-
-    // 🎯 LÓGICA DE MODALES
-    // ------------------------------------
-    addReservationBtn.addEventListener('click', () => {
-        newReservationModal.style.display = 'block';
-    });
-
-    listReservationsBtn.addEventListener('click', () => {
-        listReservationsModal.style.display = 'block';
-    });
-    
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            modal.style.display = 'none';
-            newReservationModal.style.display = 'none';
-            listReservationsModal.style.display = 'none';
-        });
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) modal.style.display = 'none';
-        if (event.target === newReservationModal) newReservationModal.style.display = 'none';
-        if (event.target === listReservationsModal) listReservationsModal.style.display = 'none';
-    });
-
-    // 🎯 LÓGICA DE FORMULARIOS
-    // ------------------------------------
-    reservationForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const date = dateInput.value;
-        const people = peopleInput.value;
-        const days = daysInput.value;
-
-        if (reservations[date]) {
-            reservations[date] = [{ people, days }]; // Update logic
-            saveReservations();
-            renderCalendar();
-            modal.style.display = 'none';
-        }
-    });
-
-    deleteButton.addEventListener('click', () => {
-        const date = dateInput.value;
-        delete reservations[date];
-        saveReservations();
-        renderCalendar();
-        modal.style.display = 'none';
-    });
-
-    newReservationForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const id = reservationIdInput.value;
-        const name = clientNameInput.value;
-        const startDate = startDateInput.value;
-        const people = newPeopleInput.value;
-        const days = newDaysInput.value;
-
-        if (!reservations[startDate]) {
-            reservations[startDate] = [];
-        }
-
-        reservations[startDate].push({ id, name, people, days });
-        saveReservations();
-        renderCalendar();
-        newReservationForm.reset();
-        newReservationModal.style.display = 'none';
-    });
-
-    // 🎯 FINANZAS: LÓGICA DE LA APLICACIÓN
-    // ------------------------------------
-    // In the Finanzas section
-    function actualizarResumen() {
-        const totalIngresos = transacciones
-            .filter(t => t.tipo === 'ingreso')
-            .reduce((sum, t) => sum + (parseFloat(t.cantidad) * parseFloat(t.precio)), 0);
-        
-        const totalGastos = transacciones
-            .filter(t => t.tipo === 'gasto')
-            .reduce((sum, t) => sum + (parseFloat(t.cantidad) * parseFloat(t.precio)), 0);
-
-        const balance = totalIngresos - totalGastos;
-
-        totalIngresosEl.textContent = `$${totalIngresos.toFixed(2)}`;
-        totalGastosEl.textContent = `$${totalGastos.toFixed(2)}`;
-        balanceEl.textContent = `$${balance.toFixed(2)}`;
-        balanceEl.style.color = balance >= 0 ? '#10B981' : '#EF4444';
     }
 
-    // In the Finanzas section
-    function actualizarHistorial() {
-        historialTransaccionesEl.innerHTML = '';
-        transacciones.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    /**
+     * Formatea un número como moneda.
+     */
+    function formatCurrency(number) {
+        return new Intl.NumberFormat('es-CL', {
+            style: 'currency',
+            currency: 'CLP',
+            minimumFractionDigits: 0,
+        }).format(number);
+    }
 
-        transacciones.forEach((t, index) => {
+    // === LÓGICA DE CALENDARIO Y RESERVAS ===
+
+    const modalReserva = document.getElementById('reservationModal');
+    const modalNuevaReserva = document.getElementById('newReservationModal');
+    const modalListaReservas = document.getElementById('listReservationsModal');
+
+    function renderCalendar() {
+        const calendarEl = document.getElementById('adminCalendar');
+        calendarEl.innerHTML = '';
+        
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        // Filtrar reservas del mes actual
+        const reservasMes = reservas.filter(r => {
+            const rDate = new Date(r.fecha_inicio);
+            return rDate.getFullYear() === year && rDate.getMonth() === month;
+        });
+
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Rellenar días anteriores (para que el primer día del mes caiga en el día correcto)
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const dayElement = document.createElement('div');
+            dayElement.classList.add('calendar-day', 'empty-day');
+            calendarEl.appendChild(dayElement);
+        }
+
+        // Días del mes
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.classList.add('calendar-day');
+            dayElement.textContent = day;
+            
+            // Marcar reservas en el día
+            const dayReservas = reservasMes.filter(r => new Date(r.fecha_inicio).getDate() === day);
+            
+            if (dayReservas.length > 0) {
+                dayElement.classList.add('has-reservation');
+                dayReservas.forEach(r => {
+                    const reservationBadge = document.createElement('div');
+                    reservationBadge.classList.add('reservation-badge');
+                    reservationBadge.textContent = r.nombre_cliente;
+                    reservationBadge.onclick = (e) => {
+                        e.stopPropagation();
+                        openEditReservationModal(r);
+                    };
+                    dayElement.appendChild(reservationBadge);
+                });
+            }
+
+            calendarEl.appendChild(dayElement);
+        }
+
+        // Actualizar el título del mes/año
+        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        document.getElementById('currentMonthYear').textContent = `${monthNames[month]} ${year}`;
+    }
+
+    // Botones de navegación del calendario
+    document.getElementById('prevMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+
+    
+    // === LÓGICA DE CARGA DE DATOS ===
+    
+    // 1. Reservas
+    async function loadReservasData() {
+        const result = await fetchData(API_RESERVAS, 'GET');
+        if (result.success) {
+            reservas = result.reservas.map(r => ({
+                ...r,
+                fecha_inicio: r.fecha_inicio 
+            }));
+            renderCalendar();
+            renderReservasList();
+        } else {
+            console.error('Error al cargar reservas:', result.message);
+            alert('Error al cargar reservas: ' + result.message);
+        }
+    }
+    
+    // 2. Finanzas
+    async function loadFinanzasData() {
+        const result = await fetchData(API_FINANZAS, 'GET');
+        if (result.success) {
+            // Totales
+            document.getElementById('totalIngresos').textContent = formatCurrency(result.totales.total_ingresos);
+            document.getElementById('totalGastos').textContent = formatCurrency(result.totales.total_gastos);
+            document.getElementById('balance').textContent = formatCurrency(result.balance);
+
+            // Resumen de Categorías y Gráficos
+            categoriasResumen = result.categorias;
+            renderTablaEstadisticas();
+            updateCharts(result.categorias, result.reservas_mes);
+            
+            // Historial
+            transacciones = result.historial;
+            renderHistorialTransacciones();
+
+        } else {
+            console.error('Error al cargar finanzas:', result.message);
+            alert('Error al cargar finanzas: ' + result.message);
+        }
+    }
+    
+    // 3. Mensajes (NUEVO)
+    async function loadMessages() {
+        try {
+            const result = await fetchData(API_MENSAJES, 'GET');
+            
+            if (result.success) {
+                mensajes = result.mensajes; // Guardar en el estado global
+                renderMessages(mensajes);
+            } else {
+                document.getElementById('mensajesTableBody').innerHTML = `<tr><td colspan="5" class="text-center py-4 text-danger">Error: ${result.message}</td></tr>`;
+            }
+        } catch (e) {
+            document.getElementById('mensajesTableBody').innerHTML = `<tr><td colspan="5" class="text-center py-4 text-danger">Falló la comunicación con el servidor.</td></tr>`;
+        }
+    }
+
+    // === LÓGICA DE RENDERIZADO ===
+    
+    // Renderizado de Mensajes (NUEVO)
+    function renderMessages(messages) {
+        const tableBody = document.getElementById('mensajesTableBody');
+        if (!tableBody) return;
+        
+        tableBody.innerHTML = ''; 
+
+        if (messages.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No hay mensajes en el buzón.</td></tr>';
+            return;
+        }
+
+        messages.forEach(msg => {
             const row = document.createElement('tr');
-            const total = (parseFloat(t.cantidad) * parseFloat(t.precio)).toFixed(2);
+            // Formato de fecha YYYY-MM-DD
+            const datePart = msg.fecha_envio.split(' ')[0]; 
+            
             row.innerHTML = `
-                <td class="py-2 px-4 text-sm text-gray-700">${t.fecha}</td>
-                <td class="py-2 px-4 text-sm text-gray-700">${t.descripcion}</td>
-                <td class="py-2 px-4 text-sm text-gray-700">${t.cantidad}</td>
-                <td class="py-2 px-4 text-sm text-gray-700">$${parseFloat(t.precio).toFixed(2)}</td>
-                <td class="py-2 px-4 text-sm text-gray-700">${t.categoria}</td>
-                <td class="py-2 px-4 text-sm text-gray-700">
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold ${t.tipo === 'ingreso' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                        ${t.tipo}
-                    </span>
-                </td>
-                <td class="py-2 px-4 text-sm font-bold text-right ${t.tipo === 'ingreso' ? 'text-green-600' : 'text-red-600'}">$${total}</td>
-                <td class="py-2 px-4 text-center">
-                    <button class="text-red-500 hover:text-red-700 text-sm" data-index="${index}">Eliminar</button>
+                <td class="px-4 py-2">${datePart}</td>
+                <td class="px-4 py-2">${msg.nombre}</td>
+                <td class="px-4 py-2">${msg.email}</td>
+                <td class="px-4 py-2">${msg.mensaje}</td>
+                <td class="px-4 py-2 text-center">
+                    <button class="btn btn-sm btn-danger delete-message" data-id="${msg.id}">
+                        Eliminar
+                    </button>
                 </td>
             `;
-            historialTransaccionesEl.appendChild(row);
-        });
-
-        document.querySelectorAll('#historialTransacciones button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const index = e.target.dataset.index;
-                transacciones.splice(index, 1);
-                localStorage.setItem('transacciones', JSON.stringify(transacciones));
-                actualizarResumen();
-                actualizarHistorial();
-                renderIngresosChart();
-            });
+            tableBody.appendChild(row);
         });
     }
 
-    function agregarTransaccion(tipo, descripcion, cantidad, precio, categoria) {
-        const nuevaTransaccion = {
-            id: Date.now(),
-            fecha: new Date().toLocaleDateString('es-ES'),
-            tipo,
-            descripcion,
-            cantidad: parseFloat(cantidad),
-            precio: parseFloat(precio),
-            categoria
-        };
-        transacciones.push(nuevaTransaccion);
-        localStorage.setItem('transacciones', JSON.stringify(transacciones));
-        actualizarResumen();
-        actualizarHistorial();
-        renderIngresosChart();
+    // === LÓGICA DE ELIMINACIÓN ===
+    
+    // Eliminar Mensaje (NUEVO)
+    async function deleteMessage(id) {
+        if (!confirm('¿Seguro que quieres eliminar este mensaje?')) return;
+        
+        const result = await fetchData(API_MENSAJES, 'DELETE', { id: id });
+        
+        if (result.success) {
+            alert(result.message);
+            loadMessages(); // Recargar la lista tras eliminar
+        } else {
+            alert(`Error al eliminar: ${result.message}`);
+        }
     }
-
-    formIngreso.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const descripcion = document.getElementById('descripcionIngreso').value;
-        const cantidad = document.getElementById('cantidadIngreso').value;
-        const precio = document.getElementById('precioIngreso').value;
-        const categoria = document.getElementById('categoriaIngreso').value;
-        if (descripcion && cantidad > 0 && precio > 0) {
-            agregarTransaccion('ingreso', descripcion, cantidad, precio, categoria);
-            this.reset();
-        } else {
-            alert('Por favor completa todos los campos correctamente');
+    
+    // Eliminar Reserva
+    document.getElementById('deleteButton').addEventListener('click', async () => {
+        if (!confirm('¿Está seguro de que desea eliminar esta reserva?')) return;
+        
+        const result = await fetchData('api_reservas.php', 'DELETE', { id: reservaSeleccionada.id });
+        if (result.success) {
+            alert('Reserva eliminada con éxito.');
+            modalReserva.style.display = 'none';
+            loadReservasData();
         }
     });
+    
+    // Inicializar Modals (usando el mismo cierre para todos los modals)
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.modal').style.display = 'none';
+        });
+    });
 
-    formGasto.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const descripcion = document.getElementById('descripcionGasto').value;
-        const cantidad = document.getElementById('cantidadGasto').value;
-        const precio = document.getElementById('precioGasto').value;
-        const categoria = document.getElementById('categoriaGasto').value;
-        if (descripcion && cantidad > 0 && precio > 0) {
-            agregarTransaccion('gasto', descripcion, cantidad, precio, categoria);
-            this.reset();
-        } else {
-            alert('Por favor completa todos los campos correctamente');
+    document.getElementById('addReservationBtn').addEventListener('click', () => {
+        modalNuevaReserva.style.display = 'block';
+    });
+
+    document.getElementById('listReservationsBtn').addEventListener('click', () => {
+        modalListaReservas.style.display = 'block';
+    });
+    
+    // Cerrar modal al hacer click fuera
+    window.onclick = (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
         }
-    });
-
-    limpiarHistorialBtn.addEventListener('click', function() {
-        if (confirm('¿Estás seguro de que quieres limpiar todo el historial?')) {
-            transacciones = [];
-            localStorage.removeItem('transacciones');
-            actualizarResumen();
-            actualizarHistorial();
-        }
-    });
-
-    // Inicializar la aplicación
-    renderCalendar();
-    actualizarResumen();
-    actualizarHistorial();
-});
-
-// 🎯 LÓGICA DE REPORTES Y ESTADÍSTICAS
-// ------------------------------------
-
-// Función para procesar datos y renderizar el gráfico de ingresos
-const renderIngresosChart = () => {
-    const ingresosPorCategoria = {};
-    transacciones.filter(t => t.tipo === 'ingreso').forEach(t => {
-        ingresosPorCategoria[t.categoria] = (ingresosPorCategoria[t.categoria] || 0) + (parseFloat(t.cantidad) * parseFloat(t.precio));
-    });
-
-    const data = {
-        labels: Object.keys(ingresosPorCategoria),
-        datasets: [{
-            label: 'Ingresos por Categoría',
-            data: Object.values(ingresosPorCategoria),
-            backgroundColor: [
-                'rgba(75, 192, 192, 0.6)',
-                'rgba(153, 102, 255, 0.6)',
-                'rgba(255, 159, 64, 0.6)',
-                'rgba(255, 99, 132, 0.6)',
-                'rgba(54, 162, 235, 0.6)'
-            ],
-            borderColor: [
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1
-        }]
     };
 
-    const config = {
-        type: 'doughnut',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+    // === LÓGICA DE FINANZAS ===
+
+    async function loadFinanzasData() {
+        const result = await fetchData('api_finanzas.php?action=reportes', 'GET');
+        if (result.success) {
+            // Totales
+            document.getElementById('totalIngresos').textContent = formatCurrency(result.totales.total_ingresos);
+            document.getElementById('totalGastos').textContent = formatCurrency(result.totales.total_gastos);
+            document.getElementById('balance').textContent = formatCurrency(result.balance);
+
+            // Resumen de Categorías y Gráficos
+            categoriasResumen = result.categorias;
+            renderTablaEstadisticas();
+            updateCharts(result.categorias, result.reservas_mes);
+            
+            // Historial
+            transacciones = result.historial;
+            renderHistorialTransacciones();
+
+        } else {
+            console.error('Error al cargar finanzas:', result.message);
+            alert('Error al cargar finanzas: ' + result.message);
+        }
+    }
+
+    function renderHistorialTransacciones() {
+        const tbody = document.getElementById('historialTransacciones');
+        tbody.innerHTML = '';
+
+        transacciones.forEach(t => {
+            const row = tbody.insertRow();
+            row.classList.add(t.tipo === 'ingreso' ? 'table-success' : 'table-danger');
+            
+            row.insertCell().textContent = t.fecha;
+            row.insertCell().textContent = t.descripcion;
+            row.insertCell().textContent = t.cantidad;
+            row.insertCell().textContent = formatCurrency(t.precio);
+            row.insertCell().textContent = t.categoria;
+            row.insertCell().textContent = t.tipo.toUpperCase();
+            
+            const totalCell = row.insertCell();
+            totalCell.textContent = formatCurrency(t.total);
+            totalCell.classList.add('text-end');
+            
+            const actionCell = row.insertCell();
+            actionCell.classList.add('text-center');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'X';
+            deleteBtn.classList.add('btn', 'btn-sm', 'btn-danger');
+            deleteBtn.onclick = () => deleteTransaction(t.id);
+            actionCell.appendChild(deleteBtn);
+        });
+    }
+
+    function renderTablaEstadisticas() {
+        const tbody = document.getElementById('tablaEstadisticas');
+        tbody.innerHTML = '';
+
+        categoriasResumen.forEach(c => {
+            const row = tbody.insertRow();
+            row.insertCell().textContent = c.categoria.toUpperCase();
+            row.insertCell().textContent = c.tipo.toUpperCase();
+            
+            const montoCell = row.insertCell();
+            montoCell.textContent = formatCurrency(c.monto_total);
+            montoCell.classList.add('text-end');
+            
+            const actionCell = row.insertCell();
+            actionCell.classList.add('text-center');
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Ajustar';
+            editBtn.classList.add('btn', 'btn-sm', 'btn-info', 'text-white');
+            editBtn.onclick = () => openEditCategoryModal(c);
+            actionCell.appendChild(editBtn);
+        });
+    }
+
+    // Funcionalidad para la edición de categorías
+    function openEditCategoryModal(categoria) {
+        document.getElementById('editCategoryId').value = categoria.id || '';
+        document.getElementById('editCategoryName').value = categoria.categoria.toUpperCase();
+        document.getElementById('editCategoryType').value = categoria.tipo.toUpperCase();
+        document.getElementById('editCategoryMonto').value = categoria.monto_total;
+        document.getElementById('categoryEditModal').style.display = 'block';
+    }
+
+    // Handlers de Formularios de Finanzas
+    document.getElementById('formIngreso').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            descripcion: document.getElementById('descripcionIngreso').value,
+            cantidad: parseInt(document.getElementById('cantidadIngreso').value),
+            precio: parseFloat(document.getElementById('precioIngreso').value),
+            categoria: document.getElementById('categoriaIngreso').value,
+            tipo: 'ingreso'
+        };
+        const result = await fetchData('api_finanzas.php', 'POST', data);
+        if (result.success) {
+            alert(result.message);
+            document.getElementById('formIngreso').reset();
+            loadFinanzasData();
+        }
+    });
+
+    document.getElementById('formGasto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            descripcion: document.getElementById('descripcionGasto').value,
+            cantidad: parseInt(document.getElementById('cantidadGasto').value),
+            precio: parseFloat(document.getElementById('precioGasto').value),
+            categoria: document.getElementById('categoriaGasto').value,
+            tipo: 'gasto'
+        };
+        const result = await fetchData('api_finanzas.php', 'POST', data);
+        if (result.success) {
+            alert(result.message);
+            document.getElementById('formGasto').reset();
+            loadFinanzasData();
+        }
+    });
+    
+    document.getElementById('categoryEditForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const categoria = document.getElementById('editCategoryName').value.toLowerCase();
+        const tipo = document.getElementById('editCategoryType').value.toLowerCase();
+        const nuevo_monto_total = parseFloat(document.getElementById('editCategoryMonto').value);
+
+        const data = {
+            categoria: categoria,
+            tipo: tipo,
+            nuevo_monto_total: nuevo_monto_total
+        };
+
+        const result = await fetchData('api_finanzas.php', 'PUT', data);
+        if (result.success) {
+            alert(result.message);
+            document.getElementById('categoryEditModal').style.display = 'none';
+            loadFinanzasData();
+        }
+    });
+
+    async function deleteTransaction(id) {
+        if (!confirm('¿Está seguro de que desea eliminar esta transacción?')) return;
+        const result = await fetchData('api_finanzas.php', 'DELETE', { id: id });
+        if (result.success) {
+            alert(result.message);
+            loadFinanzasData();
+        }
+    }
+
+    document.getElementById('limpiarHistorial').addEventListener('click', async () => {
+        if (!confirm('ADVERTENCIA: ¿Está seguro de que desea ELIMINAR TODAS las transacciones del historial? Esta acción es irreversible.')) return;
+        const result = await fetchData('api_finanzas.php', 'DELETE', { action: 'limpiar_historial' });
+        if (result.success) {
+            alert(result.message);
+            loadFinanzasData();
+        }
+    });
+
+    // === LÓGICA DE GRÁFICOS (CHART.JS) ===
+
+    function updateCharts(categorias, reservasMes) {
+        // Destruir gráficos anteriores si existen
+        if (chartIngresos) chartIngresos.destroy();
+        if (chartGastos) chartGastos.destroy();
+        if (chartReservas) chartReservas.destroy();
+
+        // 1. Gráfico de Ingresos
+        const ingresosData = categorias.filter(c => c.tipo === 'ingreso');
+        
+        if (ingresosData.length > 0) {
+            chartIngresos = new Chart(document.getElementById('ingresosChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: ingresosData.map(c => c.categoria.toUpperCase()),
+                    datasets: [{
+                        data: ingresosData.map(c => c.monto_total),
+                        backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#6366F1', '#8B5CF6'],
+                        hoverOffset: 4
+                    }]
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            if (label) {
-                                label += ': ';
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 11
+                                }
                             }
-                            if (context.parsed !== null) {
-                                label += new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(context.parsed);
-                            }
-                            return label;
-                        }
+                        },
+                        title: { display: false }
                     }
                 }
-            }
-        },
-    };
+            });
+        }
 
-    new Chart(document.getElementById('ingresosChart'), config);
-};
+        // 2. Gráfico de Gastos
+        const gastosData = categorias.filter(c => c.tipo === 'gasto');
+        
+        if (gastosData.length > 0) {
+            chartGastos = new Chart(document.getElementById('gastosChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: gastosData.map(c => c.categoria.toUpperCase()),
+                    datasets: [{
+                        data: gastosData.map(c => c.monto_total),
+                        backgroundColor: ['#EF4444', '#F87171', '#FCD34D', '#111827', '#DC2626'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        title: { display: false }
+                    }
+                }
+            });
+        }
 
-// Función para procesar datos y renderizar el gráfico de reservas
-const renderReservasChart = () => {
-    const reservasPorMes = {};
-    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        // 3. Gráfico de Reservas por Mes
+        if (reservasMes && reservasMes.length > 0) {
+            reservasMes.sort((a, b) => (a.mes > b.mes) ? 1 : -1);
 
-    // Usa `reservations` del archivo
-    for (const date in reservations) {
-        if (reservations.hasOwnProperty(date)) {
-            const monthIndex = new Date(date).getMonth();
-            const monthName = monthNames[monthIndex];
-            reservasPorMes[monthName] = (reservasPorMes[monthName] || 0) + 1;
+            chartReservas = new Chart(document.getElementById('reservasChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: reservasMes.map(r => r.mes),
+                    datasets: [{
+                        label: 'Total de Reservas',
+                        data: reservasMes.map(r => r.total_reservas),
+                        backgroundColor: '#3B82F6',
+                        borderColor: '#2563EB',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                stepSize: 1,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    }
+                }
+            });
         }
     }
 
-    const data = {
-        labels: Object.keys(reservasPorMes),
-        datasets: [{
-            label: 'Número de Reservas',
-            data: Object.values(reservasPorMes),
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    };
+    // === Inicialización (Carga inicial de datos) ===
 
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    // Handler para formulario de contacto (guarda mensajes en localStorage)
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Detiene el envío del formulario tradicional
+
+            // 1. Obtener valores del formulario
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            // 2. Crear el objeto del mensaje
+            const newMessage = {
+                id: Date.now(), // ID único basado en la marca de tiempo
+                date: new Date().toLocaleDateString('es-ES'),
+                name: name,
+                email: email,
+                message: message,
+                read: false
+            };
+
+            // 3. Obtener mensajes existentes o inicializar un array vacío
+            let messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            
+            // 4. Agregar el nuevo mensaje
+            messages.push(newMessage);
+            
+            // 5. Guardar el array actualizado en localStorage
+            localStorage.setItem('contactMessages', JSON.stringify(messages));
+
+            // 6. Notificar al usuario y limpiar el formulario
+            alert('¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
+            contactForm.reset(); 
+        });
+    }
+
+    loadReservasData();
+    loadFinanzasData();
+    loadMessages(); // <--- Carga de Mensajes
+
+    // Evento para eliminar un mensaje (delegación)
+    const mensajesTableBody = document.getElementById('mensajesTableBody');
+    if (mensajesTableBody) {
+        mensajesTableBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-message')) {
+                deleteMessage(parseInt(e.target.getAttribute('data-id')));
             }
-        },
-    };
-
-    new Chart(document.getElementById('reservasChart'), config);
-};
-
-// Llama a las funciones cuando la página esté lista
-document.addEventListener('DOMContentLoaded', () => {
-    // ... tu código existente
-    renderIngresosChart();
-    renderReservasChart();
+        });
+    }
 });
