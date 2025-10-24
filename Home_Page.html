@@ -3,45 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Piscina Tio Leo</title>
+    <title>LemusPool</title>
     <link rel="stylesheet" href="Estilos/Page_P.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="#portada">Portada</a>
-        <a href="#principal">Principal</a>
-        <a href="#calendario">Calendario</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#contacto">Contacto</a>
-    </nav>
-
     <header id="portada" class="hero">
-        <div class="hero-content">
-            <h1>Piscina Tio Leo</h1>
-            <p>Tu oasis privado para el verano.</p>
+        <nav class="navbar-top">
             
+            
+            <div class="nav-links-top">
+                <a href="#portada">Portada</a>
+                <a href="#principal">Principal</a>
+                <a href="#calendario">Calendario</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+        </nav>
+        
+        <div class="hero-content">
+            <div class="logo"><img src="Image/Logo.png" alt="LemusPool Logo"></div>
+            <a href="#contacto" class="cta-button">CONTÁCTANOS</a>
         </div>
+        <a href="#principal" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
     </header>
 
     <section id="principal" class="section">
         <div class="container">
-            <h2>Bienvenido a tu lugar de relajación</h2>
-            <p>Ofrecemos un espacio perfecto para que disfrutes con tu familia y amigos. Nuestra piscina cuenta con todas las comodidades para que tu día sea inolvidable.</p>
+            <div class="about-us-content">
+                <h2>SOBRE NOSOTROS</h2>
+                <div class="about-grid">                    
+                    <div class="text-content">
+                        <p>Nosotros somos <strong>Lemus Pool</strong> y estamos por finalizar nuestra especialidad en Programación y Análisis de Sistemas. Con más de dos años de experiencia, queremos presentarles nuestro sitio web, el cual ofrece un servicio de <strong>alojamiento con piscina</strong>. Buscamos entregar la mejor experiencia de hospedaje, y por eso, a través del sitio web también ofrecemos un recorrido virtual por los lugares más emblemáticos de Catemu. Todo esto está incluido junto al uso de la piscina.</p>
+                        <p>Una de nuestras principales ventajas es la <strong>buena comunicación con nuestros clientes</strong>: entregamos el número de contacto del propietario para resolver cualquier duda, inconveniente o disconformidad. Además, contamos con una de las <strong>tasas de cancelación más bajas de Catemu</strong>: aproximadamente un 6%. Esto se debe a nuestro compromiso con la satisfacción del cliente, ofreciendo reducciones de precio en caso de inconvenientes ajenos al huésped, encuestas de satisfacción y mejoras constantes basadas en sus opiniones.</p>
+                        <p>En resumen, Lemus Pool es una excelente opción para vacacionar en familia o con amigos, en un ambiente cómodo, confiable y con atención personalizada.</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="grid-images">
+            <div class="grid-images" style="margin-top: 50px;">
                 <div class="image-item">
-                    <img src="Image/Imagen_1.jpg" alt="Descripción de la imagen 1">
-                    <p>Amplia zona de solárium</p>
+                    <img src="Image/image4.jpg" alt="Amplia zona de solárium">
+                    <p>Cocina</p>
                 </div>
                 <div class="image-item">
-                    <img src="Image/Imagen_4.jpg" alt="Descripción de la imagen 2">
+                    <img src="Image/Image5.png" alt="Espacio para juegos">
                     <p>Espacio para juegos</p>
                 </div>
                 <div class="image-item">
-                    <img src="Image/Imagen_2.jpg" alt="Descripción de la imagen 3">
-                    <p>Piscina con todas las medidas de seguridad</p>
+                    <img src="Image/Image2.jpg" alt="Piscina con todas las medidas de seguridad">
+                    <p>Esácio para descansar</p>
                 </div>
             </div>
         </div>
@@ -87,28 +99,58 @@
             <h2>Disponibilidad</h2>
             <p>Revisa nuestro calendario para ver los días disponibles para tu reserva. Los días en rojo ya están ocupados.</p>
             
-            <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                <h3 class="calendar-title">Mes Año</h3>
+                <button class="nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
             </div>
+            
+            <div class="calendar-container">
+                </div>
         </div>
     </section>
 
-    
-
     <section id="contacto" class="section">
         <div class="container">
-            <h2>Contáctanos</h2>
-            <p>Síguenos en nuestras redes sociales o escríbenos para cualquier consulta.</p>
-            <div class="social-links">
-                <a href="https://wa.me/tu-numero" target="_blank" class="social-icon whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/tu-usuario" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@tu-usuario" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.facebook.com/tu-usuario" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <h2>Contáctanos y Reserva</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-form-container">
+                    <h3>Envíanos un mensaje</h3>
+                    <form class="contact-form" action="#" method="POST">
+                        <input type="text" name="name" placeholder="Tu Nombre" required>
+                        <input type="email" name="email" placeholder="Tu Correo Electrónico" required>
+                        <input type="tel" name="phone" placeholder="Tu Teléfono (Opcional)">
+                        <textarea name="message" placeholder="Tu Mensaje o Consulta" rows="5" required></textarea>
+                        <button type="submit" class="cta-button">Enviar Mensaje</button>
+                    </form>
+                </div>
+
+                <div class="location-details">
+                    <h3>Nuestra Ubicación</h3>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=-32.76512333287351,-70.96777830684546&hl=es&z=14&output=embed"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">Síguenos en nuestras redes sociales o llámanos directamente:</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/tu-numero" target="_blank" class="social-icon whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/tu-usuario" target="_blank" class="social-icon instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@tu-usuario" target="_blank" class="social-icon tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/tu-usuario" target="_blank" class="social-icon facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 Piscina Tio Leo. Todos los derechos reservados.</p>
+        <div class="container">
+            <p>© 2024 Piscina Tio Leo. Todos los derechos reservados.</p>
+            <p class="legal-links"><a href="#">Política de Privacidad</a> | <a href="#">Términos y Condiciones</a></p>
+        </div>
     </footer>
 
     <script src="Js/Page_P.js"></script>

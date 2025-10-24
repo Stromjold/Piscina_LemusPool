@@ -3,7 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Días de la semana en español
     const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
+    // Variables para el seguimiento del mes actual
+    const today = new Date();
+    let currentMonth = today.getMonth() + 1; // 1-12
+    let currentYear = today.getFullYear();
+
+    // Función para actualizar el título del calendario
+    function updateCalendarTitle(month, year) {
+        // Asegúrate de que month sea 1-12
+        document.querySelector('.calendar-title').textContent = `${monthNames[month - 1]} ${year}`;
+    }
+    
     // Función para obtener los días ocupados desde el almacenamiento local
     function getOccupiedDays(month, year) {
         const storedReservations = localStorage.getItem('reservations');
@@ -24,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Borra el contenido anterior del calendario
         calendarContainer.innerHTML = '';
 
+        // Actualizar el título del calendario
+        updateCalendarTitle(month, year);
+        
         const date = new Date(year, month - 1, 1);
         const firstDay = date.getDay();
         const daysInMonth = new Date(year, month, 0).getDate();
@@ -64,8 +79,20 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarContainer.appendChild(dayElement);
         }
     }
+    
+    // Función global para cambiar de mes (llamada desde los botones en el HTML)
+    window.changeMonth = function(offset) {
+        currentMonth += offset;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
+        } else if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
+        }
+        createCalendar(currentMonth, currentYear);
+    }
 
-    // Generar el calendario para el mes actual
-    const today = new Date();
-    createCalendar(today.getMonth() + 1, today.getFullYear());
+    // Generar el calendario inicial
+    createCalendar(currentMonth, currentYear);
 });
