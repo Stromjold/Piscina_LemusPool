@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `mensajes` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `nombre` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
+  `telefono` VARCHAR(20) DEFAULT 'No proporcionado',
   `mensaje` TEXT NOT NULL,
   `leido` TINYINT(1) NOT NULL DEFAULT 0,
   `fecha_envio` TIMESTAMP DEFAULT CURRENT_TIMESTAMP

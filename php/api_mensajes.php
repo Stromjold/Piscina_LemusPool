@@ -7,7 +7,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
         // OBTENER todos los mensajes
-        $sql = "SELECT id, nombre, email, mensaje, leido, fecha_envio FROM mensajes ORDER BY fecha_envio DESC";
+        $sql = "SELECT id, nombre, email, telefono, mensaje, leido, fecha_envio FROM mensajes ORDER BY fecha_envio DESC";
         $result = $conn->query($sql);
         $mensajes = [];
         if ($result->num_rows > 0) {
@@ -24,15 +24,16 @@ switch ($method) {
         
         $nombre = $data['name'] ?? '';
         $email = $data['email'] ?? '';
+        $telefono = $data['telefono'] ?? 'No proporcionado';
         $mensaje_texto = $data['message'] ?? '';
 
         if (empty($nombre) || empty($email) || empty($mensaje_texto)) {
             sendJsonResponse(["success" => false, "message" => "Faltan datos obligatorios para el mensaje."], 400);
         }
 
-        $sql = "INSERT INTO mensajes (nombre, email, mensaje) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO mensajes (nombre, email, telefono, mensaje) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $nombre, $email, $mensaje_texto);
+        $stmt->bind_param("ssss", $nombre, $email, $telefono, $mensaje_texto);
 
         if ($stmt->execute()) {
             sendJsonResponse(["success" => true, "message" => "Mensaje enviado con éxito."]);

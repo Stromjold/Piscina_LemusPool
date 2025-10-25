@@ -163,10 +163,23 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadFinanzasData() {
         const result = await fetchData(API_FINANZAS, 'GET');
         if (result.success) {
-            // Totales
-            document.getElementById('totalIngresos').textContent = formatCurrency(result.totales.total_ingresos);
-            document.getElementById('totalGastos').textContent = formatCurrency(result.totales.total_gastos);
-            document.getElementById('balance').textContent = formatCurrency(result.balance);
+            // Totales (soporta respuesta con 'totales' o con 'balance' del servidor)
+            let totalIngresos = 0;
+            let totalGastos = 0;
+            let balance = 0;
+
+            if (result.totales) {
+                totalIngresos = parseFloat(result.totales.total_ingresos) || 0;
+                totalGastos = parseFloat(result.totales.total_gastos) || 0;
+                balance = totalIngresos - totalGastos;
+            }
+            if (result.balance !== undefined) {
+                balance = parseFloat(result.balance) || balance;
+            }
+
+            document.getElementById('totalIngresos').textContent = formatCurrency(totalIngresos);
+            document.getElementById('totalGastos').textContent = formatCurrency(totalGastos);
+            document.getElementById('balance').textContent = formatCurrency(balance);
 
             // Resumen de Categorías y Gráficos
             categoriasResumen = result.categorias;
@@ -209,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = ''; 
 
         if (messages.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No hay mensajes en el buzón.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay mensajes en el buzón.</td></tr>';
             return;
         }
 
@@ -221,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.innerHTML = `
                 <td class="px-4 py-2">${datePart}</td>
                 <td class="px-4 py-2">${msg.nombre}</td>
+                <td class="px-4 py-2">${msg.telefono || 'No proporcionado'}</td>
                 <td class="px-4 py-2">${msg.email}</td>
                 <td class="px-4 py-2">${msg.mensaje}</td>
                 <td class="px-4 py-2 text-center">
@@ -351,7 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handlers de Formularios de Finanzas
     document.getElementById('formIngreso').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
         const data = {
+            fecha: currentDate,
             descripcion: document.getElementById('descripcionIngreso').value,
             cantidad: parseInt(document.getElementById('cantidadIngreso').value),
             precio: parseFloat(document.getElementById('precioIngreso').value),
@@ -368,7 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('formGasto').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const currentDate = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
         const data = {
+            fecha: currentDate,
             descripcion: document.getElementById('descripcionGasto').value,
             cantidad: parseInt(document.getElementById('cantidadGasto').value),
             precio: parseFloat(document.getElementById('precioGasto').value),

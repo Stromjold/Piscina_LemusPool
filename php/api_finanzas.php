@@ -9,12 +9,15 @@ switch ($method) {
     case 'GET':
         if ($action === 'reportes') {
             $sql_totales = "SELECT 
-                SUM(CASE WHEN tipo = 'ingreso' THEN total ELSE 0 END) AS total_ingresos,
-                SUM(CASE WHEN tipo = 'gasto' THEN total ELSE 0 END) AS total_gastos
+                COALESCE(SUM(CASE WHEN tipo = 'ingreso' THEN total ELSE 0 END), 0) AS total_ingresos,
+                COALESCE(SUM(CASE WHEN tipo = 'gasto' THEN total ELSE 0 END), 0) AS total_gastos
                 FROM transacciones";
             $result_totales = $conn->query($sql_totales);
             $totales = $result_totales->fetch_assoc();
-            
+            // Asegurarse de que sean valores numéricos
+            $totales['total_ingresos'] = isset($totales['total_ingresos']) ? (float)$totales['total_ingresos'] : 0.0;
+            $totales['total_gastos'] = isset($totales['total_gastos']) ? (float)$totales['total_gastos'] : 0.0;
+
             $sql_categorias = "SELECT categoria, tipo, SUM(total) as monto_total 
                                FROM transacciones 
                                GROUP BY categoria, tipo 
@@ -22,21 +25,28 @@ switch ($method) {
             $result_categorias = $conn->query($sql_categorias);
             $categorias = [];
             while($row = $result_categorias->fetch_assoc()) {
+                $row['monto_total'] = isset($row['monto_total']) ? (float)$row['monto_total'] : 0.0;
                 $categorias[] = $row;
             }
-            
+
             $sql_historial = "SELECT id, fecha, descripcion, cantidad, precio, categoria, tipo, total FROM transacciones ORDER BY fecha DESC, id DESC";
             $result_historial = $conn->query($sql_historial);
             $historial = [];
             while($row = $result_historial->fetch_assoc()) {
+                $row['cantidad'] = isset($row['cantidad']) ? (int)$row['cantidad'] : 0;
+                $row['precio'] = isset($row['precio']) ? (float)$row['precio'] : 0.0;
+                $row['total'] = isset($row['total']) ? (float)$row['total'] : 0.0;
                 $historial[] = $row;
             }
+
+            $balance = $totales['total_ingresos'] - $totales['total_gastos'];
 
             sendJsonResponse([
                 "success" => true,
                 "totales" => $totales,
                 "categorias" => $categorias,
-                "historial" => $historial
+                "historial" => $historial,
+                "balance" => $balance
             ]);
         } else {
             sendJsonResponse(["success" => false, "message" => "Acción GET no válida."], 400);
@@ -60,7 +70,8 @@ switch ($method) {
 
         $sql = "INSERT INTO transacciones (fecha, descripcion, cantidad, precio, categoria, tipo, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssidsd", $fecha, $descripcion, $cantidad, $precio, $categoria, $tipo, $total);
+    // Tipos: fecha(s), descripcion(s), cantidad(i), precio(d), categoria(s), tipo(s), total(d)
+    $stmt->bind_param("ssidssd", $fecha, $descripcion, $cantidad, $precio, $categoria, $tipo, $total);
 
         if ($stmt->execute()) {
             sendJsonResponse(["success" => true, "message" => "Transacción registrada con éxito."]);
