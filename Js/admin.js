@@ -52,10 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return await response.json();
         } catch (error) {
             alert('Error al conectar con el servidor: Falló la comunicación.');
-            console.error('Fallo en la comunicación con el servidor:', error);
             return { success: false, message: 'Fallo la comunicación con el servidor.' };
         }
-    }
 
     /**
      * Formatea un número como moneda.
@@ -75,58 +73,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalListaReservas = document.getElementById('listReservationsModal');
 
     function renderCalendar() {
-        const calendarEl = document.getElementById('adminCalendar');
-        calendarEl.innerHTML = '';
-        
+        const calendarEl = document.querySelector('#adminCalendar .calendar');
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         
-        // Filtrar reservas del mes actual
         const reservasMes = reservas.filter(r => {
             const rDate = new Date(r.fecha_inicio);
             return rDate.getFullYear() === year && rDate.getMonth() === month;
         });
 
-        const firstDayOfMonth = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        // Rellenar días anteriores (para que el primer día del mes caiga en el día correcto)
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day', 'empty-day');
-            calendarEl.appendChild(dayElement);
-        }
-
-        // Días del mes
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day');
-            dayElement.textContent = day;
-            
-            // Marcar reservas en el día
-            const dayReservas = reservasMes.filter(r => new Date(r.fecha_inicio).getDate() === day);
-            
-            if (dayReservas.length > 0) {
-                dayElement.classList.add('has-reservation');
-                dayReservas.forEach(r => {
-                    const reservationBadge = document.createElement('div');
-                    reservationBadge.classList.add('reservation-badge');
-                    reservationBadge.textContent = r.nombre_cliente;
-                    reservationBadge.onclick = (e) => {
-                        e.stopPropagation();
-                        openEditReservationModal(r);
-                    };
-                    dayElement.appendChild(reservationBadge);
-                });
+        const occupiedDays = [];
+        reservasMes.forEach(reserva => {
+            const fechaInicio = new Date(reserva.fecha_inicio);
+            const diasEstancia = parseInt(reserva.dias_estancia);
+            for (let i = 0; i < diasEstancia; i++) {
+                const fechaOcupada = new Date(fechaInicio);
+                fechaOcupada.setDate(fechaInicio.getDate() + i);
+                if (fechaOcupada.getFullYear() === year && fechaOcupada.getMonth() === month) {
+                    occupiedDays.push(fechaOcupada.getDate());
+                }
             }
+        });
 
-            calendarEl.appendChild(dayElement);
-        }
-
-        // Actualizar el título del mes/año
-        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-        document.getElementById('currentMonthYear').textContent = `${monthNames[month]} ${year}`;
+        createCalendar(calendarEl, month + 1, year, occupiedDays);
     }
 
     // Botones de navegación del calendario
@@ -154,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCalendar();
             renderReservasList();
         } else {
-            console.error('Error al cargar reservas:', result.message);
             alert('Error al cargar reservas: ' + result.message);
         }
     }
@@ -191,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHistorialTransacciones();
 
         } else {
-            console.error('Error al cargar finanzas:', result.message);
             alert('Error al cargar finanzas: ' + result.message);
         }
     }

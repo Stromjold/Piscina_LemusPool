@@ -36,3 +36,14 @@ CREATE TABLE IF NOT EXISTS `transacciones` (
   `tipo` ENUM('ingreso','gasto') NOT NULL,
   `total` DECIMAL(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Tabla de usuarios
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(50) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insertar un usuario administrador por defecto
+-- La contraseña es 'admin' (hasheada)
+INSERT INTO `usuarios` (`username`, `password`) VALUES ('admin', '$2y$12$v/7wXZGohewCUreuOT8NlOkVb0qrEBXRj82eDYlnEPxA/55r.RXQa');

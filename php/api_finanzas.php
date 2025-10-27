@@ -19,9 +19,9 @@ switch ($method) {
             $totales['total_gastos'] = isset($totales['total_gastos']) ? (float)$totales['total_gastos'] : 0.0;
 
             $sql_categorias = "SELECT categoria, tipo, SUM(total) as monto_total 
-                               FROM transacciones 
-                               GROUP BY categoria, tipo 
-                               ORDER BY tipo, categoria";
+                            FROM transacciones 
+                            GROUP BY categoria, tipo 
+                            ORDER BY tipo, categoria";
             $result_categorias = $conn->query($sql_categorias);
             $categorias = [];
             while($row = $result_categorias->fetch_assoc()) {
@@ -57,33 +57,33 @@ switch ($method) {
         $data = json_decode(file_get_contents("php://input"), true);
         
         $fecha = $data['fecha'] ?? '';
-        $descripcion = $data['descripcion'] ?? '';
-        $cantidad = $data['cantidad'] ?? 1;
-        $precio = $data['precio'] ?? 0.00;
-        $categoria = $data['categoria'] ?? '';
+        $descripcion = filter_var($data['descripcion'] ?? '', FILTER_SANITIZE_STRING);
+        $cantidad = filter_var($data['cantidad'] ?? 1, FILTER_VALIDATE_INT);
+        $precio = filter_var($data['precio'] ?? 0.00, FILTER_VALIDATE_FLOAT);
+        $categoria = filter_var($data['categoria'] ?? '', FILTER_SANITIZE_STRING);
         $tipo = $data['tipo'] ?? '';
-        $total = ($cantidad * $precio);
-
-        if (empty($fecha) || empty($descripcion) || empty($categoria) || !in_array($tipo, ['ingreso', 'gasto'])) {
-            sendJsonResponse(["success" => false, "message" => "Faltan datos obligatorios para la transacción."], 400);
+        
+        if (empty($fecha) || empty($descripcion) || empty($categoria) || !in_array($tipo, ['ingreso', 'gasto']) || $cantidad === false || $cantidad <= 0 || $precio === false || $precio <= 0) {
+            sendJsonResponse(["success" => false, "message" => "Datos de transacción inválidos o incompletos."], 400);
         }
+
+        $total = ($cantidad * $precio);
 
         $sql = "INSERT INTO transacciones (fecha, descripcion, cantidad, precio, categoria, tipo, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-    // Tipos: fecha(s), descripcion(s), cantidad(i), precio(d), categoria(s), tipo(s), total(d)
-    $stmt->bind_param("ssidssd", $fecha, $descripcion, $cantidad, $precio, $categoria, $tipo, $total);
+        $stmt->bind_param("ssisssd", $fecha, $descripcion, $cantidad, $precio, $categoria, $tipo, $total);
 
         if ($stmt->execute()) {
             sendJsonResponse(["success" => true, "message" => "Transacción registrada con éxito."]);
         } else {
-            sendJsonResponse(["success" => false, "message" => "Error al registrar transacción: " . $stmt->error], 500);
+            sendJsonResponse(["success" => false, "message" => "Error en la base de datos al registrar la transacción."], 500);
         }
         $stmt->close();
         break;
 
     case 'DELETE':
         $data = json_decode(file_get_contents("php://input"), true);
-        $transaccion_id = $data['id'] ?? null;
+        $transaccion_id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
         $action_delete = $data['action'] ?? null;
 
         if ($action_delete === 'limpiar_historial') {
@@ -91,15 +91,19 @@ switch ($method) {
             if ($conn->query($sql)) {
                 sendJsonResponse(["success" => true, "message" => "Historial de transacciones limpiado con éxito."]);
             } else {
-                sendJsonResponse(["success" => false, "message" => "Error al limpiar historial: " . $conn->error], 500);
+                sendJsonResponse(["success" => false, "message" => "Error en la base de datos al limpiar el historial."], 500);
             }
-        } else if ($transaccion_id) {
+        } else if ($transaccion_id !== false && $transaccion_id > 0) {
             $stmt = $conn->prepare("DELETE FROM transacciones WHERE id = ?");
             $stmt->bind_param("i", $transaccion_id);
             if ($stmt->execute()) {
-                sendJsonResponse(["success" => true, "message" => "Transacción eliminada con éxito."]);
+                if ($stmt->affected_rows > 0) {
+                    sendJsonResponse(["success" => true, "message" => "Transacción eliminada con éxito."]);
+                } else {
+                    sendJsonResponse(["success" => false, "message" => "No se encontró la transacción o ya fue eliminada."]);
+                }
             } else {
-                sendJsonResponse(["success" => false, "message" => "Error al eliminar transacción: " . $stmt->error], 500);
+                sendJsonResponse(["success" => false, "message" => "Error en la base de datos al eliminar la transacción."], 500);
             }
             $stmt->close();
         } else {
