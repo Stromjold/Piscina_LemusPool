@@ -1,0 +1,93 @@
+.template-arzopa .fw-bolder {
+  color: #0d2d52;
+}
+.template-arzopa section.row {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.template-arzopa section.row:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+.template-minimalist {
+  font-family: "Inter", sans-serif;
+}
+.template-minimalist h1, .template-minimalist h2, .template-minimalist h3, .template-minimalist h4, .template-minimalist h5, .template-minimalist h6, .template-minimalist .fw-bold {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.template-minimalist .display-1 {
+  letter-spacing: -2px;
+}
+.template-minimalist .nav-link {
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+.template-minimalist .nav-link:hover {
+  color: #0d6efd !important;
+}
+.template-minimalist section {
+  border-bottom: 1px solid #f0f0f0;
+}
+.template-minimalist section:last-child {
+  border-bottom: none;
+}
+
+.template-tropical {
+  font-family: "Poppins", sans-serif;
+}
+.template-tropical .card, .template-tropical .img-fluid {
+  border-radius: 1.5rem;
+}
+.template-tropical .shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+}
+.template-tropical .btn-primary {
+  background-color: #ff6b6b;
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+.template-tropical .btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.template-luxury .btn-outline-light {
+  border-color: #c9ab81;
+  color: #c9ab81;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.template-luxury .btn-outline-light:hover {
+  background-color: #c9ab81;
+  color: #1a1a1a;
+}
+.template-luxury .nav-link {
+  transition: color 0.3s ease;
+}
+.template-luxury .nav-link:hover {
+  color: #c9ab81 !important;
+}
+.template-luxury h3 {
+  color: #c9ab81;
+  font-family: "Playfair Display", serif;
+}
+
+.template-family {
+  font-family: "Nunito", sans-serif;
+}
+.template-family .fw-bolder {
+  font-weight: 800 !important;
+}
+.template-family .rounded-5 {
+  border-radius: 2rem;
+}
+.template-family .btn-primary {
+  background-color: #0d6efd;
+}
+.template-family .btn-warning {
+  color: #000;
+}
+
+/*# sourceMappingURL=style.css.map */

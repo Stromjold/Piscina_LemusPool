@@ -1,0 +1,29 @@
+// Estilos para la plantilla Luxury
+
+.template-luxury {
+    .btn-outline-light {
+        border-color: #c9ab81; // Tono dorado/bronce para el borde
+        color: #c9ab81;
+        border-radius: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: #c9ab81;
+            color: #1a1a1a;
+        }
+    }
+
+    .nav-link {
+        transition: color 0.3s ease;
+        &:hover {
+            color: #c9ab81 !important;
+        }
+    }
+
+    h3 {
+        color: #c9ab81;
+        font-family: 'Playfair Display', serif;
+    }
+}

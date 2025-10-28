@@ -1,0 +1,17 @@
+// Estilos para la plantilla Arzopa Aqua
+
+.template-arzopa {
+    .fw-bolder {
+        // Un color azul oscuro para los títulos, similar a la referencia
+        color: #0d2d52;
+    }
+
+    section.row {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+
+        &:nth-child(odd) {
+            background-color: #f8f9fa; // Un fondo gris claro para las secciones impares
+        }
+    }
+}

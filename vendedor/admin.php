@@ -1,16 +1,18 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['template_id'])) {
     header("Location: login.html");
     exit();
 }
+$template_id = $_SESSION['template_id'];
+$template_name = $_SESSION['template_name'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - LemusPool</title>
+    <title>Admin: <?php echo htmlspecialchars($template_name); ?></title>
     <link rel="stylesheet" href="Estilos/admin.css"> 
     <link rel="stylesheet" href="Estilos/calendar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -19,7 +21,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">LemusPool Admin</a>
+            <a class="navbar-brand" href="#">Admin: <?php echo htmlspecialchars($template_name); ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -420,6 +422,9 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </section>
 
+    <script>
+        const TEMPLATE_ID = <?php echo json_encode($template_id); ?>;
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Js/calendar.js"></script>

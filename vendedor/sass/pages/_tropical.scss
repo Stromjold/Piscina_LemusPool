@@ -1,0 +1,22 @@
+// Estilos para la plantilla Tropical
+
+.template-tropical {
+    font-family: 'Poppins', sans-serif;
+
+    .card, .img-fluid {
+        border-radius: 1.5rem; // Bordes redondeados
+    }
+
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+    }
+
+    .btn-primary {
+        background-color: #ff6b6b; // Un color coral vibrante
+        border: none;
+        transition: transform 0.2s ease-in-out;
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+}

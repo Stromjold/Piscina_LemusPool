@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Administración</title>
+    <title>Registro - Administración</title>
     <link rel="stylesheet" href="Estilos/admin.css">
     <style>
         body {
@@ -51,23 +51,38 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Acceso de Administrador</h2>
-        <div id="successMessage" class="success-message" style="display: none; color: green; margin-bottom: 1rem;">¡Registro exitoso! Ahora puedes iniciar sesión.</div>
-        <div id="errorMessage" class="error-message" style="display: none;">Usuario o contraseña incorrectos.</div>
-        <form id="loginForm" action="php/login.php" method="POST">
+        <h2 id="registerTitle">Registro de Administrador</h2>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <form id="registerForm" action="php/register.php" method="POST">
+            <input type="hidden" id="templateName" name="template" value="">
             <input type="text" name="username" placeholder="Usuario" required>
             <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit">Entrar</button>
+            <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+            <button type="submit">Registrarse</button>
         </form>
-        <p style="margin-top: 1rem;">¿No tienes una cuenta? <a href="register.html">Regístrate</a></p>
+        <p style="margin-top: 1rem;">¿Ya tienes una cuenta? <a id="loginLink" href="login.html">Inicia Sesión</a></p>
     </div>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('error')) {
-            document.getElementById('errorMessage').style.display = 'block';
+        const templateName = urlParams.get('template');
+        if (templateName) {
+            document.getElementById('templateName').value = templateName;
+            document.getElementById('registerTitle').textContent = 'Registro Admin: ' + templateName;
+            const loginLink = document.getElementById('loginLink');
+            loginLink.href = 'login.html?template=' + encodeURIComponent(templateName);
         }
-        if (urlParams.has('success')) {
-            document.getElementById('successMessage').style.display = 'block';
+
+        const error = urlParams.get('error');
+        const errorMessage = document.getElementById('errorMessage');
+        if (error) {
+            errorMessage.style.display = 'block';
+            if (error === 'password') {
+                errorMessage.textContent = 'Las contraseñas no coinciden.';
+            } else if (error === 'username') {
+                errorMessage.textContent = 'El nombre de usuario ya existe para esta plantilla.';
+            } else if (error === 'dberror') {
+                errorMessage.textContent = 'Error en la base de datos. Por favor, inténtalo de nuevo.';
+            }
         }
     </script>
 </body>
