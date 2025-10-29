@@ -19,16 +19,29 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
+            width: 100%;
+            max-width: 400px;
         }
         .login-container h2 {
             margin-bottom: 1.5rem;
         }
+        .input-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
         .login-container input {
             width: 100%;
             padding: 0.75rem;
-            margin-bottom: 1rem;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
         }
         .login-container button {
             width: 100%;
@@ -55,9 +68,17 @@
         <div id="errorMessage" class="error-message" style="display: none;"></div>
         <form id="registerForm" action="php/register.php" method="POST">
             <input type="hidden" id="templateName" name="template" value="">
-            <input type="text" name="username" placeholder="Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+            <div class="input-container">
+                <input type="text" name="username" placeholder="Usuario (mín. 20 caracteres)" required minlength="20">
+            </div>
+            <div class="input-container">
+                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</span>
+            </div>
+            <div class="input-container">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm_password')">👁️</span>
+            </div>
             <button type="submit">Registrarse</button>
         </form>
         <p style="margin-top: 1rem;">¿Ya tienes una cuenta? <a id="loginLink" href="login.html">Inicia Sesión</a></p>
@@ -82,6 +103,26 @@
                 errorMessage.textContent = 'El nombre de usuario ya existe para esta plantilla.';
             } else if (error === 'dberror') {
                 errorMessage.textContent = 'Error en la base de datos. Por favor, inténtalo de nuevo.';
+            } else if (error === 'username_length') {
+                errorMessage.textContent = 'El nombre de usuario debe tener al menos 20 caracteres.';
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            const username = document.querySelector('input[name="username"]').value;
+            if (username.length < 20) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'El nombre de usuario debe tener al menos 20 caracteres.';
+                event.preventDefault();
+            }
+        });
+
+        function togglePasswordVisibility(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field.type === 'password') {
+                field.type = 'text';
+            } else {
+                field.type = 'password';
             }
         }
     </script>
