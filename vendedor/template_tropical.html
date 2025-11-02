@@ -8,22 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/tropical.css">
 </head>
 <body class="template-tropical">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#!">TropicalVibes</a>
+            <a class="navbar-brand fw-bold" href="#inicio">TropicalVibes</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTropical" aria-controls="navbarTropical" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTropical">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#!">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Atracciones</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Comida</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#atracciones">Atracciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#comida">Comida</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reservar">Reservar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
                 </ul>
             </div>
@@ -31,7 +33,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="text-white text-center py-5" style="background: linear-gradient(45deg, #00c9ff, #92fe9d);">
+    <header id="inicio" class="text-white text-center py-5" style="background: linear-gradient(45deg, #00c9ff, #92fe9d);">
         <div class="container py-5">
             <h1 class="display-3 fw-bold">¡Sumérgete en la Diversión!</h1>
             <p class="lead">Tu paraíso tropical te espera con las mejores olas y el mejor ambiente.</p>
@@ -40,7 +42,7 @@
 
     <!-- Services Section -->
     <main class="container my-5">
-        <section class="text-center mb-5">
+        <section id="atracciones" class="text-center mb-5">
             <h2 class="fw-bold">Nuestras Actividades</h2>
             <p class="text-muted">Tenemos algo para todos en la familia.</p>
         </section>
@@ -83,19 +85,88 @@
         </section>
     </main>
 
-    <section id="calendario" class="section bg-light">
+    <!-- Food Section -->
+    <section id="comida" class="py-5">
         <div class="container">
-            <h2>Disponibilidad</h2>
-            <p>Revisa nuestro calendario para ver los días disponibles para tu reserva. Los días en rojo ya están ocupados.</p>
-            
-            <div class="calendar-header">
-                <button class="nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <h3 class="calendar-title">Mes Año</h3>
-                <button class="nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Sabores Tropicales</h2>
+                <p class="text-muted">Recarga energías con nuestras deliciosas opciones de comida y bebida.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-lg h-100">
+                        <div class="row g-0">
+                            <div class="col-md-5">
+                                <img src="Image/food1.jpg" class="img-fluid rounded-start" alt="Comida Tropical">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">Menú del Día</h5>
+                                    <p class="card-text">Platos frescos y variados para todos los gustos. Incluye bebida y postre.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-lg h-100">
+                        <div class="row g-0">
+                            <div class="col-md-5">
+                                <img src="Image/food2.jpg" class="img-fluid rounded-start" alt="Bebidas Tropicales">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">Barra de Jugos</h5>
+                                    <p class="card-text">Refrescantes jugos naturales y cócteles para combatir el calor.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservar" class="section">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title-neon">Disponibilidad</h2>
+                <p>Revisa nuestro calendario para ver los días disponibles para tu reserva.</p>
             </div>
             
             <div class="calendar-container">
+                <!-- El contenido del calendario se generará aquí por JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Contáctanos</h2>
+                <p class="text-muted">¿Tienes preguntas? Estamos aquí para ayudarte.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Correo Electrónico" required>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" rows="5" placeholder="Tu Mensaje" required></textarea>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+            </div>
         </div>
     </section>
 
@@ -107,6 +178,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/Js/reservas.js"></script>
     <script src="js/Js/calendar.js"></script>
 </body>
 </html>

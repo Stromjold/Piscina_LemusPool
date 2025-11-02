@@ -8,19 +8,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/minimalist.css">
 </head>
 <body class="template-minimalist">
 
     <!-- Header & Nav -->
-    <header class="container py-4">
-        <nav class="d-flex justify-content-between align-items-center">
-            <span class="fw-bold fs-4">MINIMALIST</span>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#!">Concepto</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Espacios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Reservar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
-                </ul>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-4" href="#">MINIMALIST</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#!">Concepto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Espacios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Reservar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -35,7 +43,7 @@
         <section class="my-5">
             <div class="row g-4">
                 <div class="col-lg-8">
-                    <img src="Image/image1.jpg" class="img-fluid rounded" alt="Piscina minimalista 1">
+                    <img src="https://i.imgur.com/v1YfS1g.jpeg" class="img-fluid rounded" alt="Piscina minimalista 1">
                 </div>
                 <div class="col-lg-4">
                     <img src="Image/image2.jpg" class="img-fluid rounded" alt="Piscina minimalista 2">
@@ -74,6 +82,40 @@
             
             <div class="calendar-container">
                 </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="my-5 py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <h2 class="text-center fw-bold">Contáctanos</h2>
+                    <p class="text-center text-secondary mb-4">¿Tienes alguna pregunta? Envíanos un mensaje.</p>
+                    <form>
+                        <div class="mb-3">
+                          <label for="exampleFormControlInput1" class="form-label">Dirección de correo electrónico</label>
+                          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                        </div>
+                        <div class="mb-3">
+                          <label for="inputPassword6" class="form-label">Contraseña</label>
+                          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+                          <div id="passwordHelpInline" class="form-text">
+                            Debe tener entre 8 y 20 caracteres.
+                        </div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="telefono" class="form-label">Teléfono</label>
+                          <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: + 56 9 1234 5678">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 

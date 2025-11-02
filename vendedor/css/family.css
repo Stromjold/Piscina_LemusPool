@@ -1,0 +1,20 @@
+/* Estilos para la plantilla Family */
+.template-family {
+  font-family: 'Nunito', sans-serif;
+}
+
+.template-family .fw-bolder {
+  font-weight: 800 !important;
+}
+
+.template-family .rounded-5 {
+  border-radius: 2rem;
+}
+
+.template-family .btn-primary {
+  background-color: #0d6efd;
+}
+
+.template-family .btn-warning {
+  color: #000;
+}

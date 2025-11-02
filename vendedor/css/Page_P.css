@@ -343,20 +343,40 @@ h1, h2, h3 {
     color: #888;
 }
 
-.day-free {
+.available {
     background-color: #e6ffe6;
     border-color: #b3ffb3;
 }
 
-.day-occupied {
+.occupied {
     background-color: #ffe6e6;
     border-color: #ffb3b3;
     cursor: not-allowed;
 }
 
-.day-occupied .day-number,
-.day-occupied .day-name {
+.occupied .day-number,
+.occupied .day-name {
     color: #d9534f;
+}
+
+.nav-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #333;
+    font-size: 1.5em;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.calendar-title {
+    font-size: 1.8em;
+    color: #333;
 }
 
 /* --- ESTILOS DE CONTACTO (FORMULARIO Y MAPA) --- */

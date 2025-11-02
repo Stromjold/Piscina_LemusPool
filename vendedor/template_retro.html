@@ -3,83 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro - Plantilla Demo</title>
+    <title>LAVO Nightclub - Plantilla Demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/retro.css">
 </head>
 <body class="template-retro">
 
     <!-- Header & Nav -->
-    <header class="container py-4">
-        <nav class="d-flex justify-content-between align-items-center">
-            <span class="fw-bold fs-4">RETRO POOL</span>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#!">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Arcade</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Reservar</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
-            </ul>
-        </nav>
+    <header class="nightclub-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="#">LAVO <span class="logo-subtext">NIGHTCLUB</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nightclubNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="nightclubNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Reservations</a></li>
+                    </ul>
+                    <ul class="navbar-nav social-icons-nav">
+                        <li class="nav-item"><a class="nav-link" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <!-- Hero Section -->
-    <main class="container">
-        <section class="text-center my-5 py-5">
-            <h1 class="display-1 fw-bold">PIXEL PERFECT</h1>
-            <p class="lead text-secondary mx-auto" style="max-width: 600px;">Vuelve a los 80s. Colores neon, musica synthwave y la mejor diversion acuatica.</p>
-        </section>
+    <section class="hero-section">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">Steve Aoki performs at<br>Lavo Nightclub</h1>
+            <p class="hero-date">May 17, 2024</p>
+            <a href="#" class="btn btn-primary btn-lg btn-book-table">BOOK A TABLE</a>
+        </div>
+    </section>
 
-        <!-- Gallery -->
-        <section class="my-5">
-            <div class="row g-4">
-                <div class="col-lg-8">
-                    <img src="Image/image1.jpg" class="img-fluid rounded" alt="Piscina retro 1">
-                </div>
-                <div class="col-lg-4">
-                    <img src="Image/image2.jpg" class="img-fluid rounded" alt="Piscina retro 2">
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="row my-5 py-5 align-items-center">
+    <!-- Welcome Section -->
+    <main class="container my-5">
+        <section class="row align-items-center welcome-section">
             <div class="col-lg-6">
-                <h2 class="fw-bold">Sube de Nivel</h2>
-                <p class="text-secondary">Piscina temperada, zona de juegos arcade y un bar con los mejores tragos de la epoca. Que mas se puede pedir?</p>
+                <img src="https://images.unsplash.com/photo-1582732279324-12691a33c00b?q=80&w=2070&auto=format&fit=crop" class="img-fluid" alt="Interior de discoteca">
             </div>
-            <div class="col-lg-6 text-lg-end">
-                <a href="#!" class="btn btn-dark btn-lg">Contactar</a>
+            <div class="col-lg-6 ps-lg-5">
+                <h2 class="welcome-title">Welcome to Lavo Nightclub<span class="title-dot">.</span></h2>
+                <p>Lavo Nightclub is one of the largest top-notch dance clubs in Charleston, SC. Our club offers 5,000 square feet of pure fun - one of the largest dancefloors downtown, a massive bar with a huge selection of drinks and 12 luxurious VIP booths for you and your friends to spend a night of partying that you'll never forget.</p>
+                <a href="#" class="btn btn-outline-primary btn-tour">IN TOUR</a>
             </div>
         </section>
     </main>
 
-    <section id="calendario" class="section bg-light">
-        <div class="container">
-            <h2>Disponibilidad</h2>
-            <p>Revisa nuestro calendario para ver los días disponibles para tu reserva. Los días en rojo ya están ocupados.</p>
-            
-            <div class="calendar-header">
-                <button class="nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <h3 class="calendar-title">Mes Año</h3>
-                <button class="nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            
-            <div class="calendar-container">
+    <!-- Services Section -->
+    <section id="services" class="py-5 section-dark">
+        <div class="container text-center">
+            <h2 class="section-title">Our Services<span class="title-dot">.</span></h2>
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-glass-cheers"></i></div>
+                        <h3 class="service-title">Bottle Service</h3>
+                        <p>Disfrute de licores y refrescos de primera calidad servidos directamente en su mesa.</p>
+                    </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-couch"></i></div>
+                        <h3 class="service-title">VIP Booths</h3>
+                        <p>Reserva una lujosa cabina VIP para una experiencia exclusiva y privada.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-birthday-cake"></i></div>
+                        <h3 class="service-title">Eventos privados</h3>
+                        <p>Celebra tu próxima fiesta privada o evento corporativo con nosotros.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title">Upcoming Events<span class="title-dot">.</span></h2>
+            <div class="row justify-content-center mt-5">
+                <div class="col-lg-10">
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header">
+                            <button id="prevMonth" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="currentMonthYear" class="calendar-title"></h3>
+                            <button id="nextMonth" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="weekdays">
+                            <span>DOM</span><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span>
+                        </div>
+                        <div class="weeks">
+                            <!-- Los días del calendario se generarán aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5 section-dark">
+        <div class="container text-center">
+            <h2 class="section-title">Gallery<span class="title-dot">.</span></h2>
+            <div class="row g-4 mt-4">
+                <div class="col-md-4"><img src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?q=80&w=1974&auto=format&fit=crop" class="img-fluid" alt="Gallery Image 1"></div>
+                <div class="col-md-4"><img src="https://images.unsplash.com/photo-1593412583972-235ac29338b7?q=80&w=1974&auto=format&fit=crop" class="img-fluid" alt="Gallery Image 2"></div>
+                <div class="col-md-4"><img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?q=80&w=2070&auto=format&fit=crop" class="img-fluid" alt="Gallery Image 3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Book a Table<span class="title-dot">.</span></h2>
+                    <p class="text-white-50 mb-5">Reserve your spot for an unforgettable night.</p>
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6"><input type="text" class="form-control" placeholder="Your Name"></div>
+                            <div class="col-md-6"><input type="email" class="form-control" placeholder="Your Email"></div>
+                            <div class="col-md-6"><input type="tel" class="form-control" placeholder="Phone Number"></div>
+                            <div class="col-md-6"><input type="date" class="form-control"></div>
+                            <div class="col-12"><textarea class="form-control" rows="4" placeholder="Any special requests?"></textarea></div>
+                            <div class="col-12"><button type="submit" class="btn btn-primary btn-lg btn-book-table">SUBMIT REQUEST</button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="container py-4 mt-5 border-top">
-        <div class="d-flex justify-content-between">
-            <p class="text-secondary">&copy; 2025 Retro Pool</p>
-            <p class="text-secondary">Términos y Condiciones</p>
+    <footer class="py-5">
+        <div class="container text-center">
+            <p>&copy; 2025 LAVO Nightclub. All Rights Reserved.</p>
         </div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/Js/calendar.js"></script>
+    <script src="js/Js/calendar_animation.js"></script>
 </body>
 </html>

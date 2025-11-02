@@ -1,0 +1,23 @@
+/* Estilos para la plantilla Luxury */
+.template-luxury .btn-outline-light {
+  border-color: #c9ab81;
+  color: #c9ab81;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.template-luxury .btn-outline-light:hover {
+  background-color: #c9ab81;
+  color: #1a1a1a;
+}
+.template-luxury .nav-link {
+  transition: color 0.3s ease;
+}
+.template-luxury .nav-link:hover {
+  color: #c9ab81 !important;
+}
+.template-luxury h3 {
+  color: #c9ab81;
+  font-family: "Playfair Display", serif;
+}

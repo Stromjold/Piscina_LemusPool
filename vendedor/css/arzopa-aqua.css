@@ -1,0 +1,53 @@
+/* Estilos para la plantilla Arzopa Aqua */
+
+.template-arzopa .fw-bolder {
+  /* Un color azul oscuro para los títulos, similar a la referencia */
+  color: #0d2d52;
+}
+
+.template-arzopa section.row {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.template-arzopa section.row:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+.template-arzopa .hero {
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrHmKit7scCP3ikRIUdEYwKcH6SNllCtpvqQ&s");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+  text-align: center;
+  padding: 2rem;
+}
+
+.template-arzopa .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 45, 82, 0.45);
+  z-index: 0;
+}
+
+.template-arzopa .hero .hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* Estilos para la sección de contacto */
+#contacto form {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}

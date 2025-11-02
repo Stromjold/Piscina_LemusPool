@@ -1,0 +1,133 @@
+/* Estilos para la plantilla Tropical */
+.template-tropical {
+  font-family: "Poppins", sans-serif;
+}
+.template-tropical .card, .template-tropical .img-fluid {
+  border-radius: 1.5rem;
+}
+.template-tropical .shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+}
+.template-tropical .btn-primary {
+  background-color: #ff6b6b;
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+.template-tropical .btn-primary:hover {
+  transform: scale(1.05);
+}
+
+/* Estilos para la sección de calendario - Estilo Neón Oscuro */
+#reservar {
+  padding: 60px 0;
+  background-color: #0a192f; /* Fondo oscuro azul marino */
+  color: #e0f7fa;
+}
+
+#reservar p {
+    color: #a8b2d1; /* Color de texto más suave para el párrafo */
+}
+
+.section-title-neon {
+    font-weight: bold;
+    color: #ff6b6b; /* Color neón/rosa de la imagen */
+    text-shadow: 0 0 5px #ff6b6b, 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
+    margin-bottom: 20px;
+}
+
+.calendar-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #2a3a55;
+    border-radius: 1.5rem;
+}
+
+.calendar-main {
+    flex-grow: 1;
+}
+
+.calendar-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.calendar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e0f7fa;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid #a8b2d1;
+  color: #a8b2d1;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 10px #ff6b6b;
+}
+
+.calendar-container {
+    padding: 20px;
+    border: 1px solid #2a3a55;
+    border-radius: 1.5rem;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendar-day {
+  padding: 15px 10px;
+  text-align: center;
+  border-radius: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.day-name {
+  font-weight: bold;
+  color: #ff6b6b; /* Color neón para los días de la semana */
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.available {
+  color: #e0f7fa;
+  cursor: pointer;
+  background-color: rgba(146, 254, 157, 0.1); /* Verde suave de fondo */
+  border-color: #92fe9d;
+}
+
+.available:hover {
+  background-color: rgba(146, 254, 157, 0.3); /* Verde más intenso al pasar el ratón */
+  color: #fff;
+}
+
+.occupied {
+  color: #a8b2d1;
+  background-color: rgba(255, 107, 107, 0.15); /* Rojo suave de fondo */
+  border-color: #ff6b6b;
+  text-decoration: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.empty {
+  background-color: transparent;
+  border: none;
+}
