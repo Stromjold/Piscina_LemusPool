@@ -7,12 +7,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_password = $_POST['confirm_password'];
 
     if (strlen($username) < 20) {
-        header("Location: ../register.html?error=username_length");
+        header("Location: ../login.html?error=username_length");
         exit();
     }
 
     if ($password !== $confirm_password) {
-        header("Location: ../register.html?error=password");
+        header("Location: ../login.html?error=password");
         exit();
     }
 
@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result_template = $stmt_template->get_result();
 
     if ($result_template->num_rows === 0) {
-        // Si la plantilla no existe, es un error.
-        header("Location: ../register.html?error=dberror");
+        header("Location: ../login.html?error=dberror");
         exit();
     }
     $template_id = $result_template->fetch_assoc()['id'];
@@ -40,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        header("Location: ../register.html?error=username&template=" . urlencode($template_name));
+        header("Location: ../login.html?error=username&template=" . urlencode($template_name));
         exit();
     }
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LemusPool</title>
-    <link rel="stylesheet" href="Estilos/Page_P.css">
+    <link rel="stylesheet" href="css/Page_P.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -19,7 +19,8 @@
                 <a href="#calendario">Calendario</a>
                 <a href="#servicios">Servicios</a>
                 <a href="#contacto">Contacto</a>
-                
+                <a href="login_cliente.html">Área de Cliente</a>
+                <a href="plantillas.html">Plantillas</a>
             </div>
         </nav>
         
@@ -113,7 +114,7 @@
             <div class="contact-grid">
                 <div class="contact-form-container">
                     <h3>Envíanos un mensaje</h3>
-                    <form id="contactForm" class="contact-form" action="#" method="POST">
+                    <form id="contactForm" class="contact-form" action="php/contact.php" method="POST">
                         <input type="text" id="contactName" name="name" placeholder="Tu Nombre" required>
                         <input type="email" id="contactEmail" name="email" placeholder="Tu Correo Electrónico" required>
                         <input type="tel" id="contactPhone" name="phone" placeholder="Tu Teléfono (Opcional)">
@@ -151,5 +152,25 @@
 
     <script src="js/Js/reservas.js"></script>
     <script src="js/Js/Page_P.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+        const error = urlParams.get('error');
+        const contactForm = document.getElementById('contactForm');
+
+        if (success) {
+            const successMessage = document.createElement('p');
+            successMessage.textContent = '¡Mensaje enviado con éxito!';
+            successMessage.style.color = 'green';
+            contactForm.parentNode.insertBefore(successMessage, contactForm.nextSibling);
+        }
+
+        if (error) {
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Hubo un error al enviar el mensaje. Inténtalo de nuevo.';
+            errorMessage.style.color = 'red';
+            contactForm.parentNode.insertBefore(errorMessage, contactForm.nextSibling);
+        }
+    </script>
 </body>
 </html>

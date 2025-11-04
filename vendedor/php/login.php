@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require 'db_connect.php';
 
@@ -38,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['template_id'] = $template_id;
                 $_SESSION['template_name'] = $template_name; // Also store name for convenience
                 
-                header("Location: ../admin.php");
+                header("Location: ../Home_Page.html");
                 exit();
             }
         }

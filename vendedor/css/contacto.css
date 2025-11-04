@@ -1,0 +1,108 @@
+
+        /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* AliceBlue - un azul muy claro */
+            color: #333;
+        }
+
+        /* Barra de Navegación */
+        .navbar.bg-primary {
+            background-color: #0056b3 !important; /* Un azul corporativo más profundo */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            transition: color 0.3s ease-in-out, transform 0.2s ease;
+            padding: 8px 12px;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            font-weight: bold;
+            border-bottom: 2px solid #fff;
+        }
+
+        /* Contenido Principal */
+        main h1.display-5 {
+            color: #004085; /* Un azul oscuro para el título principal */
+            font-weight: 700;
+        }
+
+        main .lead {
+            color: #5a6268; /* Un gris suave para el texto introductorio */
+            font-size: 1.1rem;
+        }
+
+        main.container.py-5 {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tarjeta del Formulario */
+        .card-form {
+            background-color: #949191;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+            border: 1px solid #dee2e6;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        }
+
+        .card-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Estilos de los campos del Formulario */
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            background-color: #fff;
+        }
+
+        /* Botón de Envío */
+        .btn-primary {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px; /* Botón más redondeado */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: #004085; /* Color más oscuro al pasar el ratón */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+        }
+
+        /* Pie de Página */
+        footer.bg-light {
+            background-color: #e9ecef !important; /* Un gris un poco más oscuro que el fondo */
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
