@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Pool Discoteca</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #df0568;
+            --accent-blue: #00bfff;
+            --dark-bg: #0a0f19;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: #0f1524;
+            border: 2px solid var(--primary-pink);
+            box-shadow: 0 0 30px rgba(223, 5, 104, 0.5);
+        }
+        .form-control {
+            background: var(--dark-bg);
+            border-color: var(--accent-blue);
+            color: #fff;
+        }
+        .form-control:focus {
+            background: var(--dark-bg);
+            border-color: var(--primary-pink);
+            color: #fff;
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: var(--primary-pink);
+            border-color: var(--primary-pink);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="col-md-5 col-lg-4">
+            <div class="card login-card p-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center fw-bolder mb-4" style="color: var(--primary-pink);">POOL DISCOTECA</h2>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = '../administracion/admin_retro.html';
+        });
+    </script>
+</body>
+</html>

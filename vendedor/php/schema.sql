@@ -1,90 +1,83 @@
--- Schema for LemusPool (Multi-tenant)
+CREATE DATABASE IF NOT EXISTS AquaLink_db;
+USE AquaLink_db;
 
-CREATE DATABASE IF NOT EXISTS `lemuspool_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `lemuspool_db`;
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    template_id VARCHAR(50) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE
+);
 
--- Tabla de plantillas (tenants)
-CREATE TABLE IF NOT EXISTS `templates` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `nombre` VARCHAR(100) NOT NULL UNIQUE,
-  `archivo_html` VARCHAR(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE plantillas (
+    id VARCHAR(50) PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    img_url VARCHAR(255)
+);
 
-INSERT INTO `templates` (`nombre`, `archivo_html`) VALUES
-('LemusPool', 'Home_Page.html'),
-('Arzopa Aqua', 'template_arzopa_aqua.html'),
-('Minimalist', 'template_minimalist.html'),
-('Tropical', 'template_tropical.html'),
-('Luxury', 'template_luxury.html'),
-('Family', 'template_family.html');
+CREATE TABLE solicitudes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    plantilla_interes VARCHAR(50),
+    mensaje TEXT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    leido BOOLEAN DEFAULT FALSE
+);
 
--- Tabla de usuarios (administradores de cada plantilla)
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE `usuarios` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `template_id` INT NOT NULL,
-  `username` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  UNIQUE KEY `unique_user_per_template` (`template_id`, `username`),
-  FOREIGN KEY (`template_id`) REFERENCES `templates`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE reservas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    template_id VARCHAR(50) NOT NULL,
+    nombre_cliente VARCHAR(255) NOT NULL,
+    fecha_reserva DATE NOT NULL,
+    personas INT NOT NULL,
+    estado VARCHAR(50) DEFAULT 'Pendiente', -- Pendiente, Confirmada, Cancelada
+    FOREIGN KEY (template_id) REFERENCES plantillas(id)
+);
 
--- Insert a default admin for the first template for testing
--- Password is 'admin'
-INSERT INTO `usuarios` (`template_id`, `username`, `password`) VALUES (1, 'admin_lemus', '$2y$12$v/7wXZGohewCUreuOT8NlOkVb0qrEBXRj82eDYlnEPxA/55r.RXQa');
+CREATE TABLE mensajes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    template_id VARCHAR(50) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefono VARCHAR(50),
+    mensaje TEXT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    leido BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (template_id) REFERENCES plantillas(id)
+);
 
--- Tabla de clientes (por plantilla)
-DROP TABLE IF EXISTS `clientes`;
-CREATE TABLE `clientes` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `template_id` INT NOT NULL,
-  `nombre` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `telefono` VARCHAR(50) DEFAULT NULL,
-  `fecha_registro` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `unique_email_per_template` (`template_id`, `email`),
-  FOREIGN KEY (`template_id`) REFERENCES `templates`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE transacciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    template_id VARCHAR(50) NOT NULL,
+    tipo ENUM('ingreso', 'gasto') NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL,
+    categoria VARCHAR(100),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (template_id) REFERENCES plantillas(id)
+);
 
--- Tabla de reservas (por plantilla)
-DROP TABLE IF EXISTS `reservas`;
-CREATE TABLE `reservas` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `template_id` INT NOT NULL,
-  `cliente_id` INT NOT NULL,
-  `fecha_inicio` DATE NOT NULL,
-  `dias_estancia` INT NOT NULL DEFAULT 1,
-  `cantidad_personas` INT NOT NULL DEFAULT 1,
-  FOREIGN KEY (`template_id`) REFERENCES `templates`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`cliente_id`) REFERENCES `clientes`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Insertar usuario administrador principal
+INSERT INTO usuarios (username, password, template_id, is_admin) VALUES ('admin', 'password', 'principal', TRUE);
 
--- Tabla de mensajes (por plantilla)
-DROP TABLE IF EXISTS `mensajes`;
-CREATE TABLE `mensajes` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `template_id` INT NOT NULL,
-  `nombre` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  `telefono` VARCHAR(20) DEFAULT 'No proporcionado',
-  `mensaje` TEXT NOT NULL,
-  `leido` TINYINT(1) NOT NULL DEFAULT 0,
-  `fecha_envio` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`template_id`) REFERENCES `templates`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Insertar usuarios para cada plantilla
+INSERT INTO usuarios (username, password, template_id) VALUES 
+('admin@lemus.com', 'password', 'lemuspool'),
+('admin@arzopa.com', 'password', 'arzopa'),
+('admin@family.com', 'password', 'family'),
+('admin@luxury.com', 'password', 'luxury'),
+('admin@nature.com', 'password', 'nature'),
+('admin@retro.com', 'password', 'retro'),
+('admin@tropical.com', 'password', 'tropical');
 
--- Tabla de transacciones (finanzas, por plantilla)
-DROP TABLE IF EXISTS `transacciones`;
-CREATE TABLE `transacciones` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `template_id` INT NOT NULL,
-  `fecha` DATE NOT NULL,
-  `descripcion` VARCHAR(255) NOT NULL,
-  `cantidad` INT NOT NULL DEFAULT 1,
-  `precio` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-  `categoria` VARCHAR(100) NOT NULL,
-  `tipo` ENUM('ingreso','gasto') NOT NULL,
-  `total` DECIMAL(12,2) NOT NULL,
-  FOREIGN KEY (`template_id`) REFERENCES `templates`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Insertar plantillas
+INSERT INTO plantillas (id, nombre) VALUES
+('principal', 'AquaLink Devs'),
+('lemuspool', 'LemusPool'),
+('arzopa', 'Arzopa Aqua'),
+('family', 'FamilyFun'),
+('luxury', 'Luxury'),
+('nature', 'Nature Pool'),
+('retro', 'Pool Discoteca'),
+('tropical', 'TropicalVibes');

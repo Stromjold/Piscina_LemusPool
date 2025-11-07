@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Nature Pool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/inicio_sesion_plantillas_css/natural_sesion.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f5e6d3 100%);
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            color: #2d5016;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4a7c3b, #8bc34a);
+            border: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="col-md-5 col-lg-4">
+            <div class="card login-card p-4 rounded-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center fw-bold mb-4">🌿 Nature Pool</h2>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary rounded-pill">Ingresar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = '../administracion/admin_nature.html';
+        });
+    </script>
+</body>
+</html>

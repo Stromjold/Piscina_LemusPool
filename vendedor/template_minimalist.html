@@ -3,131 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist - Plantilla Demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Minimalista - Diseño Moderno</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/minimalist.css">
+    <link rel="stylesheet" href="/vendedor/css/plantillas_css/minimalist.css">
 </head>
-<body class="template-minimalist">
+<body>
+    <!-- Decorative Elements -->
+    <div class="deco-circle circle-1"></div>
+    <div class="deco-circle circle-2"></div>
+    <div class="deco-circle circle-3"></div>
+    <div class="deco-line line-1"></div>
+    <div class="deco-line line-2"></div>
+    
+    <div class="dots-pattern top-left">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    
+    <div class="dots-pattern bottom-right">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
 
-    <!-- Header & Nav -->
+    <!-- Header -->
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container">
-                <a class="navbar-brand fw-bold fs-4" href="#">MINIMALIST</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#!">Concepto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Espacios</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Reservar</a></li>
-                        <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="logo">MLS</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">INICIO</a></li>
+                <li><a href="#gallery">GALLERY</a></li>
+                <li><a href="#Disponible">DISPONIBILIDAD</a></li>
+                <li><a href="#contacto">CONTACTO</a></li>
+            </ul>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <main class="container">
-        <section class="text-center my-5 py-5">
-            <h1 class="display-1 fw-bold">Pureza y Calma.</h1>
-            <p class="lead text-secondary mx-auto" style="max-width: 600px;">Un refugio de tranquilidad y diseño. Experimenta la perfección en cada detalle.</p>
-        </section>
-
-        <!-- Gallery -->
-        <section class="my-5">
-            <div class="row g-4">
-                <div class="col-lg-8">
-                    <img src="https://i.imgur.com/v1YfS1g.jpeg" class="img-fluid rounded" alt="Piscina minimalista 1">
-                </div>
-                <div class="col-lg-4">
-                    <img src="Image/image2.jpg" class="img-fluid rounded" alt="Piscina minimalista 2">
-                </div>
-                <div class="col-lg-4">
-                    <img src="Image/image3.jpg" class="img-fluid rounded" alt="Piscina minimalista 3">
-                </div>
-                <div class="col-lg-8">
-                    <img src="Image/image4.jpg" class="img-fluid rounded" alt="Piscina minimalista 4">
-                </div>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Creando</h1>
+                <h2>estilo y elegancia</h2>
+                <p>EDICIÓN ESPECIAL</p>
+                <a href="#contacto" class="cta-button">LEER MÁS</a>
             </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="row my-5 py-5 align-items-center">
-            <div class="col-lg-6">
-                <h2 class="fw-bold">Diseño Consciente</h2>
-                <p class="text-secondary">Suspendisse potenti. In eget lacus ac magna gravida accumsan. Nullam accumsan, velit vel facilisis eleifend, nulla felis iaculis mi, vitae posuere enim sapien at arcu. Phasellus nec convallis dui. Integer eu quam nec est pulvinar imperdiet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+            <div class="hero-image-container">
+                <img src="https://santespiedranatural.com/wp-content/uploads/2018/07/maxresdefault-2592x1296.jpg" alt="Interior Minimalista" class="hero-image">
             </div>
-            <div class="col-lg-6 text-lg-end">
-                <a href="#!" class="btn btn-dark btn-lg">Contactar</a>
-            </div>
-        </section>
-    </main>
-
-    <section id="calendario" class="section bg-light">
-        <div class="container">
-            <h2>Disponibilidad</h2>
-            <p>Revisa nuestro calendario para ver los días disponibles para tu reserva. Los días en rojo ya están ocupados.</p>
-            
-            <div class="calendar-header">
-                <button class="nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <h3 class="calendar-title">Mes Año</h3>
-                <button class="nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            
-            <div class="calendar-container">
-                </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contacto" class="my-5 py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <h2 class="text-center fw-bold">Contáctanos</h2>
-                    <p class="text-center text-secondary mb-4">¿Tienes alguna pregunta? Envíanos un mensaje.</p>
-                    <form>
-                        <div class="mb-3">
-                          <label for="exampleFormControlInput1" class="form-label">Dirección de correo electrónico</label>
-                          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                        </div>
-                        <div class="mb-3">
-                          <label for="inputPassword6" class="form-label">Contraseña</label>
-                          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                          <div id="passwordHelpInline" class="form-text">
-                            Debe tener entre 8 y 20 caracteres.
-                        </div>
-                        </div>
-                        <div class="mb-3">
-                          <label for="telefono" class="form-label">Teléfono</label>
-                          <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: + 56 9 1234 5678">
-                        </div>
-                        <div class="mb-3">
-                          <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-dark">Enviar Mensaje</button>
-                    </form>
-                </div>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2>Galeria Espacios</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://www.luxuryconcrete.eu/es/img/inspiracion/piscinas/piscina-microcemento-jardin.webp" alt="Espacio 1">
             </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800" alt="Espacio 2">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800" alt="Espacio 3">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800" alt="Espacio 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <div>
+                <h2>Diseño Consciente</h2>
+                <p>Nos enfocamos en la creación de espacios que reflejan la personalidad y necesidades de nuestros clientes. Cada proyecto es una oportunidad para innovar y superar expectativas.</p>
+                <p>Trabajamos con materiales de alta calidad y un equipo de profesionales apasionados por el diseño. Nuestra misión es transformar tus ideas en una realidad tangible y duradera.</p>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600" alt="Sobre nosotros">
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section id="Disponible" class="calendar-section">
+        <h2>Disponibilidad</h2>
+        <p>Revisa nuestro calendario para ver los días disponibles para tu reserva.</p>
+        
+        <div class="calendar-header">
+            <button class="nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+            <h3 id="calendarTitle">Noviembre 2025</h3>
+            <button class="nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        
+        <div class="calendar-container" id="calendar"></div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <h2>Contáctanos</h2>
+        <p>¿Tienes alguna pregunta? Envíanos un mensaje.</p>
+        
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" placeholder="+56 9 1234 5678">
+            </div>
+            <div class="form-group">
+                <label for="message">Mensaje</label>
+                <textarea id="message" rows="5" placeholder="Tu mensaje aquí..."></textarea>
+            </div>
+            <button class="cta-button" style="width: 100%;">Enviar Mensaje</button>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="container py-4 mt-5 border-top">
-        <div class="d-flex justify-content-between">
-            <p class="text-secondary">&copy; 2025 Minimalist</p>
-            <p class="text-secondary">Términos y Condiciones</p>
-        </div>
+    <footer>
+        <p>&copy; 2025 Minimalista. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/Js/calendar.js"></script>
+    <script>
+        // Funcionalidad simple del calendario
+        let currentMonth = 10; // Noviembre
+        let currentYear = 2025;
+
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            // Añadir encabezados de día
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.style.fontWeight = 'bold';
+                header.style.textAlign = 'center';
+                header.style.padding = '0.5rem';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            // Añadir celdas vacías para los días antes de que comience el mes
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                calendar.appendChild(empty);
+            }
+            
+            // Añadir días
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+                
+                // Marcar algunos días al azar como ocupados
+                if (Math.random() > 0.7) {
+                    dayEl.classList.add('occupied');
+                }
+                
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendar();
+        }
+
+        // Inicializar calendario
+        generateCalendar();
+    </script>
 </body>
 </html>

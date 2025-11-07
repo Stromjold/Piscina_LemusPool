@@ -61,13 +61,14 @@
                                     
                                     <h3 class="text-center fw-bolder my-3">Bienvenido de Nuevo</h3>
                                     
-                                    <form>
+                                    <form action="../php/login_handler.php" method="POST">
+                                        <input type="hidden" name="plantilla" value="arzopa">
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" required />
+                                            <input class="form-control" id="inputEmail" name="username" type="email" placeholder="name@example.com" required />
                                             <label for="inputEmail">Correo Electrónico</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputPassword" type="password" placeholder="Contraseña" required />
+                                            <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Contraseña" required />
                                             <label for="inputPassword">Contraseña</label>
                                         </div>
                                         <div class="form-check mb-3">

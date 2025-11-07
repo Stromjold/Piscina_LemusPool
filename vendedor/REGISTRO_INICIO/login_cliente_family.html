@@ -21,19 +21,18 @@
                 
                 <div class="front rounded-5">
                     
-                    <form action="#" class="d-flex flex-column h-100 justify-content-center p-4 p-md-5">
+                    <form action="" method="POST" class="d-flex flex-column h-100 justify-content-center p-4 p-md-5">
                         <h2 class="fw-bolder text-center mb-4">
-                            <i class="bi bi-sun-fill text-warning"></i> AquaFun
                         </h2>
                         <h1 class="fw-bolder mb-4 text-center">Iniciar Sesión</h1>
                         
                         <div class="input-group mb-3">
-                            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                            <input type="text" class="form-control" placeholder="Usuario" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                            <input type="password" class="form-control" placeholder="Contraseña">
+                            <input type="password" class="form-control" placeholder="Contraseña" required>
                         </div>
                         
                         <a href="#" class="text-muted my-2 text-center"><small>¿Olvidaste tu contraseña?</small></a>
@@ -83,5 +82,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/vendedor/js/Js/family_sesion.js"></script>
+    <script>
+        document.querySelector('form').onsubmit = function(e) {
+            e.preventDefault();
+            window.location.href = '../administracion/admin_family.html';
+        }
+    </script>
 </body>
 </html>
