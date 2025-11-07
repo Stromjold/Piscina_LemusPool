@@ -1,6 +1,19 @@
 /* Estilos para la plantilla Tropical */
 .template-tropical {
   font-family: "Poppins", sans-serif;
+  --tropical-cyan: #00c9ff;
+  --tropical-green: #92fe9d;
+  --tropical-pink: #ff6b6b;
+  --tropical-yellow: #ffd93d;
+  --tropical-purple: #a855f7;
+  --tropical-orange: #ff9a56;
+  --dark-bg: #0a192f;
+  --darker-bg: #071426;
+  --card-bg: #112240;
+  --light-text: #e0f7fa;
+  --muted-text: #a8b2d1;
+  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+  color: var(--light-text);
 }
 .template-tropical .card {
   border-radius: 1.5rem;
@@ -15,29 +28,112 @@
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
 }
 .template-tropical .btn-primary {
-  background-color: #ff6b6b;
+  background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
   border: none;
-  transition: transform 0.2s ease-in-out;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 201, 255, 0.3);
+  font-weight: 700;
 }
 .template-tropical .btn-primary:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 201, 255, 0.5);
+}
+
+/* Estilos de la página pública */
+.template-tropical .navbar-tropical {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, var(--tropical-cyan), var(--tropical-green)) 1;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+.template-tropical .navbar-brand {
+    background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+.template-tropical .nav-link {
+    color: var(--muted-text);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.template-tropical .nav-link:hover, .template-tropical .nav-link.active {
+    color: var(--tropical-cyan);
+}
+.template-tropical .navbar-toggler {
+    border-color: rgba(0, 201, 255, 0.5);
+}
+.template-tropical .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 201, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.template-tropical .hero-section {
+    background: linear-gradient(45deg, var(--tropical-cyan), var(--tropical-green));
+}
+
+.template-tropical h1, .template-tropical h2, .template-tropical h3, .template-tropical h4, .template-tropical h5 {
+    font-weight: 700;
+}
+.template-tropical .text-muted {
+    color: var(--muted-text) !important;
+}
+
+.template-tropical .card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+    border: 2px solid rgba(146, 254, 157, 0.2);
+    transition: all 0.3s ease;
+}
+.template-tropical .card:hover {
+    transform: translateY(-5px);
+    border-color: var(--tropical-cyan);
+    box-shadow: 0 10px 30px rgba(0, 201, 255, 0.2);
+}
+.template-tropical .card-body {
+    color: var(--light-text);
+}
+
+.template-tropical .form-control {
+    background-color: var(--darker-bg);
+    border: 2px solid rgba(0, 201, 255, 0.3);
+    color: var(--light-text);
+    border-radius: 0.75rem;
+}
+.template-tropical .form-control:focus {
+    background-color: var(--darker-bg);
+    border-color: var(--tropical-cyan);
+    box-shadow: 0 0 15px rgba(0, 201, 255, 0.3);
+    color: var(--light-text);
+}
+.template-tropical .form-control::placeholder {
+    color: var(--muted-text);
+}
+
+.template-tropical .footer-tropical {
+    background-color: var(--darker-bg);
+    border-top: 2px solid rgba(146, 254, 157, 0.2);
+    color: var(--muted-text);
 }
 
 /* Estilos para la sección de calendario - Estilo Neón Oscuro */
 #reservar {
   padding: 60px 0;
-  background-color: #0a192f; /* Fondo oscuro azul marino */
-  color: #e0f7fa;
+  background-color: var(--dark-bg); /* Fondo oscuro azul marino */
+  color: var(--light-text);
 }
 
 #reservar p {
-    color: #a8b2d1; /* Color de texto más suave para el párrafo */
+    color: var(--muted-text); /* Color de texto más suave para el párrafo */
 }
 
 .section-title-neon {
-    font-weight: bold;
-    color: #ff6b6b; /* Color neón/rosa de la imagen */
-    text-shadow: 0 0 5px #ff6b6b, 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
+    font-weight: 800;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 15px rgba(0, 201, 255, 0.3);
     margin-bottom: 20px;
 }
 
@@ -46,9 +142,11 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
-    padding: 20px;
-    border: 1px solid #2a3a55;
+    padding: 2rem;
+    border: 2px solid rgba(0, 201, 255, 0.3);
     border-radius: 1.5rem;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .calendar-main {
@@ -61,33 +159,35 @@
 }
 
 .calendar-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #e0f7fa;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--light-text);
 }
 
 .nav-btn {
   background: transparent;
-  border: 1px solid #a8b2d1;
-  color: #a8b2d1;
-  border-radius: 5px;
-  width: 40px;
-  height: 40px;
+  border: 2px solid var(--muted-text);
+  color: var(--muted-text);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .nav-btn:hover {
-    color: #ff6b6b;
-    border-color: #ff6b6b;
-    box-shadow: 0 0 10px #ff6b6b;
+    color: var(--tropical-cyan);
+    border-color: var(--tropical-cyan);
+    box-shadow: 0 0 20px var(--tropical-cyan);
+    transform: scale(1.1);
 }
 
 .calendar-container {
     padding: 20px;
-    border: 1px solid #2a3a55;
+    border: 2px solid rgba(146, 254, 157, 0.2);
     border-radius: 1.5rem;
+    background: var(--darker-bg);
 }
 
 .calendar-days-grid {
@@ -100,37 +200,43 @@
   padding: 15px 10px;
   text-align: center;
   border-radius: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .day-name {
-  font-weight: bold;
-  color: #ff6b6b; /* Color neón para los días de la semana */
+  font-weight: 700;
+  color: var(--tropical-cyan); /* Color neón para los días de la semana */
   text-transform: uppercase;
   font-size: 0.8rem;
 }
 
 .available {
-  color: #e0f7fa;
+  background: linear-gradient(135deg, rgba(146, 254, 157, 0.2), rgba(0, 201, 255, 0.1));
+  border-color: var(--tropical-green);
+  color: var(--tropical-green);
   cursor: pointer;
-  background-color: rgba(146, 254, 157, 0.1); /* Verde suave de fondo */
-  border-color: #92fe9d;
 }
 
 .available:hover {
-  background-color: rgba(146, 254, 157, 0.3); /* Verde más intenso al pasar el ratón */
+  transform: scale(1.1);
+  border-color: var(--tropical-cyan);
+  box-shadow: 0 5px 20px rgba(0, 201, 255, 0.4);
   color: #fff;
 }
 
 .occupied {
-  color: #a8b2d1;
-  background-color: rgba(255, 107, 107, 0.15); /* Rojo suave de fondo */
-  border-color: #ff6b6b;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 154, 86, 0.1));
+  border-color: var(--tropical-pink);
+  color: var(--tropical-pink);
   text-decoration: none;
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .empty {

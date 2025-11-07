@@ -1,0 +1,166 @@
+    :root {
+    --tropical-cyan: #00c9ff;
+    --tropical-green: #92fe9d;
+    --dark-bg: #0a192f;
+    --card-bg: #112240;
+}
+
+body {
+    background: url('https://i.pinimg.com/1200x/42/16/cc/4216ccf53e2bb83c8dd18da5a5d97307.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+.flip-container {
+    width: 520px;
+    max-width: 90%;
+    height: 550px;
+    perspective: 1000px;
+    background-color: transparent;
+}
+
+.flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.front,
+.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    background: rgba(46, 139, 87, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.flip-container.is-flipped .flipper {
+    transform: rotateY(180deg);
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+.input-group-custom {
+    width: 100%;
+    position: relative;
+}
+
+.input-group-custom .form-control {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 25px;
+    color: #fff;
+    padding: 10px 45px 10px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+.input-group-custom .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+.input-group-custom .form-control:focus {
+    background: transparent;
+    border-color: #fff;
+    box-shadow: none;
+}
+
+.input-group-custom .input-group-text {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    z-index: 2;
+}
+
+.form-check-input {
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    vertical-align: middle;
+}
+.form-check-input:checked {
+    background-color: #fff;
+    border-color: #fff;
+}
+.form-check-input:checked::before {
+    content: "";
+}
+
+.btn-custom-primary {
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btn-custom-primary:hover {
+    background: #f0f0f0;
+    color: #000;
+}
+.btn-custom-primary:active {
+    transform: translateY(1px);
+}
+
+hr {
+    display: none;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.form-check-label, .small-text, .register-link a {
+    color: #fff !important;
+}

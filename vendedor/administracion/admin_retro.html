@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pool Discoteca - Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-pink: #df0568;
+            --primary-pink-dark: #b90456;
+            --accent-blue: #00bfff;
+            --dark-bg: #0a0f19;
+            --darker-bg: #070b14;
+            --card-bg: #0f1524;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: linear-gradient(180deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            border-right: 2px solid rgba(223, 5, 104, 0.3);
+            padding: 2rem 0;
+            box-shadow: 4px 0 30px rgba(223, 5, 104, 0.2);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-logo h2 {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-logo .logo-subtext {
+            color: var(--primary-pink);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(223, 5, 104, 0.2);
+            color: #fff;
+            border-left-color: var(--primary-pink);
+        }
+
+        .sidebar-menu i {
+            font-size: 1.2rem;
+            width: 25px;
+            color: var(--accent-blue);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 1.5rem 2rem;
+            border-radius: 0;
+            border: 2px solid rgba(223, 5, 104, 0.3);
+            box-shadow: 0 5px 30px rgba(223, 5, 104, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+            color: #fff;
+        }
+
+        .welcome-text p {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-pink), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            border: 2px solid var(--primary-pink);
+        }
+
+        .logout-btn:hover {
+            background: transparent;
+            color: var(--primary-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(223, 5, 104, 0.4);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 2rem;
+            border: 2px solid rgba(223, 5, 104, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-pink), var(--accent-blue));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(223, 5, 104, 0.3);
+            border-color: var(--primary-pink);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            background: rgba(223, 5, 104, 0.2);
+            border: 2px solid var(--primary-pink);
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            color: var(--primary-pink);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            color: var(--accent-blue);
+            background: rgba(0, 191, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            color: #00ff00;
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(223, 5, 104, 0.5);
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 2rem;
+            border: 2px solid rgba(223, 5, 104, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .title-dot {
+            color: var(--primary-pink);
+            font-size: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-pink);
+            border: 2px solid var(--primary-pink);
+            padding: 0.8rem 1.5rem;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(223, 5, 104, 0.4);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .data-table thead th {
+            background: rgba(223, 5, 104, 0.2);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: #fff;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .data-table tbody tr {
+            background: var(--darker-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-pink);
+            box-shadow: 0 4px 20px rgba(223, 5, 104, 0.3);
+        }
+
+        .data-table tbody td {
+            padding: 1rem;
+            border: none;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid;
+        }
+
+        .badge-success {
+            background: transparent;
+            color: #00ff00;
+            border-color: #00ff00;
+        }
+
+        .badge-pending {
+            background: transparent;
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .badge-cancelled {
+            background: transparent;
+            color: var(--primary-pink);
+            border-color: var(--primary-pink);
+        }
+
+        .badge-vip {
+            background: transparent;
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border: 2px solid;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .btn-edit {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .btn-edit:hover {
+            background: var(--accent-blue);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--accent-blue);
+        }
+
+        .btn-delete {
+            color: var(--primary-pink);
+            border-color: var(--primary-pink);
+        }
+
+        .btn-delete:hover {
+            background: var(--primary-pink);
+            color: white;
+            box-shadow: 0 0 20px var(--primary-pink);
+        }
+
+        .btn-view {
+            color: #00ff00;
+            border-color: #00ff00;
+        }
+
+        .btn-view:hover {
+            background: #00ff00;
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        /* Calendar Preview */
+        .calendar-preview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: var(--darker-bg);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-pink);
+        }
+
+        .calendar-day.event {
+            background: rgba(223, 5, 104, 0.3);
+            border-color: var(--primary-pink);
+            color: #fff;
+        }
+
+        .calendar-day.available {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+
+        .calendar-day-number {
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: var(--darker-bg);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 20px rgba(223, 5, 104, 0.3);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-blue);
+        }
+
+        /* Neon Effects */
+        .neon-text {
+            text-shadow: 0 0 10px var(--primary-pink),
+                         0 0 20px var(--primary-pink),
+                         0 0 30px var(--primary-pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse-neon {
+            0%, 100% { 
+                opacity: 1;
+                text-shadow: 0 0 10px var(--primary-pink),
+                             0 0 20px var(--primary-pink);
+            }
+            50% { 
+                opacity: 0.7;
+                text-shadow: 0 0 5px var(--primary-pink),
+                             0 0 10px var(--primary-pink);
+            }
+        }
+
+        .pulse-neon {
+            animation: pulse-neon 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>POOL</h2>
+            <div class="logo-subtext">PANEL DE CONTROL</div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#dashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="#reservas"><i class="fas fa-ticket-alt"></i> Reservas</a></li>
+            <li><a href="#eventos"><i class="fas fa-calendar-star"></i> Eventos</a></li>
+            <li><a href="#vip"><i class="fas fa-crown"></i> VIP Tables</a></li>
+            <li><a href="#clientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#ventas"><i class="fas fa-chart-line"></i> Ventas</a></li>
+            <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
+            <li><a href="../template_retro.html"><i class="fas fa-home"></i> Volver al Sitio</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="welcome-text">
+                <h1 class="neon-text">CONTROL CENTER</h1>
+                <p>Sistema de Gestión Pool Discoteca</p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="stat-number">342</div>
+                <div class="stat-label">Entradas Vendidas</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-number">18</div>
+                <div class="stat-label">Eventos Programados</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="stat-number">24</div>
+                <div class="stat-label">Mesas VIP Reservadas</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-number">$89K</div>
+                <div class="stat-label">Ingresos del Mes</div>
+            </div>
+        </div>
+
+        <!-- Reservas Recientes -->
+        <section class="content-section" id="reservas">
+            <div class="section-header">
+                <h2 class="section-title">
+                    RESERVAS RECIENTES<span class="title-dot">.</span>
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i> Nueva Reserva
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="BUSCAR POR NOMBRE, EMAIL O FECHA...">
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Evento</th>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#VIP-1024</strong></td>
+                        <td>
+                            <strong>Carlos Méndez</strong><br>
+                            <small style="color: rgba(255,255,255,0.5);">carlos@email.com</small>
+                        </td>
+                        <td>Steve Aoki Live</td>
+                        <td>17 Mayo 2028</td>
+                        <td><span class="badge badge-vip">VIP TABLE</span></td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#ENT-2045</strong></td>
+                        <td>
+                            <strong>María Silva</strong><br>
+                            <small style="color: rgba(255,255,255,0.5);">maria@email.com</small>
+                        </td>
+                        <td>Pool Party</td>
+                        <td>20 Mayo 2028</td>
+                        <td><span class="badge badge-pending">Entrada General</span></td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#VIP-1023</strong></td>
+                        <td>
+                            <strong>Roberto Díaz</strong><br>
+                            <small style="color: rgba(255,255,255,0.5);">roberto@email.com</small>
+                        </td>
+                        <td>Neon Night</td>
+                        <td>25 Mayo 2028</td>
+                        <td><span class="badge badge-vip">VIP TABLE</span></td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#ENT-2044</strong></td>
+                        <td>
+                            <strong>Ana Torres</strong><br>
+                            <small style="color: rgba(255,255,255,0.5);">ana@email.com</small>
+                        </td>
+                        <td>Summer Splash</td>
+                        <td>15 Mayo 2028</td>
+                        <td><span class="badge badge-pending">Entrada General</span></td>
+                        <td><span class="badge badge-cancelled">Cancelada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Calendario de Eventos -->
+        <section class="content-section" id="eventos">
+            <div class="section-header">
+                <h2 class="section-title">
+                    CALENDARIO DE EVENTOS<span class="title-dot">.</span>
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-calendar-plus"></i> Nuevo Evento
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 10px; text-align: center; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                <div>Dom</div>
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+            </div>
+
+            <div class="calendar-preview">
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">1</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">2</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">3</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">4</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">5</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">6</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">7</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">8</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">9</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">10</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">11</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">12</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">13</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">14</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">15</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">16</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">17</span>
+                    <small style="font-size: 0.6rem;">AOKI</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">18</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">19</span>
+                </div>
+                <div class="calendar-day event">
+                    <span class="calendar-day-number">20</span>
+                    <small style="font-size: 0.6rem;">EVENTO</small>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 2rem; margin-top: 1.5rem; justify-content: center; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: rgba(0, 255, 0, 0.2); border: 2px solid #00ff00;"></div>
+                    <span>Disponible</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; background: rgba(223, 5, 104, 0.3); border: 2px solid var(--primary-pink);"></div>
+                    <span>Con Evento</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Próximos Eventos Destacados -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    PRÓXIMOS EVENTOS<span class="title-dot">.</span>
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-edit"></i> Gestionar Eventos
+                </button>
+            </div>
+
+            <div style="display: grid; gap: 1.5rem;">
+                <div style="background: var(--darker-bg); padding: 1.5rem; border: 2px solid rgba(223, 5, 104, 0.3); display: flex; align-items: center; gap: 2rem;">
+                    <div style="text-align: center; min-width: 80px;">
+                        <div style="color: var(--primary-pink); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Mayo</div>
+                        <div style="font-size: 3rem; font-weight: 900; line-height: 1;">17</div>
+                        <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; text-transform: uppercase;">2028</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff;">STEVE AOKI LIVE</h3>
+                        <p style="color: rgba(255,255,255,0.6); margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                            <i class="fas fa-clock" style="color: var(--accent-blue);"></i> 22:00 - 05:00 | 
+                            <i class="fas fa-ticket-alt" style="color: var(--accent-blue);"></i> 342 Vendidas | 
+                            <i class="fas fa-crown" style="color: #ffd700;"></i> 12 VIP Tables
+                        </p>
+                    </div>
+                    <div>
+                        <span class="badge badge-success" style="font-size: 0.9rem; padding: 0.7rem 1.2rem;">ACTIVO</span>
+                    </div>
+                </div>
+
+                <div style="background: var(--darker-bg); padding: 1.5rem; border: 2px solid rgba(0, 191, 255, 0.3); display: flex; align-items: center; gap: 2rem;">
+                    <div style="text-align: center; min-width: 80px;">
+                        <div style="color: var(--accent-blue); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Mayo</div>
+                        <div style="font-size: 3rem; font-weight: 900; line-height: 1;">20</div>
+                        <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; text-transform: uppercase;">2028</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff;">NEON POOL PARTY</h3>
+                        <p style="color: rgba(255,255,255,0.6); margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                            <i class="fas fa-clock" style="color: var(--accent-blue);"></i> 20:00 - 04:00 | 
+                            <i class="fas fa-ticket-alt" style="color: var(--accent-blue);"></i> 156 Vendidas | 
+                            <i class="fas fa-crown" style="color: #ffd700;"></i> 8 VIP Tables
+                        </p>
+                    </div>
+                    <div>
+                        <span class="badge badge-pending" style="font-size: 0.9rem; padding: 0.7rem 1.2rem;">EN VENTA</span>
+                    </div>
+                </div>
+
+                <div style="background: var(--darker-bg); padding: 1.5rem; border: 2px solid rgba(255, 215, 0, 0.3); display: flex; align-items: center; gap: 2rem;">
+                    <div style="text-align: center; min-width: 80px;">
+                        <div style="color: #ffd700; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Mayo</div>
+                        <div style="font-size: 3rem; font-weight: 900; line-height: 1;">25</div>
+                        <div style="color: rgba(255,255,255,0.6); font-size: 0.8rem; text-transform: uppercase;">2028</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff;">SUMMER SPLASH</h3>
+                        <p style="color: rgba(255,255,255,0.6); margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                            <i class="fas fa-clock" style="color: var(--accent-blue);"></i> 19:00 - 03:00 | 
+                            <i class="fas fa-ticket-alt" style="color: var(--accent-blue);"></i> 89 Vendidas | 
+                            <i class="fas fa-crown" style="color: #ffd700;"></i> 4 VIP Tables
+                        </p>
+                    </div>
+                    <div>
+                        <span class="badge badge-pending" style="font-size: 0.9rem; padding: 0.7rem 1.2rem;">EN VENTA</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navegación activa en sidebar
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Scroll suave a la sección
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Funcionalidad de búsqueda
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            console.log('Buscando:', searchTerm);
+            // Aquí iría la lógica de filtrado real
+        });
+
+        // Botones de acción
+        document.querySelectorAll('.btn-icon').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.classList.contains('btn-view') ? 'ver' :
+                             this.classList.contains('btn-edit') ? 'editar' : 'cancelar';
+                const row = this.closest('tr');
+                const id = row.querySelector('td:first-child strong').textContent;
+                
+                if (action === 'ver') {
+                    alert(`Ver detalles de reserva ${id}`);
+                } else if (action === 'editar') {
+                    alert(`Editar reserva ${id}`);
+                } else if (action === 'cancelar') {
+                    if (confirm(`¿Estás seguro de cancelar la reserva ${id}?`)) {
+                        alert('Reserva cancelada exitosamente');
+                        // Aquí iría la lógica para actualizar el estado
+                    }
+                }
+            });
+        });
+
+        // Botones principales
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                if (text.includes('Nueva Reserva')) {
+                    alert('Abrir formulario de nueva reserva');
+                } else if (text.includes('Nuevo Evento')) {
+                    alert('Abrir formulario de nuevo evento');
+                } else if (text.includes('Gestionar')) {
+                    alert('Abrir panel de gestión');
+                }
+            });
+        });
+
+        // Click en días del calendario
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.addEventListener('click', function() {
+                const dayNumber = this.querySelector('.calendar-day-number')?.textContent;
+                if (dayNumber) {
+                    if (this.classList.contains('event')) {
+                        alert(`Ver detalles del evento del día ${dayNumber}`);
+                    } else if (this.classList.contains('available')) {
+                        if (confirm(`¿Deseas crear un evento para el día ${dayNumber}?`)) {
+                            this.classList.remove('available');
+                            this.classList.add('event');
+                            this.innerHTML = `
+                                <span class="calendar-day-number">${dayNumber}</span>
+                                <small style="font-size: 0.6rem;">EVENTO</small>
+                            `;
+                        }
+                    }
+                }
+            });
+        });
+
+        // Logout
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                alert('Cerrando sesión...');
+                // window.location.href = 'login.html';
+            }
+        });
+
+        // Efecto de carga con animación neon
+        window.addEventListener('load', function() {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+
+            // Efecto neon pulsante en el título
+            setInterval(() => {
+                const neonText = document.querySelector('.neon-text');
+                if (neonText) {
+                    neonText.classList.add('pulse-neon');
+                    setTimeout(() => {
+                        neonText.classList.remove('pulse-neon');
+                    }, 2000);
+                }
+            }, 5000);
+        });
+
+        // Mobile menu toggle
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Agregar botón de menú móvil si es necesario
+        if (window.innerWidth <= 768) {
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            mobileMenuBtn.style.cssText = `
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1001;
+                background: var(--primary-pink);
+                border: 2px solid var(--primary-pink);
+                color: white;
+                width: 50px;
+                height: 50px;
+                border-radius: 0;
+                cursor: pointer;
+                font-size: 1.5rem;
+            `;
+            mobileMenuBtn.onclick = toggleSidebar;
+            document.body.appendChild(mobileMenuBtn);
+        }
+    </script>
+</body>
+</html>

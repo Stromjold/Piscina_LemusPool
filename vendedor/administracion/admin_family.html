@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - AquaFun</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/family.css">
+</head>
+<body class="template-family">
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f0f8ff;">
+        <div class="container">
+            <a class="navbar-brand fw-bolder" href="template_family.html">
+                <i class="bi bi-sun-fill text-warning"></i> FamilyFun
+            </a>
+            <div class="ms-auto">
+                <a href="../template_family.html" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-house-door-fill me-1"></i> Volver al Sitio
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-lg-10 col-xl-9 mx-auto">
+                <h1 class="display-5 fw-bolder mb-2">Panel de Administración</h1>
+                <p class="lead text-muted mb-4">Gestiona las reservas y consultas de AquaFun.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-xl-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link active rounded-pill text-start mb-2" id="v-pills-resumen-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resumen" type="button" role="tab" aria-controls="v-pills-resumen" aria-selected="true">
+                        <i class="bi bi-bar-chart-line-fill me-2"></i>Resumen
+                    </button>
+                    <button class="nav-link rounded-pill text-start mb-2" id="v-pills-reservas-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reservas" type="button" role="tab" aria-controls="v-pills-reservas" aria-selected="false">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Reservas
+                    </button>
+                    <button class="nav-link rounded-pill text-start mb-2" id="v-pills-mensajes-tab" data-bs-toggle="pill" data-bs-target="#v-pills-mensajes" type="button" role="tab" aria-controls="v-pills-mensajes" aria-selected="false">
+                        <i class="bi bi-envelope-fill me-2"></i>Mensajes
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-xl-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    
+                    <div class="tab-pane fade show active" id="v-pills-resumen" role="tabpanel" aria-labelledby="v-pills-resumen-tab">
+                        <h2 class="fw-bolder">Resumen</h2>
+                        <p class="text-muted">Vista rápida de la actividad.</p>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0 rounded-4">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-calendar-check-fill fs-1 text-primary me-3"></i>
+                                            <div>
+                                                <h5 class="card-title fw-bolder">Reservas Pendientes</h5>
+                                                <p class="card-text display-6 fw-bolder">8</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0 rounded-4">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-envelope-fill fs-1 text-success me-3"></i>
+                                            <div>
+                                                <h5 class="card-title fw-bolder">Mensajes Nuevos</h5>
+                                                <p class="card-text display-6 fw-bolder">3</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-reservas" role="tabpanel" aria-labelledby="v-pills-reservas-tab">
+                        <h2 class="fw-bolder">Gestionar Reservas</h2>
+                        <p class="text-muted">Acepta o rechaza las solicitudes.</p>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#201</td>
+                                        <td>Familia González</td>
+                                        <td>2025-11-15</td>
+                                        <td><span class="badge rounded-pill bg-warning text-dark">Pendiente</span></td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm rounded-pill px-3" title="Aprobar"><i class="bi bi-check-lg"></i></button>
+                                            <button class="btn btn-danger btn-sm rounded-pill px-3" title="Rechazar"><i class="bi bi-x-lg"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#200</td>
+                                        <td>Familia Rojas</td>
+                                        <td>2025-11-12</td>
+                                        <td><span class="badge rounded-pill bg-success">Aprobada</span></td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm rounded-pill px-3" title="Cancelar"><i class="bi bi-trash-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-mensajes" role="tabpanel" aria-labelledby="v-pills-mensajes-tab">
+                        <h2 class="fw-bolder">Mensajes</h2>
+                        <p class="text-muted">Revisa las consultas de los visitantes.</p>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action rounded-3 mb-2">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 fw-bolder">Consulta sobre menú de niños</h5>
+                                    <small>hace 2 horas</small>
+                                </div>
+                                <p class="mb-1">De: Laura Fernández</p>
+                                <small class="text-muted">"Hola, mi hijo es alérgico al gluten, ¿tienen opciones...?"</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action rounded-3 mb-2">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 fw-bolder">Horarios fin de semana</h5>
+                                    <small>hace 1 día</small>
+                                </div>
+                                <p class="mb-1">De: Mario Salas</p>
+                                <small class="text-muted">"¿Cuál es el horario de cierre el día domingo?"</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-4 mt-4">
+        <div class="container text-center">
+            <p class="text-muted">AquaFun Park &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* login_flip_style.css */
+
+/*
+   Contenedor principal para centrar el formulario en la página.
+   Usamos el color de fondo de la navbar de tu página principal.
+*/
+body.template-family {
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/*
+   1. EL CONTENEDOR DE PERSPECTIVA
+   Establece el "escenario" 3D. No se mueve, solo define la profundidad.
+*/
+.flip-container {
+    width: 450px; /* Ancho del formulario */
+    max-width: 100%;
+    height: 650px; /* Alto del formulario */
+    perspective: 1000px; /* Profundidad de la escena 3D */
+    background-color: transparent;
+}
+
+/*
+   2. EL GIRADOR (FLIPPER)
+   Este es el elemento que realmente gira y contiene ambas caras.
+*/
+.flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s; /* Duración de la animación de giro */
+    transform-style: preserve-3d; /* ¡CLAVE! Mantiene el espacio 3D */
+}
+
+/*
+   3. LAS CARAS (FRONTAL Y TRASERA)
+   Ambas caras están en el mismo lugar, pero una mira al frente y la otra hacia atrás.
+*/
+.front,
+.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Chrome/Safari */
+    backface-visibility: hidden; /* ¡CLAVE! Oculta la cara que no se ve */
+    
+    /* Aplicamos el estilo de tu 'family.css' */
+    background: #fff;
+    /* .rounded-5 hereda de 'family.css' (border-radius: 2rem) */
+}
+
+/* La cara trasera empieza girada 180 grados, "de espaldas" */
+.back {
+    transform: rotateY(180deg);
+}
+
+
+/*
+   4. LA MAGIA (EL GIRO)
+   Cuando el .flip-container tiene la clase .is-flipped...
+   ...el .flipper gira 180 grados.
+*/
+.flip-container.is-flipped .flipper {
+    transform: rotateY(180deg);
+}
+
+/*
+   Estilos de los botones de cambio.
+   Usamos el color .btn-warning de tu 'family.css'
+*/
+#btn-to-register,
+#btn-to-login {
+    /* Estos botones usan .btn-warning */
+    color: #000; /* Asegurado por tu family.css */
+}

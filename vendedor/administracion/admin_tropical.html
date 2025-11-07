@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TropicalVibes - Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --tropical-cyan: #00c9ff;
+            --tropical-green: #92fe9d;
+            --tropical-pink: #ff6b6b;
+            --tropical-yellow: #ffd93d;
+            --tropical-purple: #a855f7;
+            --tropical-orange: #ff9a56;
+            --dark-bg: #0a192f;
+            --darker-bg: #071426;
+            --card-bg: #112240;
+            --light-text: #e0f7fa;
+            --muted-text: #a8b2d1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+            color: var(--light-text);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 800;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: linear-gradient(180deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            border-right: 3px solid;
+            border-image: linear-gradient(180deg, var(--tropical-cyan), var(--tropical-green)) 1;
+            padding: 2rem 0;
+            box-shadow: 5px 0 30px rgba(0, 201, 255, 0.2);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 2px solid rgba(146, 254, 157, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-logo h2 {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-logo .logo-subtext {
+            color: var(--muted-text);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem 2rem;
+            color: var(--muted-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 600;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: linear-gradient(90deg, rgba(0, 201, 255, 0.1), transparent);
+            color: var(--tropical-cyan);
+            border-left-color: var(--tropical-cyan);
+        }
+
+        .sidebar-menu i {
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
+            border: 2px solid;
+            border-image: linear-gradient(90deg, var(--tropical-cyan), var(--tropical-green)) 1;
+            box-shadow: 0 10px 40px rgba(0, 201, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-text p {
+            color: var(--muted-text);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 201, 255, 0.5);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--tropical-pink), var(--tropical-orange));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 2px solid rgba(146, 254, 157, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .stat-card:nth-child(1) {
+            border-color: var(--tropical-cyan);
+        }
+
+        .stat-card:nth-child(1)::before {
+            background: linear-gradient(90deg, var(--tropical-cyan), var(--tropical-green));
+        }
+
+        .stat-card:nth-child(2) {
+            border-color: var(--tropical-pink);
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: linear-gradient(90deg, var(--tropical-pink), var(--tropical-orange));
+        }
+
+        .stat-card:nth-child(3) {
+            border-color: var(--tropical-yellow);
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: linear-gradient(90deg, var(--tropical-yellow), var(--tropical-orange));
+        }
+
+        .stat-card:nth-child(4) {
+            border-color: var(--tropical-purple);
+        }
+
+        .stat-card:nth-child(4)::before {
+            background: linear-gradient(90deg, var(--tropical-purple), var(--tropical-pink));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(0, 201, 255, 0.3);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: linear-gradient(135deg, rgba(0, 201, 255, 0.2), rgba(146, 254, 157, 0.2));
+            color: var(--tropical-cyan);
+            box-shadow: 0 5px 20px rgba(0, 201, 255, 0.3);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 154, 86, 0.2));
+            color: var(--tropical-pink);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.2), rgba(255, 154, 86, 0.2));
+            color: var(--tropical-yellow);
+            box-shadow: 0 5px 20px rgba(255, 217, 61, 0.3);
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(255, 107, 107, 0.2));
+            color: var(--tropical-purple);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--muted-text);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--darker-bg) 100%);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 2px solid rgba(0, 201, 255, 0.3);
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(146, 254, 157, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .section-title i {
+            color: var(--tropical-cyan);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 201, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 201, 255, 0.5);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .data-table thead th {
+            background: linear-gradient(135deg, rgba(0, 201, 255, 0.2), rgba(146, 254, 157, 0.2));
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--light-text);
+            border: none;
+            border-radius: 1rem;
+        }
+
+        .data-table tbody tr {
+            background: var(--darker-bg);
+            border: 2px solid rgba(146, 254, 157, 0.2);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            transform: translateX(10px);
+            border-color: var(--tropical-cyan);
+            box-shadow: 0 5px 30px rgba(0, 201, 255, 0.3);
+        }
+
+        .data-table tbody td {
+            padding: 1rem;
+            border: none;
+            color: var(--light-text);
+        }
+
+        .data-table tbody tr td:first-child {
+            border-radius: 1rem 0 0 1rem;
+        }
+
+        .data-table tbody tr td:last-child {
+            border-radius: 0 1rem 1rem 0;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, rgba(146, 254, 157, 0.3), rgba(146, 254, 157, 0.2));
+            color: var(--tropical-green);
+            border: 2px solid var(--tropical-green);
+        }
+
+        .badge-pending {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.3), rgba(255, 217, 61, 0.2));
+            color: var(--tropical-yellow);
+            border: 2px solid var(--tropical-yellow);
+        }
+
+        .badge-cancelled {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.2));
+            color: var(--tropical-pink);
+            border: 2px solid var(--tropical-pink);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .btn-edit {
+            color: var(--tropical-cyan);
+            border-color: var(--tropical-cyan);
+        }
+
+        .btn-edit:hover {
+            background: var(--tropical-cyan);
+            color: white;
+            box-shadow: 0 0 20px var(--tropical-cyan);
+            transform: scale(1.1);
+        }
+
+        .btn-delete {
+            color: var(--tropical-pink);
+            border-color: var(--tropical-pink);
+        }
+
+        .btn-delete:hover {
+            background: var(--tropical-pink);
+            color: white;
+            box-shadow: 0 0 20px var(--tropical-pink);
+            transform: scale(1.1);
+        }
+
+        .btn-view {
+            color: var(--tropical-green);
+            border-color: var(--tropical-green);
+        }
+
+        .btn-view:hover {
+            background: var(--tropical-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--tropical-green);
+            transform: scale(1.1);
+        }
+
+        /* Calendar Preview */
+        .calendar-preview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: var(--darker-bg);
+            border: 2px solid rgba(146, 254, 157, 0.2);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.1);
+            border-color: var(--tropical-cyan);
+            box-shadow: 0 5px 20px rgba(0, 201, 255, 0.4);
+        }
+
+        .calendar-day.available {
+            background: linear-gradient(135deg, rgba(146, 254, 157, 0.2), rgba(0, 201, 255, 0.1));
+            border-color: var(--tropical-green);
+            color: var(--tropical-green);
+        }
+
+        .calendar-day.occupied {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 154, 86, 0.1));
+            border-color: var(--tropical-pink);
+            color: var(--tropical-pink);
+        }
+
+        .calendar-day-number {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid rgba(0, 201, 255, 0.3);
+            border-radius: 50px;
+            background: var(--darker-bg);
+            color: var(--light-text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--tropical-cyan);
+            box-shadow: 0 0 30px rgba(0, 201, 255, 0.3);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--muted-text);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--tropical-cyan);
+            font-size: 1.1rem;
+        }
+
+        /* Wave Animation */
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .wave-animation {
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2>🌴 TropicalVibes</h2>
+            <div class="logo-subtext">PANEL DE ADMINISTRACIÓN</div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#reservas"><i class="fas fa-calendar-check"></i> Reservas</a></li>
+            <li><a href="#actividades"><i class="fas fa-water"></i> Actividades</a></li>
+            <li><a href="#clientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#ventas"><i class="fas fa-dollar-sign"></i> Ventas</a></li>
+            <li><a href="#calendario"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
+            <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
+            <li><a href="../template_tropical.html"><i class="fas fa-home"></i> Volver al Sitio</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="welcome-text">
+                <h1 class="wave-animation">¡Bienvenido al Paraíso! 🌊</h1>
+                <p>Gestiona tu parque acuático tropical</p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="stat-number">1,247</div>
+                <div class="stat-label">Visitantes Hoy</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-number">89</div>
+                <div class="stat-label">Reservas Activas</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="stat-number">12</div>
+                <div class="stat-label">Atracciones Activas</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number">$45.2K</div>
+                <div class="stat-label">Ingresos del Mes</div>
+            </div>
+        </div>
+
+        <!-- Reservas Recientes -->
+        <section class="content-section" id="reservas">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-check"></i>
+                    Reservas Recientes
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i> Nueva Reserva
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar por nombre, email o fecha...">
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha Visita</th>
+                        <th>Personas</th>
+                        <th>Paquete</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#TRO-2024</strong></td>
+                        <td>
+                            <strong>Familia Martínez</strong><br>
+                            <small style="color: var(--muted-text);">martinez@email.com</small>
+                        </td>
+                        <td>15 Nov 2025</td>
+                        <td>4</td>
+                        <td>Familiar VIP</td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#TRO-2023</strong></td>
+                        <td>
+                            <strong>Carlos Rodríguez</strong><br>
+                            <small style="color: var(--muted-text);">carlos@email.com</small>
+                        </td>
+                        <td>16 Nov 2025</td>
+                        <td>2</td>
+                        <td>Parejas</td>
+                        <td><span class="badge badge-pending">Pendiente Pago</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#TRO-2022</strong></td>
+                        <td>
+                            <strong>Ana Silva</strong><br>
+                            <small style="color: var(--muted-text);">ana@email.com</small>
+                        </td>
+                        <td>17 Nov 2025</td>
+                        <td>8</td>
+                        <td>Grupo Grande</td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#TRO-2021</strong></td>
+                        <td>
+                            <strong>Pedro González</strong><br>
+                            <small style="color: var(--muted-text);">pedro@email.com</small>
+                        </td>
+                        <td>14 Nov 2025</td>
+                        <td>3</td>
+                        <td>Familiar</td>
+                        <td><span class="badge badge-cancelled">Cancelada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Calendario de Disponibilidad -->
+        <section class="content-section" id="calendario">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    Disponibilidad - Noviembre 2025
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-cog"></i> Gestionar Disponibilidad
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 15px; text-align: center; font-weight: 700; color: var(--tropical-cyan); font-size: 0.9rem;">
+                <div>DOM</div>
+                <div>LUN</div>
+                <div>MAR</div>
+                <div>MIÉ</div>
+                <div>JUE</div>
+                <div>VIE</div>
+                <div>SÁB</div>
+            </div>
+
+            <div class="calendar-preview">
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">1</span>
+                    <small style="font-size: 0.7rem;">70%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">2</span>
+                    <small style="font-size: 0.7rem;">45%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">3</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">4</span>
+                    <small style="font-size: 0.7rem;">30%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">5</span>
+                    <small style="font-size: 0.7rem;">55%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">6</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">7</span>
+                    <small style="font-size: 0.7rem;">20%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">8</span>
+                    <small style="font-size: 0.7rem;">15%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">9</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">10</span>
+                    <small style="font-size: 0.7rem;">40%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">11</span>
+                    <small style="font-size: 0.7rem;">25%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">12</span>
+                    <small style="font-size: 0.7rem;">35%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">13</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">14</span>
+                    <small style="font-size: 0.7rem;">60%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">15</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">16</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">17</span>
+                    <small style="font-size: 0.7rem;">50%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">18</span>
+                    <small style="font-size: 0.7rem;">10%</small>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">19</span>
+                    <small style="font-size: 0.7rem;">45%</small>
+                </div>
+                <div class="calendar-day occupied">
+                    <span class="calendar-day-number">20</span>
+                    <small style="font-size: 0.7rem;">LLENO</small>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 2rem; margin-top: 1.5rem; justify-content: center; font-weight: 600;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 25px; height: 25px; background: linear-gradient(135deg, rgba(146, 254, 157, 0.2), rgba(0, 201, 255, 0.1)); border: 2px solid var(--tropical-green); border-radius: 0.5rem;"></div>
+                    <span>Disponible</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 25px; height: 25px; background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 154, 86, 0.1)); border: 2px solid var(--tropical-pink); border-radius: 0.5rem;"></div>
+                    <span>Completo</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Actividades Populares -->
+        <section class="content-section" id="actividades">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-water"></i>
+                    Actividades Más Populares
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-chart-bar"></i> Ver Reportes
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <!-- Actividad 1 -->
+                <div style="background: linear-gradient(135deg, rgba(0, 201, 255, 0.1), rgba(146, 254, 157, 0.05)); padding: 1.5rem; border-radius: 1.5rem; border: 2px solid var(--tropical-cyan); transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                            🌊
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.2rem; margin: 0; font-weight: 800;">Piscina de Olas</h3>
+                            <p style="color: var(--muted-text); margin: 0; font-size: 0.85rem;">Atracción más visitada</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: var(--tropical-cyan);">847</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">Visitantes hoy</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--tropical-green);">↑ 23%</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">vs. ayer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 2 -->
+                <div style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 154, 86, 0.05)); padding: 1.5rem; border-radius: 1.5rem; border: 2px solid var(--tropical-pink); transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--tropical-pink), var(--tropical-orange)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                            🎢
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.2rem; margin: 0; font-weight: 800;">Toboganes</h3>
+                            <p style="color: var(--muted-text); margin: 0; font-size: 0.85rem;">Alta adrenalina</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: var(--tropical-pink);">623</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">Visitantes hoy</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--tropical-green);">↑ 18%</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">vs. ayer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad 3 -->
+                <div style="background: linear-gradient(135deg, rgba(255, 217, 61, 0.1), rgba(255, 154, 86, 0.05)); padding: 1.5rem; border-radius: 1.5rem; border: 2px solid var(--tropical-yellow); transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--tropical-yellow), var(--tropical-orange)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                            👶
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.2rem; margin: 0; font-weight: 800;">Zona Infantil</h3>
+                            <p style="color: var(--muted-text); margin: 0; font-size: 0.85rem;">Para los más pequeños</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: var(--tropical-yellow);">412</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">Visitantes hoy</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--tropical-green);">↑ 31%</div>
+                            <div style="color: var(--muted-text); font-size: 0.85rem;">vs. ayer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen de Ventas -->
+        <section class="content-section" id="ventas">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Resumen de Ventas - Noviembre
+                </h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(0, 201, 255, 0.1), transparent); border-radius: 1rem; border: 2px solid rgba(0, 201, 255, 0.3);">
+                    <i class="fas fa-ticket-alt" style="font-size: 2.5rem; color: var(--tropical-cyan); margin-bottom: 1rem;"></i>
+                    <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">2,847</div>
+                    <div style="color: var(--muted-text); font-weight: 600;">Entradas Vendidas</div>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), transparent); border-radius: 1rem; border: 2px solid rgba(255, 107, 107, 0.3);">
+                    <i class="fas fa-dollar-sign" style="font-size: 2.5rem; color: var(--tropical-pink); margin-bottom: 1rem;"></i>
+                    <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">$45.2K</div>
+                    <div style="color: var(--muted-text); font-weight: 600;">Ingresos Totales</div>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(255, 217, 61, 0.1), transparent); border-radius: 1rem; border: 2px solid rgba(255, 217, 61, 0.3);">
+                    <i class="fas fa-utensils" style="font-size: 2.5rem; color: var(--tropical-yellow); margin-bottom: 1rem;"></i>
+                    <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">$8.9K</div>
+                    <div style="color: var(--muted-text); font-weight: 600;">Ventas Comida</div>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), transparent); border-radius: 1rem; border: 2px solid rgba(168, 85, 247, 0.3);">
+                    <i class="fas fa-star" style="font-size: 2.5rem; color: var(--tropical-purple); margin-bottom: 1rem;"></i>
+                    <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">4.8</div>
+                    <div style="color: var(--muted-text); font-weight: 600;">Calificación Promedio</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navegación activa en sidebar
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Scroll suave a la sección
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Funcionalidad de búsqueda
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            console.log('Buscando:', searchTerm);
+            // Aquí iría la lógica de filtrado real
+        });
+
+        // Botones de acción
+        document.querySelectorAll('.btn-icon').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.classList.contains('btn-view') ? 'ver' :
+                             this.classList.contains('btn-edit') ? 'editar' : 'cancelar';
+                const row = this.closest('tr');
+                const id = row.querySelector('td:first-child strong').textContent;
+                
+                if (action === 'ver') {
+                    alert(`Ver detalles de la reserva ${id}`);
+                } else if (action === 'editar') {
+                    alert(`Editar reserva ${id}`);
+                } else if (action === 'cancelar') {
+                    if (confirm(`¿Estás seguro de cancelar la reserva ${id}?`)) {
+                        alert('Reserva cancelada exitosamente');
+                    }
+                }
+            });
+        });
+
+        // Botones principales
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                if (text.includes('Nueva Reserva')) {
+                    alert('Abrir formulario de nueva reserva');
+                } else if (text.includes('Gestionar Disponibilidad')) {
+                    alert('Abrir panel de gestión de disponibilidad');
+                } else if (text.includes('Ver Reportes')) {
+                    alert('Abrir reportes detallados');
+                }
+            });
+        });
+
+        // Click en días del calendario
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.addEventListener('click', function() {
+                const dayNumber = this.querySelector('.calendar-day-number')?.textContent;
+                if (dayNumber) {
+                    if (this.classList.contains('occupied')) {
+                        alert(`Día ${dayNumber} - Capacidad completa. Ver lista de espera.`);
+                    } else if (this.classList.contains('available')) {
+                        const occupancy = this.querySelector('small')?.textContent;
+                        alert(`Día ${dayNumber} - Ocupación actual: ${occupancy}\n¿Deseas ver detalles o hacer una reserva?`);
+                    }
+                }
+            });
+        });
+
+        // Hover effect en actividades
+        document.querySelectorAll('#actividades > div > div').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.boxShadow = '0 15px 50px rgba(0, 201, 255, 0.3)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Logout
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                alert('Cerrando sesión...');
+                // window.location.href = 'login.html';
+            }
+        });
+
+        // Animación de carga inicial
+        window.addEventListener('load', function() {
+            // Animar stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+
+            // Efecto de ola en el título
+            const waveElement = document.querySelector('.wave-animation');
+            if (waveElement) {
+                setInterval(() => {
+                    waveElement.style.animation = 'none';
+                    setTimeout(() => {
+                        waveElement.style.animation = 'wave 3s ease-in-out infinite';
+                    }, 10);
+                }, 6000);
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Agregar botón de menú móvil
+        if (window.innerWidth <= 768) {
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            mobileMenuBtn.style.cssText = `
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1001;
+                background: linear-gradient(135deg, var(--tropical-cyan), var(--tropical-green));
+                border: none;
+                color: white;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 1.5rem;
+                box-shadow: 0 5px 20px rgba(0, 201, 255, 0.4);
+            `;
+            mobileMenuBtn.onclick = toggleSidebar;
+            document.body.appendChild(mobileMenuBtn);
+        }
+
+        // Actualizar números dinámicamente (simulación)
+        function updateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const currentValue = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
+                const variation = Math.floor(Math.random() * 10) - 5;
+                const newValue = Math.max(0, currentValue + variation);
+                
+                // Animación de cambio
+                if (variation !== 0) {
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            });
+        }
+
+        // Actualizar stats cada 30 segundos (simulación)
+        // setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>

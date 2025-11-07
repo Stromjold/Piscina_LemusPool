@@ -321,3 +321,54 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.5);
 }
+
+/* --- CSS PARA LA NUEVA GALERÍA --- */
+
+/* 1. Estilo para la sección oscura */
+/* (El usuario usó la clase 'section-dark' en el HTML) */
+.section-dark {
+    background-color: #0f1524; /* Color de fondo oscuro de tu CSS original */
+    color: #fff;
+}
+
+/* 2. Estilos para el nuevo título 'Galería.' */
+#gallery .section-title {
+    font-weight: 900;
+    font-size: 2.8rem; /* Tamaño del título */
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+}
+
+/* 3. Estilo para el punto en el título */
+#gallery .title-dot {
+    color: #df0568; /* Color de acento rosa de tu CSS */
+    font-size: 3rem; /* Tamaño del punto */
+}
+
+/* 4. CSS para ajustar las medidas de las imágenes */
+#gallery .img-fluid {
+    /* ----- Aquí ajustamos las medidas ----- */
+    width: 100%;  /* Ocupa todo el ancho de su columna */
+    
+    /* Define una altura fija. 
+      Puedes cambiar 250px al valor que prefieras.
+    */
+    height: 250px; 
+    
+    /* Esto hace que la imagen cubra el espacio de 250px 
+      sin deformarse (la recorta si es necesario).
+    */
+    object-fit: cover; 
+
+    /* ----- Estilos que ya tenías en retro.css ----- */
+    border: 3px solid #df0568;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border-radius: 4px; /* Opcional: suaviza las esquinas */
+}
+
+/* 5. Efecto hover que ya tenías */
+#gallery .img-fluid:hover {
+    transform: scale(1.05);
+    border-color: #00bfff; /* Color de acento azul */
+}

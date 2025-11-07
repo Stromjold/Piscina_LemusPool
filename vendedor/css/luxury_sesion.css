@@ -1,0 +1,140 @@
+/* login_luxury_flip.css */
+
+/*
+   1. ESTILOS DE LA PÁGINA Y FUENTES
+   (Tomados de tu template_luxury.html)
+*/
+body.template-luxury {
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+/*
+   2. LÓGICA DEL GIRO 3D (MOVIMIENTO)
+   (Idéntico a la Opción B)
+*/
+.flip-container {
+    width: 450px;
+    max-width: 100%;
+    height: 650px;
+    perspective: 1000px;
+    background-color: transparent;
+}
+
+.flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.front,
+.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    /* Adaptado al diseño Luxury */
+    background: #2a2a2a; /* Un poco más claro que el fondo */
+    border: 1px solid #444;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.flip-container.is-flipped .flipper {
+    transform: rotateY(180deg);
+}
+
+
+/*
+   3. ESTILOS DEL FORMULARIO (DISEÑO LUXURY)
+*/
+.front h1, .back h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+}
+
+p {
+    color: #ccc;
+}
+
+hr {
+    border-color: #555;
+    opacity: 0.5;
+}
+
+a.text-muted {
+    color: #888 !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a.text-muted:hover {
+    color: #c9ab81 !important;
+}
+
+/* Campos de formulario (Inputs) */
+.form-control {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 0; /* Esquinas rectas */
+    padding: 0.75rem 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+.form-control::placeholder {
+    color: #888;
+}
+.form-control:focus {
+    background-color: #333;
+    color: #fff;
+    border-color: #c9ab81; /* Color dorado al enfocar */
+    box-shadow: 0 0 0 0.25rem rgba(201, 171, 129, 0.25);
+}
+
+/* Iconos del formulario */
+.input-group-text {
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 0;
+    color: #c9ab81; /* Iconos en color dorado */
+}
+
+/*
+   4. ESTILOS DE BOTONES (DISEÑO LUXURY)
+*/
+
+/* Botón de acción principal (creado para este form) */
+.btn-primary-luxury {
+  background-color: #c9ab81;
+  color: #1a1a1a;
+  border-color: #c9ab81;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.75rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+.btn-primary-luxury:hover {
+  background-color: #b89a73; /* Un dorado más oscuro */
+  border-color: #b89a73;
+  color: #1a1a1a;
+}
+
+/* El botón .btn-outline-light ya está definido
+   en tu archivo 'luxury.css' (color dorado, bordes rectos).
+   No necesitamos re-definirlo aquí.
+*/

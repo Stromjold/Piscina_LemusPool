@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Pool - Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --forest-green: #2d5016;
+            --leaf-green: #4a7c3b;
+            --light-green: #8bc34a;
+            --earth-brown: #6d4c41;
+            --sand: #f5e6d3;
+            --water-blue: #4a90a4;
+            --sky-blue: #e8f4f8;
+            --danger-red: #d32f2f;
+            --warning-orange: #f57c00;
+            --success-green: #388e3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f5e6d3 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--forest-green);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: linear-gradient(180deg, var(--forest-green) 0%, var(--leaf-green) 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-logo h2 {
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo i {
+            color: var(--light-green);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: var(--light-green);
+        }
+
+        .sidebar-menu i {
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .welcome-text p {
+            color: #666;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--leaf-green), var(--light-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background: var(--danger-red);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--leaf-green), var(--light-green));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: linear-gradient(135deg, rgba(139, 195, 74, 0.2), rgba(139, 195, 74, 0.3));
+            color: var(--success-green);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: linear-gradient(135deg, rgba(74, 144, 164, 0.2), rgba(74, 144, 164, 0.3));
+            color: var(--water-blue);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: linear-gradient(135deg, rgba(245, 124, 0, 0.2), rgba(245, 124, 0, 0.3));
+            color: var(--warning-orange);
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: linear-gradient(135deg, rgba(211, 47, 47, 0.2), rgba(211, 47, 47, 0.3));
+            color: var(--danger-red);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--leaf-green), var(--light-green));
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 124, 59, 0.3);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .data-table thead th {
+            background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(74, 144, 164, 0.1));
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--forest-green);
+            border: none;
+        }
+
+        .data-table thead th:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .data-table thead th:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .data-table tbody tr {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .data-table tbody tr:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table tbody td {
+            padding: 1rem;
+            border: none;
+        }
+
+        .data-table tbody tr td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .data-table tbody tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(56, 142, 60, 0.15);
+            color: var(--success-green);
+        }
+
+        .badge-pending {
+            background: rgba(245, 124, 0, 0.15);
+            color: var(--warning-orange);
+        }
+
+        .badge-cancelled {
+            background: rgba(211, 47, 47, 0.15);
+            color: var(--danger-red);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: rgba(74, 144, 164, 0.15);
+            color: var(--water-blue);
+        }
+
+        .btn-edit:hover {
+            background: var(--water-blue);
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(211, 47, 47, 0.15);
+            color: var(--danger-red);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger-red);
+            color: white;
+        }
+
+        .btn-view {
+            background: rgba(139, 195, 74, 0.15);
+            color: var(--success-green);
+        }
+
+        .btn-view:hover {
+            background: var(--success-green);
+            color: white;
+        }
+
+        /* Calendar Preview */
+        .calendar-preview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+
+        .calendar-day.available {
+            background: rgba(139, 195, 74, 0.2);
+            color: var(--success-green);
+        }
+
+        .calendar-day.reserved {
+            background: rgba(211, 47, 47, 0.2);
+            color: var(--danger-red);
+        }
+
+        .calendar-day-number {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.1);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <h2><i class="fas fa-water"></i> NATURE POOL</h2>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0;">Panel de Administración</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#dashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="#reservas"><i class="fas fa-calendar-check"></i> Reservas</a></li>
+            <li><a href="#calendario"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
+            <li><a href="#clientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
+            <li><a href="#reportes"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> Volver al Sitio</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="welcome-text">
+                <h1>¡Bienvenido, Administrador!</h1>
+                <p>Gestiona tus reservas y operaciones desde aquí</p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-number">24</div>
+                <div class="stat-label">Reservas Activas</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">8</div>
+                <div class="stat-label">Pendientes de Confirmar</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">156</div>
+                <div class="stat-label">Total Clientes</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-number">$2.4M</div>
+                <div class="stat-label">Ingresos del Mes</div>
+            </div>
+        </div>
+
+        <!-- Reservas Recientes -->
+        <section class="content-section" id="reservas">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-check"></i>
+                    Reservas Recientes
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-plus"></i> Nueva Reserva
+                </button>
+            </div>
+
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar por nombre, email o fecha...">
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Personas</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1024</td>
+                        <td>
+                            <strong>María González</strong><br>
+                            <small style="color: #999;">maria@email.com</small>
+                        </td>
+                        <td>15 Nov 2025</td>
+                        <td>14:00 - 18:00</td>
+                        <td>4</td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1023</td>
+                        <td>
+                            <strong>Carlos Ruiz</strong><br>
+                            <small style="color: #999;">carlos@email.com</small>
+                        </td>
+                        <td>16 Nov 2025</td>
+                        <td>10:00 - 14:00</td>
+                        <td>6</td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1022</td>
+                        <td>
+                            <strong>Ana Martínez</strong><br>
+                            <small style="color: #999;">ana@email.com</small>
+                        </td>
+                        <td>17 Nov 2025</td>
+                        <td>15:00 - 19:00</td>
+                        <td>2</td>
+                        <td><span class="badge badge-success">Confirmada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1021</td>
+                        <td>
+                            <strong>Pedro Silva</strong><br>
+                            <small style="color: #999;">pedro@email.com</small>
+                        </td>
+                        <td>14 Nov 2025</td>
+                        <td>11:00 - 15:00</td>
+                        <td>8</td>
+                        <td><span class="badge badge-cancelled">Cancelada</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-view" title="Ver detalles">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Cancelar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Vista Previa del Calendario -->
+        <section class="content-section" id="calendario">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    Disponibilidad - Noviembre 2025
+                </h2>
+                <button class="btn-primary">
+                    <i class="fas fa-calendar-plus"></i> Gestionar Disponibilidad
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 10px; text-align: center; font-weight: 600; color: var(--forest-green);">
+                <div>Dom</div>
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+            </div>
+
+            <div class="calendar-preview">
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day"></div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">1</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">2</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">3</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">4</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">5</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">6</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">7</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">8</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">9</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">10</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">11</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">12</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">13</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">14</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">15</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">16</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">17</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">18</span>
+                </div>
+                <div class="calendar-day available">
+                    <span class="calendar-day-number">19</span>
+                </div>
+                <div class="calendar-day reserved">
+                    <span class="calendar-day-number">20</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 2rem; margin-top: 1.5rem; justify-content: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; border-radius: 5px; background: rgba(139, 195, 74, 0.2);"></div>
+                    <span>Disponible</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 20px; height: 20px; border-radius: 5px; background: rgba(211, 47, 47, 0.2);"></div>
+                    <span>Reservado</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/Js/reservas.js"></script>
+    <script src="js/Js/calendar.js"></script>
+    <script>
+        // Navegación activa en sidebar
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Funcionalidad de búsqueda (demo)
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            console.log('Buscando:', searchTerm);
+            // Aquí iría la lógica de filtrado real
+        });
+
+        // Botones de acción
+        document.querySelectorAll('.btn-icon').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.classList.contains('btn-view') ? 'ver' :
+                             this.classList.contains('btn-edit') ? 'editar' : 'cancelar';
+                const row = this.closest('tr');
+                const id = row.querySelector('td:first-child').textContent;
+                console.log(`Acción: ${action} reserva ${id}`);
+                
+                if (action === 'cancelar') {
+                    if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+                        alert('Reserva cancelada exitosamente');
+                    }
+                }
+            });
+        });
+
+        // Botón de nueva reserva
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent.includes('Nueva Reserva')) {
+                    alert('Formulario de nueva reserva (por implementar)');
+                } else if (this.textContent.includes('Gestionar Disponibilidad')) {
+                    alert('Panel de gestión de disponibilidad (por implementar)');
+                }
+            });
+        });
+
+        // Click en días del calendario
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.addEventListener('click', function() {
+                if (this.classList.contains('available')) {
+                    if (confirm('¿Deseas marcar este día como reservado?')) {
+                        this.classList.remove('available');
+                        this.classList.add('reserved');
+                    }
+                } else if (this.classList.contains('reserved')) {
+                    if (confirm('¿Deseas liberar este día?')) {
+                        this.classList.remove('reserved');
+                        this.classList.add('available');
+                    }
+                }
+            });
+        });
+
+        // Logout
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                alert('Cerrando sesión...');
+                // window.location.href = 'login.html';
+            }
+        });
+
+        // Mobile menu toggle (para responsive)
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Animación de carga inicial
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.stat-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html

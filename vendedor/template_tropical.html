@@ -12,27 +12,27 @@
 <body class="template-tropical">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-tropical sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#inicio">TropicalVibes</a>
+            <a class="navbar-brand" href="#inicio">🌴 TropicalVibes</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTropical" aria-controls="navbarTropical" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTropical">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#atracciones">Atracciones</a></li>
                     <li class="nav-item"><a class="nav-link" href="#comida">Comida</a></li>
                     <li class="nav-item"><a class="nav-link" href="#reservar">Reservar</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin.php">Administración</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../vendedor/administracion/admin_tropical.html">Administración</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header id="inicio" class="text-white text-center py-5" style="background: linear-gradient(45deg, #00c9ff, #92fe9d);">
+    <header id="inicio" class="text-white text-center py-5 hero-section">
         <div class="container py-5">
             <h1 class="display-3 fw-bold">¡Sumérgete en la Diversión!</h1>
             <p class="lead">Tu paraíso tropical te espera con las mejores olas y el mejor ambiente.</p>
@@ -133,8 +133,17 @@
                 <p>Revisa nuestro calendario para ver los días disponibles para tu reserva.</p>
             </div>
             
-            <div class="calendar-container">
-                <!-- El contenido del calendario se generará aquí por JS -->
+            <div class="calendar-wrapper mt-4">
+                <div class="calendar-main">
+                    <div class="calendar-header d-flex justify-content-between align-items-center">
+                        <button class="nav-btn" id="prev-month-btn"><i class="fas fa-chevron-left"></i></button>
+                        <h3 class="calendar-title" id="month-year"></h3>
+                        <button class="nav-btn" id="next-month-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-container mt-3">
+                        <!-- El contenido del calendario se generará aquí por JS -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -170,9 +179,9 @@
     </section>
 
     <!-- Footer -->
-    <footer class="text-center py-4" style="background-color: #f0f8ff;">
+    <footer class="text-center py-4 footer-tropical">
         <div class="container">
-            <p class="mb-0">TropicalVibes &copy; 2025 - ¡Vive el Verano!</p>
+            <p class="mb-0">🌴 TropicalVibes &copy; 2025 - ¡Vive el Verano!</p>
         </div>
     </footer>
 
