@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaLink Devs - Opciones de Demo</title>
+
+    <style>
+        /* Importar la fuente Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /* Definición de variables de color (basadas en la imagen) */
+        :root {
+            --color-fondo: #0a192f; /* Azul marino/negro muy oscuro */
+            --color-texto: #ccd6f6; /* Texto claro, ligeramente azulado */
+            --color-titulo: #e6f1ff; /* Texto más brillante para títulos */
+            --color-acento: #64ffda; /* Cian/turquesa brillante para botones */
+            --color-acento-hover: #00f0c0;
+            --color-vidrio-fondo: rgba(255, 255, 255, 0.08); /* Fondo del "vidrio" */
+            --color-vidrio-borde: rgba(255, 255, 255, 0.2); /* Borde del "vidrio" */
+        }
+
+        /* Estilos base del cuerpo de la página */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px; /* Espacio para pantallas pequeñas */
+            box-sizing: border-box;
+        }
+
+        /* Contenedor principal con efecto "vidrio" */
+        .demo-container {
+            /* Efecto Glassmorphism */
+            background: var(--color-vidrio-fondo);
+            border: 1px solid var(--color-vidrio-borde);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+            
+            padding: 30px 40px;
+            border-radius: 15px; /* Bordes redondeados como en la imagen */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Estilos de texto */
+        h1 {
+            color: var(--color-titulo);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        /* Contenedor de botones */
+        .botones {
+            display: flex;
+            flex-direction: column; /* Apilados en móvil */
+            gap: 15px;
+        }
+
+        /* Estilo de botones personalizado */
+        .btn {
+            display: block;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Botón Principal (color de acento) */
+        .btn-principal {
+            background-color: var(--color-acento);
+            color: #0a192f; /* Texto oscuro para que contraste */
+        }
+
+        .btn-principal:hover {
+            background-color: var(--color-acento-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.2);
+        }
+
+        /* Botón Secundario (borde) */
+        .btn-admin {
+            background: none;
+            border: 2px solid var(--color-acento);
+            color: var(--color-acento);
+        }
+
+        .btn-admin:hover {
+            background-color: rgba(100, 255, 218, 0.1); /* Relleno sutil */
+            color: var(--color-acento);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive para pantallas más grandes */
+        @media (min-width: 600px) {
+            .botones {
+                flex-direction: row; /* Botones lado a lado */
+            }
+            .btn {
+                flex-grow: 1; /* Ocupan el espacio equitativamente */
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="demo-container">
+        <h1 id="tituloDemo">Demo</h1> 
+        <p>Elige qué vista de la plantilla deseas explorar:</p>
+        
+        <div class="botones">
+            <a id="linkAdmin" href="#" target="_blank" class="btn btn-admin">Administración</a>
+        </div>
+        <div class="botones">
+            <a id="linkPrincipal" href="#" target="_blank" class="btn btn-principal">Página Principal</a>
+        </div>
+    </div>
+
+    <script>
+        // Este script se ejecuta cuando la página carga
+        window.onload = function() {
+            // 1. Obtiene los parámetros de la URL (ej: ?principal=...&nombre=...)
+            const params = new URLSearchParams(window.location.search);
+            
+            // 2. Lee los valores que le pasamos
+            const principalUrl = params.get('principal');
+            const nombre = params.get('nombre');
+
+            // 3. Define la URL de admin (basado en tu HTML, esta es fija)
+            const adminUrl = 'administracion/admin_principal.html';
+
+            // 4. Actualiza la página con la información correcta
+            document.getElementById('tituloDemo').textContent = 'Demo: ' + (nombre || 'Plantilla');
+            
+            // 5. Asigna las URLs correctas a los botones
+            if (principalUrl) {
+                document.getElementById('linkPrincipal').href = principalUrl;
+            } else {
+                 document.getElementById('linkPrincipal').style.display = 'none'; // Oculta si no hay URL
+            }
+            
+            document.getElementById('linkAdmin').href = adminUrl;
+        };
+    </script>
+
+</body>
+</html>
