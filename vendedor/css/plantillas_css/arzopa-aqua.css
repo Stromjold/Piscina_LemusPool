@@ -15,7 +15,14 @@
 }
 
 .template-arzopa .hero {
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrHmKit7scCP3ikRIUdEYwKcH6SNllCtpvqQ&s");
+  /* Fondo HERO: imagen local proporcionada por el usuario */
+   /* aseguramos usar una imagen local que existe en el repo para evitar rutas faltantes */
+   background-image: 
+     radial-gradient(circle at 50% 30%, rgba(0,150,200,0.12), transparent 25%),
+     linear-gradient(180deg, rgba(0,120,160,0.10), rgba(5,15,25,0.10)),
+     repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 10px),
+     url("https://www.fmdos.cl/wp-content/uploads/2025/01/Parque-acuatico-1-1-jpg.webp"), /* imagen oscura ya presente en vendedor/Image */
+     url("../../img/template-arzopa.jpg"); /* fallback local image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -33,7 +40,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(13, 45, 82, 0.45);
+  background: rgba(13, 45, 82, 0.25); /* reducido para que la imagen destaque más */
   z-index: 0;
 }
 
