@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Minimalista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #d8d8d8 100%);
+            color: #2c2c2c;
+            overflow-x: hidden;
+        }
+
+        /* Decorative Elements */
+        .deco-circle {
+            position: absolute;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .circle-1 { top: 10%; right: 15%; width: 200px; height: 200px; }
+        .circle-2 { top: 50%; right: 5%; width: 150px; height: 150px; }
+        .circle-3 { bottom: 15%; left: 10%; width: 100px; height: 100px; }
+
+        .deco-line {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .line-1 { top: 20%; left: 5%; width: 2px; height: 100px; transform: rotate(45deg); }
+        .line-2 { bottom: 25%; right: 20%; width: 80px; height: 2px; }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #2c2c2c;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #2c2c2c;
+        }
+
+        nav a.active {
+            color: #2c2c2c;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2c2c2c;
+        }
+
+        /* Main Content */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 5% 4rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            color: #2c2c2c;
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Admin Sections */
+        .admin-section {
+            background: white;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: #2c2c2c;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        /* Form Styles */
+        .admin-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c2c2c;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2c2c2c;
+            background: white;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #2c2c2c;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn:hover {
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2c2c2c;
+            border: 1px solid #2c2c2c;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-danger {
+            background: #c62828;
+        }
+
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+
+        /* Gallery Management */
+        .gallery-admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-admin-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .gallery-admin-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-admin-item:hover .gallery-item-actions {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            background: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-btn.delete {
+            color: #c62828;
+        }
+
+        /* Calendar Admin */
+        .calendar-admin {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-day-header {
+            font-weight: bold;
+            text-align: center;
+            padding: 0.5rem;
+            background: #f5f5f5;
+        }
+
+        .calendar-admin-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0.5rem;
+        }
+
+        .calendar-admin-day:hover {
+            background: #f5f5f5;
+        }
+
+        .calendar-admin-day.occupied {
+            background: #ffebee;
+            border-color: #c62828;
+        }
+
+        .calendar-admin-day.selected {
+            background: #2c2c2c;
+            color: white;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .day-status {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background: #f9f9f9;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .data-table tr:hover {
+            background: #fafafa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 20px;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-confirmed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 5%;
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Elements -->
+    <div class="deco-circle circle-1"></div>
+    <div class="deco-circle circle-2"></div>
+    <div class="deco-circle circle-3"></div>
+    <div class="deco-line line-1"></div>
+    <div class="deco-line line-2"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">MLS ADMIN</div>
+        <nav>
+            <ul>
+                <li><a href="#dashboard" class="active">DASHBOARD</a></li>
+                <li><a href="#calendar">CALENDARIO</a></li>
+                <li><a href="#gallery">GALERÍA</a></li>
+                <li><a href="#messages">MENSAJES</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="admin-container">
+        <h1 class="page-title">Panel de Administración</h1>
+        <p class="page-subtitle">Gestiona tu sitio web</p>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                <div class="stat-value" id="totalReservas">24</div>
+                <div class="stat-label">Reservas Este Mes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                <div class="stat-value" id="totalMensajes">12</div>
+                <div class="stat-label">Mensajes Nuevos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-images"></i></div>
+                <div class="stat-value" id="totalImagenes">48</div>
+                <div class="stat-label">Imágenes en Galería</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-value" id="totalVisitas">1.2k</div>
+                <div class="stat-label">Visitas Este Mes</div>
+            </div>
+        </div>
+
+        <!-- Calendar Management -->
+        <section id="calendar" class="admin-section">
+            <h2 class="section-title">Gestión de Calendario</h2>
+            <p style="color: #666; margin-bottom: 2rem;">Haz clic en los días para marcarlos como ocupados o disponibles.</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <button class="btn-secondary btn" onclick="changeCalendarMonth(-1)">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <h3 id="calendarAdminTitle" style="font-weight: 300;">Noviembre 2025</h3>
+                <button class="btn-secondary btn" onclick="changeCalendarMonth(1)">
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="calendar-admin" id="calendarAdmin"></div>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <button class="btn" onclick="saveCalendar()">Guardar Cambios</button>
+                <button class="btn-secondary btn" onclick="resetCalendar()">Restablecer</button>
+            </div>
+        </section>
+
+        <!-- Gallery Management -->
+        <section id="gallery" class="admin-section">
+            <h2 class="section-title">Gestión de Galería</h2>
+            
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label>Agregar Nueva Imagen</label>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="url" id="newImageUrl" placeholder="URL de la imagen">
+                    <button class="btn" onclick="addImage()">Agregar</button>
+                </div>
+            </div>
+
+            <div class="gallery-admin-grid" id="galleryAdmin">
+                <!-- Images will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Content Editor -->
+        <section id="content" class="admin-section">
+            <h2 class="section-title">Editor de Contenido</h2>
+            
+            <form class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título Principal</label>
+                        <input type="text" id="mainTitle" value="Creando">
+                    </div>
+                    <div class="form-group">
+                        <label>Subtítulo</label>
+                        <input type="text" id="subtitle" value="estilo y elegancia">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción Hero</label>
+                    <input type="text" id="heroDesc" value="EDICIÓN ESPECIAL">
+                </div>
+
+                <div class="form-group">
+                    <label>URL Imagen Hero</label>
+                    <input type="url" id="heroImage" value="https://santespiedranatural.com/wp-content/uploads/2018/07/maxresdefault-2592x1296.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Título Sección Acerca de</label>
+                    <input type="text" id="aboutTitle" value="Diseño Consciente">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción Acerca de</label>
+                    <textarea id="aboutDesc" rows="4">Nos enfocamos en la creación de espacios que reflejan la personalidad y necesidades de nuestros clientes. Cada proyecto es una oportunidad para innovar y superar expectativas.</textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="btn" onclick="saveContent()">Guardar Cambios</button>
+                    <button type="button" class="btn-secondary btn">Vista Previa</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Messages -->
+        <section id="messages" class="admin-section">
+            <h2 class="section-title">Mensajes Recientes</h2>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="messagesTable">
+                    <tr>
+                        <td>08/11/2025</td>
+                        <td>cliente@example.com</td>
+                        <td>+56 9 1234 5678</td>
+                        <td><span class="status-badge status-pending">Pendiente</span></td>
+                        <td>
+                            <button class="icon-btn" onclick="viewMessage(1)"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn delete" onclick="deleteMessage(1)"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>07/11/2025</td>
+                        <td>contacto@empresa.com</td>
+                        <td>+56 9 8765 4321</td>
+                        <td><span class="status-badge status-confirmed">Respondido</span></td>
+                        <td>
+                            <button class="icon-btn" onclick="viewMessage(2)"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn delete" onclick="deleteMessage(2)"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Minimalista Admin. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Calendar Management
+        let currentMonth = 10; // Noviembre
+        let currentYear = 2025;
+        let occupiedDays = {};
+
+        function generateCalendarAdmin() {
+            const calendar = document.getElementById('calendarAdmin');
+            calendar.innerHTML = '';
+            
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                calendar.appendChild(empty);
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-admin-day';
+                const key = `${currentYear}-${currentMonth}-${day}`;
+                
+                if (occupiedDays[key]) {
+                    dayEl.classList.add('occupied');
+                }
+                
+                dayEl.innerHTML = `
+                    <span class="day-number">${day}</span>
+                    <span class="day-status">${occupiedDays[key] ? 'Ocupado' : 'Libre'}</span>
+                `;
+                
+                dayEl.onclick = () => toggleDay(key, dayEl);
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        function toggleDay(key, element) {
+            occupiedDays[key] = !occupiedDays[key];
+            if (occupiedDays[key]) {
+                element.classList.add('occupied');
+                element.querySelector('.day-status').textContent = 'Ocupado';
+            } else {
+                element.classList.remove('occupied');
+                element.querySelector('.day-status').textContent = 'Libre';
+            }
+        }
+
+        function changeCalendarMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarAdminTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendarAdmin();
+        }
+
+        function saveCalendar() {
+            alert('Calendario guardado exitosamente');
+        }
+
+        function resetCalendar() {
+            if (confirm('¿Estás seguro de restablecer el calendario?')) {
+                occupiedDays = {};
+                generateCalendarAdmin();
+            }
+        }
+
+        // Gallery Management
+        let galleryImages = [
+            'https://www.luxuryconcrete.eu/es/img/inspiracion/piscinas/piscina-microcemento-jardin.webp',
+            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
+            'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800'
+        ];
+
+        function loadGallery() {
+            const gallery = document.getElementById('galleryAdmin');
+            gallery.innerHTML = '';
+            
+            galleryImages.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-admin-item';
+                item.innerHTML = `
+                    <img src="${url}" alt="Imagen ${index + 1}">
+                    <div class="gallery-item-actions">
+                        <button class="icon-btn delete" onclick="removeImage(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+
+        function addImage() {
+            const url = document.getElementById('newImageUrl').value;
+            if (url) {
+                galleryImages.push(url);
+                loadGallery();
+                document.getElementById('newImageUrl').value = '';
+                alert('Imagen agregada exitosamente');
+            }
+        }
+
+        function removeImage(index) {
+            if (confirm('¿Estás seguro de eliminar esta imagen?')) {
+                galleryImages.splice(index, 1);
+                loadGallery();
+            }
+        }
+
+        // Content Management
+        function saveContent() {
+            alert('Contenido guardado exitosamente');
+        }
+
+        // Messages Management
+        function viewMessage(id) {
+            alert('Ver mensaje #' + id);
+        }
+
+        function deleteMessage(id) {
+            if (confirm('¿Estás seguro de eliminar este mensaje?')) {
+                alert('Mensaje eliminado');
+            }
+        }
+
+        // Initialize
+        generateCalendarAdmin();
+        loadGallery();
+
+        // Initialize some random occupied days
+        for (let i = 0; i < 10; i++) {
+            const day = Math.floor(Math.random() * 30) + 1;
+            occupiedDays[`${currentYear}-${currentMonth}-${day}`] = true;
+        }
+        generateCalendarAdmin();
+    </script>
+</body>
+</html>
