@@ -3,143 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso y Registro - Arzopa Aqua</title>
+    <title>Acceso Profesional</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="css/arzopa-aqua.css" rel="stylesheet">
-
+    
     <style>
-        /* Un pequeño ajuste para que las pestañas usen tu color personalizado */
-        .template-arzopa .nav-tabs .nav-link {
-            color: #6c757d; /* Color de pestaña inactiva */
-        }
-        
-        /* Pestaña activa usa el color azul de tu CSS */
-        .template-arzopa .nav-tabs .nav-link.active {
-            color: #0d2d52; 
-            border-color: #dee2e6 #dee2e6 #fff;
-            font-weight: bold;
-        }
+        html, body { height: 100%; margin: 0; }
+
+.brand-panel {
+    background: linear-gradient(135deg, #0d2d52 0%, #0056b3 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: left;
+}
+.brand-content { max-width: 450px; }
+.brand-content h1 { font-weight: 700; font-size: 3rem; }
+.brand-content h1:before { content: 'Arzopa Aqua'; } /* Personalización */
+
+.form-panel { background-color: #ffffff; }
+.form-control { padding: 0.75rem 1rem; border-radius: 0.5rem; background-color: #f8f9fa; }
+.form-control:focus { background-color: #ffffff; border-color: #0d6efd; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); }
+.btn-primary { padding: 0.75rem; font-weight: 600; }
     </style>
 </head>
-<body class="template-arzopa bg-light">
+<body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="template_arzopa_aqua.html">Arzopa Aqua</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDemo" aria-controls="navbarDemo" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
+    <div class="container-fluid p-0">
+        <div class="row g-0 vh-100">
 
-    <main class="py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="card shadow-lg border-0 rounded-lg mt-5">
-                        
-                        <div class="card-header bg-white border-bottom-0">
-                            <ul class="nav nav-tabs card-header-tabs" id="authTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-pane" type="button" role="tab" aria-controls="login-pane" aria-selected="true">
-                                        Iniciar Sesión
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-pane" type="button" role="tab" aria-controls="register-pane" aria-selected="false">
-                                        Registro
-                                    </button>
-                                </li>
-                            </ul>
+            <div class="col-md-6 col-lg-7 d-none d-md-flex brand-panel">
+                <div class="brand-content">
+                    <h1>TuMarca</h1>
+                    <p class="lead">Bienvenido a la plataforma.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center form-panel">
+                <div class="col-10 col-lg-8">
+                    
+                    <h2 class="fw-bolder mb-3">Iniciar Sesión</h2>
+                    <p class="text-muted mb-4">Bienvenido de vuelta.</p>
+
+                    <div id="signin-error" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="signInForm" novalidate>
+                        <div class="mb-3">
+                            <label for="signInEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="signInEmail" placeholder="tu@email.com" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="signInPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="signInPassword" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="text-end mb-3">
+                            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" id="signInSubmitButton">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="button-text">Entrar</span>
+                            </button>
+                        </div>
+                    </form>
 
-                        <div class="card-body p-4">
-                            <div class="tab-content" id="authTabContent">
-
-                                <div class="tab-pane fade show active" id="login-pane" role="tabpanel" aria-labelledby="login-tab">
-                                    
-                                    <h3 class="text-center fw-bolder my-3">Bienvenido de Nuevo</h3>
-                                    
-                                    <form action="../php/login_handler.php" method="POST">
-                                        <input type="hidden" name="plantilla" value="arzopa">
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmail" name="username" type="email" placeholder="name@example.com" required />
-                                            <label for="inputEmail">Correo Electrónico</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Contraseña" required />
-                                            <label for="inputPassword">Contraseña</label>
-                                        </div>
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                            <label class="form-check-label" for="inputRememberPassword">Recordar contraseña</label>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <a class="small" href="#">¿Olvidaste tu contraseña?</a>
-                                            <button class="btn btn-primary" type="submit">Ingresar</button>
-                                        </div>
-                                    </form>
-
-                                </div>
-
-                                <div class="tab-pane fade" id="register-pane" role="tabpanel" aria-labelledby="register-tab">
-
-                                    <h3 class="text-center fw-bolder my-3">Crear una Cuenta</h3>
-
-                                    <form>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Ingresa tu nombre" required />
-                                                    <label for="inputFirstName">Nombre</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" id="inputLastName" type="text" placeholder="Ingresa tu apellido" required />
-                                                    <label for="inputLastName">Apellido</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmailRegister" type="email" placeholder="name@example.com" required />
-                                            <label for="inputEmailRegister">Correo Electrónico</label>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" id="inputPasswordRegister" type="password" placeholder="Crea una contraseña" required />
-                                                    <label for="inputPasswordRegister">Contraseña</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirma la contraseña" required />
-                                                    <label for="inputPasswordConfirm">Confirmar Contraseña</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mt-4 mb-0">
-                                            <div class="d-grid">
-                                                <button class="btn btn-primary btn-block" type="submit">Crear Cuenta</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div> </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer class="py-5 bg-dark mt-auto">
-        <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Tu Sitio Web 2025</p></div>
-    </footer>
-
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Restablecer Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ingresa tu email y simularemos el envío de un enlace.</p>
+                    <form id="resetForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="tu@email.com" required>
+                        </div>
+                    </form>
+                    <div id="modal-message" class="alert d-none" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="sendResetLinkButton" form="resetForm">
+                        <span class="button-text">Enviar enlace</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 1. LÓGICA DE FORMULARIO DE INICIO DE SESIÓN (SIGN-IN) ---
+    const signInForm = document.getElementById('signInForm');
+    const signInEmailInput = document.getElementById('signInEmail');
+    const signInPasswordInput = document.getElementById('signInPassword');
+    const signInSubmitButton = document.getElementById('signInSubmitButton');
+    const signInError = document.getElementById('signin-error');
+
+    if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(signInSubmitButton, 'Iniciando...');
+            hideError(signInError);
+
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = signInEmailInput.value;
+                const password = signInPasswordInput.value;
+
+                if (email === "admin@tuapp.com" && password === "1234") {
+                    alert("¡Acceso concedido! Redirigiendo...");
+                    // window.location.href = '/dashboard.html'; 
+                
+                } else if (email === "" || password === "") {
+                    showError(signInError, "Completa todos los campos.");
+                
+                } else {
+                    showError(signInError, "Email o contraseña incorrectos.");
+                }
+                
+                restoreButton(signInSubmitButton, 'Iniciar Sesión');
+
+            }, 1500); 
+        });
+    }
+
+    // --- 2. LÓGICA DEL MODAL "OLVIDÉ CONTRASEÑA" ---
+    const resetForm = document.getElementById('resetForm');
+    const resetEmailInput = document.getElementById('resetEmail');
+    const sendResetLinkButton = document.getElementById('sendResetLinkButton');
+    const modalMessage = document.getElementById('modal-message');
+    const modalElement = document.getElementById('forgotPasswordModal');
+
+    if (resetForm && modalElement) {
+        const forgotPasswordModal = new bootstrap.Modal(modalElement);
+
+        resetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(sendResetLinkButton, 'Enviando...');
+            hideError(modalMessage); 
+            modalMessage.classList.remove('alert-success', 'alert-danger'); 
+
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = resetEmailInput.value;
+                
+                if (email.includes('@')) {
+                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace.';
+                    modalMessage.classList.add('alert-success'); 
+                } else {
+                    modalMessage.textContent = 'Email inválido.';
+                    modalMessage.classList.add('alert-danger'); 
+                }
+                
+                modalMessage.classList.remove('d-none'); 
+                restoreButton(sendResetLinkButton, 'Enviar enlace'); 
+
+                if (email.includes('@')) {
+                    setTimeout(() => {
+                        forgotPasswordModal.hide();
+                    }, 3000);
+                }
+            }, 1500);
+        });
+
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            hideError(modalMessage);
+            resetForm.reset();
+        });
+    }
+
+    // --- 3. FUNCIONES AUXILIARES (Para Spinners y Errores) ---
     
+    function showLoading(buttonElement, loadingText) {
+        buttonElement.disabled = true;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+        
+        if (buttonText) buttonText.textContent = loadingText;
+        if (spinner) spinner.classList.remove('d-none');
+    }
+
+    function restoreButton(buttonElement, originalText) {
+        buttonElement.disabled = false;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+
+        if (buttonText) buttonText.textContent = originalText;
+        if (spinner) spinner.classList.add('d-none');
+    }
+
+    function showError(errorElement, message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('d-none');
+    }
+
+    function hideError(errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.add('d-none');
+    }
+
+}); // Fin del DOMContentLoaded
+    </script>
+
 </body>
 </html>

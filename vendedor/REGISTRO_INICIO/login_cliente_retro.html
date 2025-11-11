@@ -2,282 +2,269 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Retro-Futurista</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Fuentes retro/futuristas -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>Acceso Profesional</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* -------------- Reset y tipografías -------------- */
-        * { box-sizing: border-box; }
-        html,body { height: 100%; }
-        body {
-            margin: 0;
-            font-family: 'Montserrat', 'Orbitron', sans-serif;
-            background: radial-gradient(ellipse at top, #0a0f2a 0%, #050511 50%), linear-gradient(180deg, rgba(18,6,46,0.25), rgba(2,0,10,0.5));
-            color: #e6f0ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 30px;
-            overflow: hidden;
-        }
+        /* Configuración base para que la altura funcione */
+html, body {
+    height: 100%;
+    margin: 0;
+}
 
-        /* Fondo con grid y scanlines para look retro-futurista */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: linear-gradient(transparent 50%, rgba(255,255,255,0.02) 50%),linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100% 3px, 120px 100%;
-            pointer-events: none;
-            mix-blend-mode: overlay;
-            z-index: 0;
-        }
+/* Panel de la Marca (Izquierda) */
+.brand-panel {
+    /* Un gradiente profesional. Puedes cambiarlo por una imagen:
+       background: url('tu-imagen.jpg') no-repeat center center;
+       background-size: cover;
+    */
+    background: linear-gradient(135deg, #00416A 0%, #001E3C 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: left;
+}
 
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
-            color: #78f0ff;
-            margin-bottom: 18px;
-            text-shadow: 0 0 8px rgba(120,240,255,0.2), 0 2px 10px rgba(0,0,0,0.6);
-        }
+.brand-content {
+    max-width: 450px;
+}
 
-        /* Contenedor con vidrio/neón */
-        .container {
-            position: relative;
-            width: 880px;
-            max-width: 95%;
-            min-height: 520px;
-            border-radius: 16px;
-            overflow: hidden;
-            z-index: 5;
-            background: linear-gradient(135deg, rgba(15,12,30,0.7), rgba(10,8,20,0.5));
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 40px rgba(120,50,255,0.05) inset;
-            border: 1px solid rgba(120,240,255,0.06);
-            -webkit-backdrop-filter: blur(6px) saturate(120%);
-            backdrop-filter: blur(6px) saturate(120%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.brand-content h1 {
+    font-weight: 700;
+    font-size: 3rem;
+}
 
-        /* Badge de depuración visible cuando el panel derecho está activo
-           Ahora soporta imagen dentro (.debug-badge img) y mantiene texto accesible. */
-        .debug-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: linear-gradient(90deg,#ff3aa3,#7a00ff);
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-weight:700;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing:1px;
-            display: none; /* se mostrará cuando .container tenga la clase right-panel-active */
-            z-index: 9999;
-            box-shadow: 0 6px 18px rgba(122,0,255,0.18);
-            align-items: center;
-            gap: 8px;
-            display: flex;
-        }
-        .debug-badge img {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            object-fit: cover;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-            flex-shrink: 0;
-        }
-        .debug-badge .debug-badge-text {
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            color: #fff;
-            font-size: 12px;
-            white-space: nowrap;
-        }
-        /* Mostrar la badge cuando el panel derecho esté activo */
-        .container.right-panel-active .debug-badge { display: flex; }
+/* Panel del Formulario (Derecha) */
+.form-panel {
+    background-color: #ffffff;
+}
 
-        /* Neon accent strip */
-        .container::after {
-            content: '';
-            position: absolute;
-            left: 0; right: 0; top: 0; height: 6px;
-            background: linear-gradient(90deg, #00f0ff, #7a00ff, #ff3aa3);
-            box-shadow: 0 0 18px rgba(120,40,255,0.6);
-            mix-blend-mode: screen;
-            pointer-events: none;
-        }
+/* Ajustes a los elementos del formulario */
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem; /* Bordes redondeados sutiles */
+    background-color: #f8f9fa; /* Fondo ligero para el input */
+}
 
-        .form-container { position: absolute; top: 0; height: 100%; transition: all 0.6s ease-in-out; }
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: #0d6efd; /* Color primario de Bootstrap */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
 
-          .sign-in-container { left: 0; width: 50%; z-index: 2; padding: 60px; transition: transform 0.6s ease, opacity 0.4s ease; }
-          /* Posicionar el contenedor de registro en la mitad derecha para evitar solapamientos
-              y mejorar la presentación cuando se active */
-          .sign-up-container { left: 50%; width: 50%; opacity: 0; z-index: 1; padding: 60px; display:flex; align-items:center; pointer-events: none; transition: transform 0.6s ease, opacity 0.4s ease; }
-
-        form { display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; }
-        form h1 { margin: 6px 0 8px; font-family: 'Orbitron', sans-serif; color: #fff; font-size: 26px; }
-        form p { margin: 0; color: #bcdcff; }
-
-        .social-container { margin: 18px 0; }
-        .social { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; margin:0 6px; color:#0b0b0b; background:linear-gradient(180deg,#fff,#e6f7ff); box-shadow:0 4px 14px rgba(0,0,0,0.35); }
-
-        input {
-            width: 100%; max-width: 420px;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.06);
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            color: #e8f6ff;
-            outline: none;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.5) inset;
-            transition: box-shadow 160ms, transform 120ms;
-            font-family: inherit;
-        }
-        input::placeholder { color: rgba(230,240,255,0.5); font-style: italic; }
-        input:focus { box-shadow: 0 8px 28px rgba(120,200,255,0.12), 0 0 12px rgba(120,200,255,0.06); transform: translateY(-2px); }
-
-        a { color: #69f0ff; text-decoration: none; font-size: 13px; }
-
-        button {
-            margin-top: 8px;
-            padding: 12px 44px; border-radius: 999px; border: none;
-            cursor: pointer; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-            color:#06080a; background: linear-gradient(90deg,#78f0ff,#b400ff);
-            box-shadow: 0 6px 24px rgba(124,0,255,0.24), 0 0 18px rgba(120,240,255,0.08) inset;
-            transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms;
-        }
-        button:hover { transform: translateY(-4px); filter:brightness(1.05); }
-        button.ghost { background: transparent; color: #e6f0ff; border: 1px solid rgba(230,240,255,0.12); box-shadow:none; }
-
-    /* Overlay panel neon */
-        .overlay-container { position:absolute; top:0; left:50%; width:50%; height:100%; overflow:hidden; transition: transform 0.6s ease-in-out; z-index:3; }
-        .overlay { position:relative; left:-100%; height:100%; width:200%; transform:translateX(0); transition: transform 0.6s ease-in-out; display:flex; }
-        .overlay-panel { width:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; padding: 60px; text-align:center; }
-        .overlay-left { transform: translateX(-20%); }
-        .overlay-right { right:0; transform: translateX(0); }
-        .overlay { background: linear-gradient(90deg, rgba(0,240,255,0.08), rgba(122,0,255,0.12)); }
-
-          /* Cuando se active el panel de registro, alinear los elementos a la izquierda
-              para que los inputs y botones tengan una presentación más natural en columna
-              y ocultar el panel de inicio de sesión para que solo se vea el registro. */
-          .container.right-panel-active .sign-up-container { transform: translateX(0); opacity:1; z-index:5; pointer-events: auto; }
-          .container.right-panel-active .sign-up-container form { align-items:flex-start; }
-          .container.right-panel-active .sign-up-container .social-container { margin-left: 6px; }
-
-          /* Ocultar e inutilizar el panel de inicio de sesión cuando el registro está activo */
-          .container.right-panel-active .sign-in-container { transform: translateX(100%); opacity: 0; pointer-events: none; z-index: 1; }
-
-        /* Moving neon lines behind overlay text */
-        .overlay-panel h1 { font-family: 'Orbitron', sans-serif; color:#fff; text-shadow: 0 0 16px rgba(120,200,255,0.12); }
-
-          /* Estados animados (mantener la funcionalidad)
-              Ajustado: al activar el panel derecho, el contenedor de registro
-              debe mostrarse en su posición (translateX(0)) — no desplazarse fuera.
-          */
-          .container.right-panel-active .sign-in-container { transform: translateX(100%); }
-          .container.right-panel-active .overlay-container { transform: translateX(-100%); }
-          /* Mostrar el panel de registro en su lugar (sin desplazarlo fuera de la pantalla) */
-          .container.right-panel-active .sign-up-container { transform: translateX(0); opacity:1; z-index:5; animation: show 0.6s; }
-        @keyframes show { 0%,49.99%{opacity:0;z-index:1;} 50%,100%{opacity:1;z-index:5;} }
-        .container.right-panel-active .overlay { transform: translateX(50%); }
-        .container.right-panel-active .overlay-left { transform: translateX(0); }
-        .container.right-panel-active .overlay-right { transform: translateX(20%); }
-
-        /* Pequeños detalles responsivos */
-        @media (max-width: 880px) {
-            .container{ width: 100%; min-height: 640px; }
-            .sign-in-container, .sign-up-container, .overlay-panel { padding: 28px; }
-        }
+.btn-primary {
+    padding: 0.75rem;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
 
-    <h2>RETRO • FUTURISTA</h2>
-    
-    <div class="container" id="container">
+    <div class="container-fluid p-0">
+        <div class="row g-0 vh-100">
 
-        
-
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Crear Cuenta</h1>
-                <div class="social-container">
-                    <a href="#" class="social" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social" title="Google"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <div class="col-md-6 col-lg-7 d-none d-md-flex brand-panel">
+                <div class="brand-content">
+                    <h1>TuLogo</h1>
+                    <p class="lead">La plataforma líder para gestionar tu negocio.</p>
                 </div>
-                <p>o usa tu email para registrarte</p>
-                <input type="text" placeholder="Nombre" aria-label="Nombre" />
-                <input type="email" placeholder="Email" aria-label="Email" />
-                <input type="password" placeholder="Contraseña" aria-label="Contraseña" />
-                <button type="button">Registrarse</button>
-            </form>
-        </div>
+            </div>
 
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Iniciar Sesión</h1>
-                <div class="social-container">
-                    <a href="#" class="social" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social" title="Google"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <p>o usa tu cuenta</p>
-                <input type="email" placeholder="Email" aria-label="Email" />
-                <input type="password" placeholder="Contraseña" aria-label="Contraseña" />
-                <a href="#">¿Olvidaste tu contraseña?</a>
-                <button type="button">Iniciar Sesión</button>
-            </form>
-        </div>
+            <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center form-panel">
+                <div class="col-10 col-lg-8">
+                    
+                    <h2 class="fw-bolder mb-3">Iniciar Sesión</h2>
+                    <p class="text-muted mb-4">Bienvenido de vuelta.</p>
 
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>¡Bienvenido de vuelta!</h1>
-                    <p>Para mantenerte conectado, inicia sesión con tu información</p>
-                    <button class="ghost" id="signIn">Iniciar Sesión</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>¡Hola, Amigo!</h1>
-                    <p>Introduce tus datos y comienza tu viaje</p>
-                    <button class="ghost" id="signUp">Registrarse</button>
+                    <div id="signin-error" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="signInForm" novalidate>
+                        <div class="mb-3">
+                            <label for="signInEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="signInEmail" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signInPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="signInPassword" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="text-end mb-3">
+                            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" id="signInSubmitButton">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="button-text">Entrar</span>
+                            </button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
-
     </div>
 
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Restablecer Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ingresa tu email y simularemos el envío de un enlace.</p>
+                    <form id="resetForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="tu@email.com" required>
+                        </div>
+                    </form>
+                    <div id="modal-message" class="alert d-none" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="sendResetLinkButton" form="resetForm">
+                        <span class="button-text">Enviar enlace</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        // Mantener funcionalidad de alternar paneles
-        const container = document.getElementById('container');
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Buscar botones de manera robusta (por id o por selector) para evitar fallos
-        let signUpButton = document.getElementById('signUp');
-        let signInButton = document.getElementById('signIn');
-        if (!signUpButton) signUpButton = document.querySelector('.ghost#signUp') || document.querySelector('[id="signUp"]');
-        if (!signInButton) signInButton = document.querySelector('.ghost#signIn') || document.querySelector('[id="signIn"]');
+    // --- 1. LÓGICA DE FORMULARIO DE INICIO DE SESIÓN (SIGN-IN) ---
+    const signInForm = document.getElementById('signInForm');
+    const signInEmailInput = document.getElementById('signInEmail');
+    const signInPasswordInput = document.getElementById('signInPassword');
+    const signInSubmitButton = document.getElementById('signInSubmitButton');
+    const signInError = document.getElementById('signin-error');
 
-        if (signUpButton) {
-            signUpButton.addEventListener('click', () => {
-                container.classList.add('right-panel-active');
-            });
-        } else {
-            console.warn('Elemento signUp no encontrado');
-        }
+    if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(signInSubmitButton, 'Iniciando...');
+            hideError(signInError);
 
-        if (signInButton) {
-            signInButton.addEventListener('click', () => {
-                container.classList.remove('right-panel-active');
-            });
-        } else {
-            console.warn('Elemento signIn no encontrado');
-        }
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = signInEmailInput.value;
+                const password = signInPasswordInput.value;
+
+                // --- Simulación de Lógica de Validación ---
+                // En una app real, esto se haría en un servidor
+                if (email === "admin@tuapp.com" && password === "1234") {
+                    alert("¡Acceso concedido! Redirigiendo...");
+                    // window.location.href = '/dashboard.html'; // Redirige a la página de admin
+                
+                } else if (email === "" || password === "") {
+                    showError(signInError, "Completa todos los campos.");
+                
+                } else {
+                    showError(signInError, "Email o contraseña incorrectos.");
+                }
+                
+                // Restaura el botón (solo si hubo error)
+                restoreButton(signInSubmitButton, 'Iniciar Sesión');
+
+            }, 1500); // Simula 1.5 segundos de retraso de red
+        });
+    }
+
+    // --- 2. LÓGICA DEL MODAL "OLVIDÉ CONTRASEÑA" ---
+    const resetForm = document.getElementById('resetForm');
+    const resetEmailInput = document.getElementById('resetEmail');
+    const sendResetLinkButton = document.getElementById('sendResetLinkButton');
+    const modalMessage = document.getElementById('modal-message');
+    const modalElement = document.getElementById('forgotPasswordModal');
+
+    if (resetForm && modalElement) {
+        // Obtenemos la instancia del Modal de Bootstrap
+        const forgotPasswordModal = new bootstrap.Modal(modalElement);
+
+        resetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(sendResetLinkButton, 'Enviando...');
+            hideError(modalMessage); // Oculta mensajes previos
+            modalMessage.classList.remove('alert-success', 'alert-danger'); // Quita clases de color
+
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = resetEmailInput.value;
+                
+                if (email.includes('@')) {
+                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace.';
+                    modalMessage.classList.add('alert-success'); // Fondo verde
+                } else {
+                    modalMessage.textContent = 'Email inválido.';
+                    modalMessage.classList.add('alert-danger'); // Fondo rojo
+                }
+                
+                modalMessage.classList.remove('d-none'); // Muestra el mensaje
+                restoreButton(sendResetLinkButton, 'Enviar enlace'); // Restaura el botón
+
+                // Si fue exitoso, cierra el modal después de 3 segundos
+                if (email.includes('@')) {
+                    setTimeout(() => {
+                        forgotPasswordModal.hide();
+                    }, 3000);
+                }
+            }, 1500);
+        });
+
+        // Limpia el modal cuando se cierra
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            hideError(modalMessage);
+            resetForm.reset();
+        });
+    }
+
+    // --- 3. FUNCIONES AUXILIARES (Para Spinners y Errores) ---
+    
+    /** Muestra el spinner y deshabilita el botón */
+    function showLoading(buttonElement, loadingText) {
+        buttonElement.disabled = true;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+        
+        if (buttonText) buttonText.textContent = loadingText;
+        if (spinner) spinner.classList.remove('d-none');
+    }
+
+    /** Restaura el botón a su estado original */
+    function restoreButton(buttonElement, originalText) {
+        buttonElement.disabled = false;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+
+        if (buttonText) buttonText.textContent = originalText;
+        if (spinner) spinner.classList.add('d-none');
+    }
+
+    /** Muestra un mensaje de error */
+    function showError(errorElement, message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('d-none');
+    }
+
+    /** Oculta el contenedor de error */
+    function hideError(errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.add('d-none');
+    }
+
+}); // Fin del DOMContentLoaded
     </script>
 
 </body>

@@ -5,61 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso - TropicalVibes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a192f 0%, #071426 100%);
-            color: #e0f7fa;
-        }
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-card {
-            background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, #00c9ff, #92fe9d) 1;
-            box-shadow: 0 10px 40px rgba(0, 201, 255, 0.2);
-        }
-        .form-control {
-            background: #0a192f;
-            border-color: rgba(0, 201, 255, 0.3);
-            color: #e0f7fa;
-        }
-        .form-control:focus {
-            background: #0a192f;
-            border-color: #00c9ff;
-            color: #e0f7fa;
-            box-shadow: 0 0 20px rgba(0, 201, 255, 0.3);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #00c9ff, #92fe9d);
-            border: none;
-            font-weight: 700;
-        }
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6; /* Fondo más limpio */
+    color: #333;
+}
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.login-card {
+    border-radius: 1rem; /* Bordes más redondeados */
+    background-color: #ffffff;
+}
+
+.card-title {
+    color: #00796b; /* Un verde-azulado tropical */
+}
+
+.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem; /* Bordes redondeados para inputs */
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: #00796b;
+    box-shadow: 0 0 10px rgba(0, 121, 107, 0.2);
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #00796b; /* Color principal */
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #004d40; /* Un tono más oscuro al pasar el ratón */
+    box-shadow: 0 4px 15px rgba(0, 77, 64, 0.3);
+}
+
+.btn-primary:disabled {
+    background-color: #a5d6a7;
+}
+
+.form-text {
+    color: #00796b;
+}
+
+.form-text:hover {
+    color: #004d40;
+}
     </style>
 </head>
 <body>
+
     <div class="login-container">
-        <div class="col-md-5 col-lg-4">
-            <div class="card login-card p-4 rounded-4">
-                <div class="card-body">
-                    <h2 class="card-title text-center fw-bolder mb-2">🌴 TropicalVibes</h2>
+        <div class="col-md-5 col-lg-4 col-xl-3">
+            <div class="card login-card shadow-lg border-0">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <h2 class="card-title text-center fw-bolder mb-2 text-primary">
+                        🌴 TropicalVibes
+                    </h2>
                     <p class="text-center text-muted mb-4">Acceso al panel</p>
-                    <form id="loginForm">
+
+                    <div id="error-message" class="alert alert-danger d-none" role="alert">
+                        </div>
+
+                    <form id="loginForm" novalidate>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <label for="email" class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="tu@email.com" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" required>
+                            <label for="password" class="form-label fw-semibold">Contraseña</label>
+                            <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="text-end mb-3">
+                            <a href="#" class="form-text text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                ¿Olvidaste tu contraseña?
+                            </a>
                         </div>
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary rounded-pill">Entrar</button>
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold" id="submitButton">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="button-text">Entrar</span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -67,11 +111,172 @@
         </div>
     </div>
 
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Restablecer Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Ingresa tu email y simularemos el envío de un enlace para restablecer tu contraseña.</p>
+                    
+                    <form id="resetForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="tu@email.com" required>
+                        </div>
+                    </form>
+
+                    <div id="modal-message" class="alert d-none" role="alert">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="sendResetLinkButton" form="resetForm">
+                        <span class="button-text">Enviar enlace</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            window.location.href = '../administracion/admin_tropical.html';
+        document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Lógica para el Formulario de Login ---
+    
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitButton = document.getElementById('submitButton');
+    const errorMessage = document.getElementById('error-message');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evitar envío tradicional
+            
+            // Ocultar errores previos
+            errorMessage.classList.add('d-none');
+            
+            // 1. Mostrar estado de "Cargando"
+            const buttonText = submitButton.querySelector('.button-text');
+            const spinner = submitButton.querySelector('.spinner-border');
+            
+            buttonText.textContent = 'Verificando...';
+            spinner.classList.remove('d-none');
+            submitButton.disabled = true;
+
+            // --- SIMULACIÓN DE LLAMADA AL SERVIDOR (LOGIN) ---
+            setTimeout(() => {
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                // Simulación de lógica de validación
+                if (email === "admin@tropical.com" && password === "1234") {
+                    // ÉXITO: Redirigir
+                    window.location.href = '../administracion/admin_tropical.html';
+                
+                } else if (email === "" || password === "") {
+                    // ERROR: Campos vacíos
+                    showError('Por favor, completa ambos campos.');
+                    restoreButton(); // Restaurar botón en caso de error
+                
+                } else {
+                    // ERROR: Datos incorrectos
+                    showError('Email o contraseña incorrectos.');
+                    restoreButton(); // Restaurar botón en caso de error
+                }
+
+            }, 1500); // Simula 1.5 segundos de retraso de red
         });
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('d-none');
+    }
+
+    function restoreButton() {
+        const buttonText = submitButton.querySelector('.button-text');
+        const spinner = submitButton.querySelector('.spinner-border');
+
+        buttonText.textContent = 'Entrar';
+        spinner.classList.add('d-none');
+        submitButton.disabled = false;
+    }
+
+
+    // --- Lógica para el Modal de Olvidé Contraseña ---
+    
+    const resetForm = document.getElementById('resetForm');
+    const resetEmailInput = document.getElementById('resetEmail');
+    const sendResetLinkButton = document.getElementById('sendResetLinkButton');
+    const modalMessage = document.getElementById('modal-message');
+    const modalElement = document.getElementById('forgotPasswordModal');
+    
+    // Asegurarse de que los elementos existen antes de añadir listeners
+    if (resetForm && modalElement) {
+        
+        // Obtenemos la instancia del Modal de Bootstrap
+        const forgotPasswordModal = new bootstrap.Modal(modalElement);
+
+        resetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 1. Mostrar estado de "Cargando" en el botón del modal
+            const buttonText = sendResetLinkButton.querySelector('.button-text');
+            const spinner = sendResetLinkButton.querySelector('.spinner-border');
+
+            buttonText.textContent = 'Enviando...';
+            spinner.classList.remove('d-none');
+            sendResetLinkButton.disabled = true;
+            
+            // Ocultar mensajes previos del modal
+            modalMessage.classList.add('d-none');
+            modalMessage.classList.remove('alert-success', 'alert-danger');
+
+            // --- SIMULACIÓN DE LLAMADA AL BACKEND (RESET) ---
+            setTimeout(() => {
+                const email = resetEmailInput.value;
+
+                if (email.includes('@') && email.includes('.')) {
+                    // ÉXITO (Simulado)
+                    modalMessage.textContent = 'Si esta cuenta existe, hemos enviado un enlace a tu email.';
+                    modalMessage.classList.add('alert-success'); // Fondo verde
+                    modalMessage.classList.remove('d-none');
+                    
+                    // Ocultar el modal después de 3 segundos
+                    setTimeout(() => {
+                        forgotPasswordModal.hide();
+                    }, 3000);
+
+                } else {
+                    // ERROR (Email inválido)
+                    modalMessage.textContent = 'Por favor, ingresa un email válido.';
+                    modalMessage.classList.add('alert-danger'); // Fondo rojo
+                    modalMessage.classList.remove('d-none');
+                }
+
+                // 3. Restaurar el botón del modal
+                buttonText.textContent = 'Enviar enlace';
+                spinner.classList.add('d-none');
+                sendResetLinkButton.disabled = false;
+
+            }, 1500); // Simula 1.5 segundos
+        });
+
+        // Limpia el formulario y mensajes cuando el modal se cierra
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            modalMessage.classList.add('d-none');
+            resetForm.reset();
+        });
+    }
+
+}); // Fin del DOMContentLoaded
     </script>
 </body>
 </html>
