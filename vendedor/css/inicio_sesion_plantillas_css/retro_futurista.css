@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Retro-Futurista</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Fuentes retro/futuristas -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <style>
         /* -------------- Reset y tipografías -------------- */
         * { box-sizing: border-box; }
         html,body { height: 100%; }
@@ -63,44 +53,68 @@
             justify-content: center;
         }
 
-        /* Badge de depuración visible cuando el panel derecho está activo
-           Ahora soporta imagen dentro (.debug-badge img) y mantiene texto accesible. */
-        .debug-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: linear-gradient(90deg,#ff3aa3,#7a00ff);
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-weight:700;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing:1px;
-            display: none; /* se mostrará cuando .container tenga la clase right-panel-active */
-            z-index: 9999;
-            box-shadow: 0 6px 18px rgba(122,0,255,0.18);
-            align-items: center;
-            gap: 8px;
-            display: flex;
-        }
-        .debug-badge img {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            object-fit: cover;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-            flex-shrink: 0;
-        }
-        .debug-badge .debug-badge-text {
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            color: #fff;
-            font-size: 12px;
+          /* Badge de depuración estilo banner dentro del panel de registro.
+              Ahora se muestra como elemento en flujo justo debajo del título
+              "Crear Cuenta" y se alinea a la derecha del formulario. */
+        .sr-only { /* accesibilidad: ocultar visualmente pero mantener para lectores */
+            position: absolute !important;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
             white-space: nowrap;
+            border: 0;
         }
-        /* Mostrar la badge cuando el panel derecho esté activo */
-        .container.right-panel-active .debug-badge { display: flex; }
+
+        .debug-badge {
+            /* elemento en flujo, debajo del título */
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+            padding: 0;
+            border-radius: 8px;
+            display: block; /* se controlará visibilidad con la clase del contenedor */
+            z-index: 10;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 6px 18px rgba(122,0,255,0.06) inset;
+            overflow: hidden;
+            width: 200px; /* ancho reducido para evitar corte y dejar margen */
+            height: 72px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: transform 220ms ease, opacity 220ms ease;
+            transform: translateY(-6px);
+            opacity: 0;
+            /* dejar más espacio hacia el borde derecho para que no quede cortada; aumentado para mover el banner hacia la izquierda */
+            margin: 12px 200px 18px auto; /* top, right, bottom, left(auto pushes to right) */
+        }
+
+        .debug-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
+            filter: saturate(0.95) contrast(0.98);
+        }
+
+        /* overlay suave para dar efecto más oscuro y cinematic */
+        .debug-badge::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28));
+            pointer-events: none;
+        }
+
+        .debug-badge .debug-badge-text { display: none; }
+
+    /* Mostrar la badge cuando el panel derecho esté activo (entrada suave) */
+    .container.right-panel-active .debug-badge { opacity: 1; transform: translateY(0); }
+
+        /* Ajustes responsivos: banner más chico en pantallas reducidas */
+        @media (max-width: 880px) {
+            .debug-badge { width: 180px; height: 56px; right: 20px; top: 18px; }
+        }
 
         /* Neon accent strip */
         .container::after {
@@ -118,7 +132,7 @@
           .sign-in-container { left: 0; width: 50%; z-index: 2; padding: 60px; transition: transform 0.6s ease, opacity 0.4s ease; }
           /* Posicionar el contenedor de registro en la mitad derecha para evitar solapamientos
               y mejorar la presentación cuando se active */
-          .sign-up-container { left: 50%; width: 50%; opacity: 0; z-index: 1; padding: 60px; display:flex; align-items:center; pointer-events: none; transition: transform 0.6s ease, opacity 0.4s ease; }
+          .sign-up-container { position: relative; left: 50%; width: 0%; opacity: 0; z-index: 1; padding: 60px; display:flex; align-items:center; pointer-events: none; transition: transform 0.6s ease, opacity 0.4s ease; }
 
         form { display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; }
         form h1 { margin: 6px 0 8px; font-family: 'Orbitron', sans-serif; color: #fff; font-size: 26px; }
@@ -194,91 +208,3 @@
             .container{ width: 100%; min-height: 640px; }
             .sign-in-container, .sign-up-container, .overlay-panel { padding: 28px; }
         }
-    </style>
-</head>
-<body>
-
-    <h2>RETRO • FUTURISTA</h2>
-    
-    <div class="container" id="container">
-
-        
-
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Crear Cuenta</h1>
-                <div class="social-container">
-                    <a href="#" class="social" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social" title="Google"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <p>o usa tu email para registrarte</p>
-                <input type="text" placeholder="Nombre" aria-label="Nombre" />
-                <input type="email" placeholder="Email" aria-label="Email" />
-                <input type="password" placeholder="Contraseña" aria-label="Contraseña" />
-                <button type="button">Registrarse</button>
-            </form>
-        </div>
-
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Iniciar Sesión</h1>
-                <div class="social-container">
-                    <a href="#" class="social" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social" title="Google"><i class="fab fa-google-plus-g"></i></a>
-                    <a href="#" class="social" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <p>o usa tu cuenta</p>
-                <input type="email" placeholder="Email" aria-label="Email" />
-                <input type="password" placeholder="Contraseña" aria-label="Contraseña" />
-                <a href="#">¿Olvidaste tu contraseña?</a>
-                <button type="button">Iniciar Sesión</button>
-            </form>
-        </div>
-
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>¡Bienvenido de vuelta!</h1>
-                    <p>Para mantenerte conectado, inicia sesión con tu información</p>
-                    <button class="ghost" id="signIn">Iniciar Sesión</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>¡Hola, Amigo!</h1>
-                    <p>Introduce tus datos y comienza tu viaje</p>
-                    <button class="ghost" id="signUp">Registrarse</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        // Mantener funcionalidad de alternar paneles
-        const container = document.getElementById('container');
-
-        // Buscar botones de manera robusta (por id o por selector) para evitar fallos
-        let signUpButton = document.getElementById('signUp');
-        let signInButton = document.getElementById('signIn');
-        if (!signUpButton) signUpButton = document.querySelector('.ghost#signUp') || document.querySelector('[id="signUp"]');
-        if (!signInButton) signInButton = document.querySelector('.ghost#signIn') || document.querySelector('[id="signIn"]');
-
-        if (signUpButton) {
-            signUpButton.addEventListener('click', () => {
-                container.classList.add('right-panel-active');
-            });
-        } else {
-            console.warn('Elemento signUp no encontrado');
-        }
-
-        if (signInButton) {
-            signInButton.addEventListener('click', () => {
-                container.classList.remove('right-panel-active');
-            });
-        } else {
-            console.warn('Elemento signIn no encontrado');
-        }
-    </script>
-
-</body>
-</html>

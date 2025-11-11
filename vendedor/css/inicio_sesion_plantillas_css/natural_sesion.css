@@ -18,8 +18,8 @@ body {
 }
 
 .flip-container {
-    width: 520px;
-    max-width: 90%;
+    width: 720px;
+    max-width: 10090px;
     height: 550px;
     perspective: 1000px;
     background-color: transparent;

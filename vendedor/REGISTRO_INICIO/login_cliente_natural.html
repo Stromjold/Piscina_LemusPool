@@ -5,63 +5,295 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso - Nature Pool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/inicio_sesion_plantillas_css/natural_sesion.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --tropical-cyan: #00c9ff;
+            --tropical-green: #92fe9d;
+            --dark-bg: #0a192f;
+            --main-text-color: #fff;
+            --primary-button-bg: #fff;
+            --primary-button-text: #000;
+            --glass-bg: rgba(46, 139, 87, 0.5); /* Verde mar semi-transparente */
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #e8f4f8 0%, #f5e6d3 100%);
-        }
-        .login-container {
-            min-height: 100vh;
+            background: url('https://i.pinimg.com/1200x/42/16/cc/4216ccf53e2bb83c8dd18da5a5d97307.jpg') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            font-family: 'Poppins', sans-serif;
+            color: var(--main-text-color);
         }
-        .login-card {
-            background: white;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+        /* ------------------ Estilos para el Volteo (Flip Card) ------------------ */
+
+        .flip-container {
+            width: 380px; /* Ancho fijo para la tarjeta */
+            max-width: 90%;
+            height: 580px; /* Ajustado para el contenido del registro */
+            perspective: 1000px;
+        }
+
+        .flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+
+            /* Estilo Glassmorphism compartido */
+            background: var(--glass-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-container.is-flipped .flipper {
+            transform: rotateY(180deg);
+        }
+
+        /* ------------------ Estilos de Formularios y Elementos ------------------ */
+
+        .form-label {
+            color: var(--main-text-color);
+            font-weight: 500;
+            text-align: left; /* Asegura que las etiquetas se alineen a la izquierda */
+            width: 100%;
+            margin-bottom: 0.25rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* Agregamos un div para agrupar input y icono */
+        .input-icon-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            color: var(--main-text-color);
+            padding: 0.75rem 1rem;
+            padding-right: 3rem; /* Espacio extra para el icono */
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--main-text-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--main-text-color);
+            pointer-events: none; /* Asegura que el icono no interfiera con el input */
+            font-size: 1.2rem;
+        }
+
+        .btn-custom-primary {
+            background: var(--primary-button-bg);
+            color: var(--primary-button-text);
             border: none;
+            border-radius: 50px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
+        .btn-custom-primary:hover {
+            background: #f0f0f0;
+            color: var(--primary-button-text);
+            transform: translateY(-2px);
+        }
+
+        .btn-link-flip {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--main-text-color);
+            text-decoration: underline;
+            transition: opacity 0.3s;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-link-flip:hover {
+            opacity: 0.8;
+            color: var(--main-text-color);
+        }
+        
         .card-title {
-            font-family: 'Playfair Display', serif;
-            color: #2d5016;
+            color: var(--main-text-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #4a7c3b, #8bc34a);
-            border: none;
-            font-weight: 600;
-        }
+
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="col-md-5 col-lg-4">
-            <div class="card login-card p-4 rounded-4">
-                <div class="card-body">
-                    <h2 class="card-title text-center fw-bold mb-4">🌿 Nature Pool</h2>
-                    <form id="loginForm">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
+    <div class="flip-container" id="flip-card">
+        <div class="flipper">
+            <div class="front">
+                <h2 class="card-title text-center">🌿 Ingresar</h2>
+
+                <form id="loginForm" class="w-100 px-3">
+                    <div class="mb-4">
+                        <label for="login-email" class="form-label">Email</label>
+                        <div class="input-icon-group">
+                            <input type="email" class="form-control" id="login-email" placeholder="nombre@ejemplo.com" required>
+                            <i class="bi bi-envelope-fill input-icon"></i>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="login-password" class="form-label">Contraseña</label>
+                        <div class="input-icon-group">
+                            <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+                            <i class="bi bi-lock-fill input-icon"></i>
                         </div>
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary rounded-pill">Ingresar</button>
+                    </div>
+
+                    <div class="text-end mb-4">
+                        <a href="#" class="text-white small text-decoration-none">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-custom-primary">Ingresar</button>
+                    </div>
+                </form>
+                
+                <p class="mt-4 mb-0 small">
+                    ¿No tienes una cuenta? 
+                    <button type="button" class="btn-link-flip" data-target="register">
+                        ¡Regístrate aquí!
+                    </button>
+                </p>
+            </div>
+
+            <div class="back">
+                <h2 class="card-title text-center">📝 Registrarse</h2>
+
+                <form id="registerForm" class="w-100 px-3">
+                    <div class="mb-3">
+                        <label for="register-name" class="form-label">Nombre</label>
+                        <div class="input-icon-group">
+                            <input type="text" class="form-control" id="register-name" placeholder="Tu nombre completo" required>
+                            <i class="bi bi-person-fill input-icon"></i>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register-email" class="form-label">Email</label>
+                        <div class="input-icon-group">
+                            <input type="email" class="form-control" id="register-email" placeholder="nombre@ejemplo.com" required>
+                            <i class="bi bi-envelope-fill input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register-password" class="form-label">Contraseña</label>
+                        <div class="input-icon-group">
+                            <input type="password" class="form-control" id="register-password" placeholder="Mínimo 8 caracteres" required>
+                            <i class="bi bi-lock-fill input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-custom-primary">Crear Cuenta</button>
+                    </div>
+                </form>
+
+                <p class="mt-4 mb-0 small">
+                    ¿Ya tienes una cuenta? 
+                    <button type="button" class="btn-link-flip" data-target="login">
+                        Ingresa
+                    </button>
+                </p>
             </div>
         </div>
     </div>
 
     <script>
+        const flipCard = document.getElementById('flip-card');
+        
+        // Función para alternar el estado de volteo
+        function flip(target) {
+            if (target === 'register') {
+                flipCard.classList.add('is-flipped');
+            } else if (target === 'login') {
+                flipCard.classList.remove('is-flipped');
+            }
+        }
+
+        // Asignar eventos de clic a los botones de cambio
+        document.querySelectorAll('.btn-link-flip').forEach(button => {
+            button.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                flip(target);
+            });
+        });
+
+        // Manejar el envío del formulario de LOGIN
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            // Lógica de autenticación de Login aquí...
+            alert('Iniciando sesión...'); 
             window.location.href = '../administracion/admin_nature.html';
+        });
+
+        // Manejar el envío del formulario de REGISTRO
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Lógica de registro de usuario aquí...
+            alert('¡Cuenta creada! Regresando al login...');
+            
+            // Volver al formulario de login después de un registro exitoso
+            flip('login');
         });
     </script>
 </body>

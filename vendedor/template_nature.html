@@ -375,6 +375,60 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
+        /* Calendar Admin Styles */
+        .calendar-admin-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 1rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 700;
+            color: var(--leaf-green);
+            padding: 0.5rem 0;
+        }
+
+        .calendar-admin-empty {
+            height: 80px;
+            background: transparent;
+        }
+
+        .calendar-admin-day {
+            min-height: 80px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .calendar-admin-day:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        .calendar-admin-day .day-number {
+            font-weight: 700;
+            color: var(--forest-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .calendar-admin-day .day-status {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .calendar-admin-day.occupied {
+            background: linear-gradient(180deg, rgba(255,200,200,0.95) 0%, rgba(255,240,240,1) 100%);
+            border: 1px solid rgba(220, 50, 50, 0.12);
+        }
+
         /* Footer */
         footer {
             background: var(--forest-green);
@@ -515,17 +569,20 @@
         <p class="text-center text-secondary mb-5">Revisa nuestro calendario para ver los días disponibles. Los días en rojo ya están reservados.</p>
         
         <div class="calendar-header">
-            <button class="nav-btn" onclick="changeMonth(-1)">
+            <button class="nav-btn" onclick="changeCalendarMonth(-1)">
                 <i class="fas fa-chevron-left"></i> Anterior
             </button>
-            <h3 class="calendar-title">Mes Año</h3>
-            <button class="nav-btn" onclick="changeMonth(1)">
-                Siguiente <i class="fas fa-chevron-right"></i>
-            </button>
+            <h3 id="calendarAdminTitle" class="calendar-title">Mes Año</h3>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="nav-btn" onclick="changeCalendarMonth(1)">Siguiente <i class="fas fa-chevron-right"></i></button>
+                <button class="nav-btn" onclick="saveCalendar()" title="Guardar calendario">Guardar</button>
+                <button class="nav-btn" onclick="resetCalendar()" title="Restablecer calendario">Restablecer</button>
+            </div>
         </div>
         
         <div class="calendar-container">
             <!-- El calendario se generará aquí con JavaScript -->
+            <div id="calendarAdmin" class="calendar-admin-grid" aria-live="polite"></div>
         </div>
     </section>
 
@@ -566,23 +623,144 @@
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Función placeholder para el calendario
-        function changeMonth(direction) {
-            console.log('Cambiar mes:', direction);
-            // Aquí se integraría con tu archivo calendar.js existente
+        // Calendar Management (public pages: solo lectura)
+        let today = new Date();
+        let currentMonth = today.getMonth(); // 0-based
+        let currentYear = today.getFullYear();
+        let occupiedDays = {};
+
+        const isAdminPage = /\/administracion\//i.test(window.location.pathname) || /admin_/.test(window.location.pathname) || /admin\.php$/i.test(window.location.pathname);
+
+        function generateCalendarAdmin() {
+            const calendar = document.getElementById('calendarAdmin');
+            if (!calendar) return;
+            calendar.innerHTML = '';
+            
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-admin-empty';
+                calendar.appendChild(empty);
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-admin-day';
+                const key = `${currentYear}-${currentMonth}-${day}`;
+                
+                if (occupiedDays[key]) {
+                    dayEl.classList.add('occupied');
+                }
+                
+                dayEl.innerHTML = `
+                    <span class="day-number">${day}</span>
+                    <span class="day-status">${occupiedDays[key] ? 'Ocupado' : 'Libre'}</span>
+                `;
+
+                if (isAdminPage) {
+                    dayEl.style.cursor = 'pointer';
+                    dayEl.onclick = () => toggleDay(key, dayEl);
+                } else {
+                    dayEl.style.cursor = 'default';
+                }
+
+                calendar.appendChild(dayEl);
+            }
         }
 
-        // Smooth scroll para los enlaces de navegación
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        function toggleDay(key, element) {
+            if (!isAdminPage) return;
+            if (occupiedDays[key]) {
+                delete occupiedDays[key];
+                element.classList.remove('occupied');
+                element.querySelector('.day-status').textContent = 'Libre';
+            } else {
+                occupiedDays[key] = true;
+                element.classList.add('occupied');
+                element.querySelector('.day-status').textContent = 'Ocupado';
+            }
+        }
+
+        function changeCalendarMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarAdminTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendarAdmin();
+        }
+
+        function saveCalendar() {
+            if (!isAdminPage) return;
+            try {
+                localStorage.setItem('admin_occupiedDays', JSON.stringify(occupiedDays));
+                alert('Calendario guardado exitosamente');
+            } catch (e) {
+                console.error(e);
+                alert('Error al guardar el calendario.');
+            }
+        }
+
+        function resetCalendar() {
+            if (!isAdminPage) return;
+            if (confirm('¿Estás seguro de restablecer el calendario?')) {
+                occupiedDays = {};
+                localStorage.removeItem('admin_occupiedDays');
+                generateCalendarAdmin();
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const stored = localStorage.getItem('admin_occupiedDays');
+                if (stored) occupiedDays = JSON.parse(stored);
+            } catch (e) {
+                occupiedDays = {};
+                console.error('Error parsing occupiedDays from localStorage', e);
+            }
+
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarAdminTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendarAdmin();
+
+            // Si no es admin, ocultar/inhabilitar controles inline
+            if (!isAdminPage) {
+                document.querySelectorAll('.calendar-header button[onclick], .calendar-header [onclick], #calendarAdmin ~ .calendar-header button[onclick]').forEach(btn => {
+                    try { btn.removeAttribute('onclick'); btn.disabled = true; btn.style.cursor = 'default'; } catch(e){}
+                });
+            }
+
+            // Smooth scroll para los enlaces de navegación
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
             });
         });
     </script>

@@ -7,8 +7,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/retro.css">
+    <link rel="stylesheet" href="css/plantillas_css/retro.css">
+    <style>
+        /* Calendario admin - estilos integrados para plantilla retro */
+        .calendar-admin-container{background:linear-gradient(180deg,#0f1724,rgba(255,255,255,0.02));padding:20px;border-radius:12px;color:#fff}
+        .calendar-admin-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+        .calendar-admin-controls{display:flex;gap:8px;align-items:center}
+        .calendar-admin-title{font-weight:700;margin:0;font-size:1.25rem}
+        .nav-btn-admin{background:#1f2937;border:0;color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer}
+        #calendarAdmin{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+        .calendar-day-header{font-size:.8rem;text-align:center;color:#cbd5e1;padding:6px}
+        .calendar-admin-empty{height:70px;background:transparent}
+        .calendar-admin-day{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);min-height:70px;padding:6px;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+        .calendar-admin-day .day-number{font-weight:700}
+        .day-status{font-size:.75rem;color:#94a3b8}
+        .calendar-admin-day.occupied{background:linear-gradient(90deg,#7c3aed33,#ef444433);border-color:#7c3aed}
+        .btn-admin-action{background:#ef4444;border:0;color:#fff;padding:.5rem .75rem;border-radius:8px;cursor:pointer}
+        .btn-admin-save{background:#10b981}
+        @media (max-width:767px){#calendarAdmin .calendar-day-header{font-size:.7rem}}
+    </style>
 </head>
 <body class="template-retro">
 
@@ -97,17 +114,21 @@
             <h2 class="section-title">Próximos Eventos<span class="title-dot">.</span></h2>
             <div class="row justify-content-center mt-5">
                 <div class="col-lg-10">
-                    <div class="calendar-wrapper">
-                        <div class="calendar-header">
-                            <button id="prevMonth" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
-                            <h3 id="currentMonthYear" class="calendar-title"></h3>
-                            <button id="nextMonth" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                    <div class="calendar-admin-container">
+                        <div class="calendar-admin-header">
+                            <div class="calendar-admin-controls">
+                                <button id="prevMonthAdmin" class="nav-btn-admin" aria-label="Mes anterior"><i class="fas fa-chevron-left"></i></button>
+                                <h3 id="calendarAdminTitle" class="calendar-admin-title">Noviembre 2025</h3>
+                                <button id="nextMonthAdmin" class="nav-btn-admin" aria-label="Mes siguiente"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-admin-controls">
+                                <button id="saveCalendarBtn" class="btn-admin-action btn-admin-save">Guardar</button>
+                                <button id="resetCalendarBtn" class="btn-admin-action">Restablecer</button>
+                            </div>
                         </div>
-                        <div class="weekdays">
-                            <span>DOM</span><span>LUN</span><span>MAR</span><span>MIÉ</span><span>JUE</span><span>VIE</span><span>SÁB</span>
-                        </div>
-                        <div class="weeks">
-                            <!-- Los días del calendario se generarán aquí -->
+
+                        <div id="calendarAdmin">
+                            <!-- Cabeceras de días -->
                         </div>
                     </div>
                 </div>
@@ -158,5 +179,142 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Calendar Management (read-only in public templates)
+        let currentMonth = 10; // Noviembre (0-based)
+        let currentYear = 2025;
+        let occupiedDays = {};
+
+        const isAdminPage = /\/administracion\//i.test(window.location.pathname) || /admin_/.test(window.location.pathname) || /admin\.php$/i.test(window.location.pathname);
+
+        function loadOccupiedDays() {
+            try {
+                const raw = localStorage.getItem('admin_occupiedDays');
+                if (raw) occupiedDays = JSON.parse(raw);
+            } catch (e) {
+                console.error('Error cargando occupiedDays:', e);
+                occupiedDays = {};
+            }
+        }
+
+        function generateCalendarAdmin() {
+            const calendar = document.getElementById('calendarAdmin');
+            if (!calendar) return;
+            calendar.innerHTML = '';
+            
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-admin-empty';
+                calendar.appendChild(empty);
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-admin-day';
+                const key = `${currentYear}-${currentMonth}-${day}`;
+                
+                if (occupiedDays[key]) {
+                    dayEl.classList.add('occupied');
+                }
+                
+                dayEl.innerHTML = `
+                    <span class="day-number">${day}</span>
+                    <span class="day-status">${occupiedDays[key] ? 'Ocupado' : 'Libre'}</span>
+                `;
+
+                if (isAdminPage) {
+                    dayEl.style.cursor = 'pointer';
+                    dayEl.onclick = () => toggleDay(key, dayEl);
+                } else {
+                    dayEl.style.cursor = 'default';
+                }
+
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        function toggleDay(key, element) {
+            if (!isAdminPage) return;
+            occupiedDays[key] = !occupiedDays[key];
+            if (occupiedDays[key]) {
+                element.classList.add('occupied');
+                element.querySelector('.day-status').textContent = 'Ocupado';
+            } else {
+                delete occupiedDays[key];
+                element.classList.remove('occupied');
+                element.querySelector('.day-status').textContent = 'Libre';
+            }
+        }
+
+        function changeCalendarMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarAdminTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendarAdmin();
+        }
+
+        function saveCalendar() {
+            if (!isAdminPage) return;
+            try {
+                localStorage.setItem('admin_occupiedDays', JSON.stringify(occupiedDays));
+                alert('Calendario guardado exitosamente');
+            } catch (e) {
+                console.error(e);
+                alert('Error al guardar el calendario.');
+            }
+        }
+
+        function resetCalendar() {
+            if (!isAdminPage) return;
+            if (confirm('¿Estás seguro de restablecer el calendario?')) {
+                occupiedDays = {};
+                localStorage.removeItem('admin_occupiedDays');
+                generateCalendarAdmin();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOccupiedDays();
+            const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('calendarAdminTitle').textContent = `${months[currentMonth]} ${currentYear}`;
+            generateCalendarAdmin();
+
+            if (!isAdminPage) {
+                ['prevMonthAdmin','nextMonthAdmin','saveCalendarBtn','resetCalendarBtn'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+                document.querySelectorAll('#reservations button[onclick], .calendar-admin-header button[onclick], .calendar-header button[onclick]').forEach(btn => {
+                    try { btn.removeAttribute('onclick'); btn.disabled = true; btn.style.cursor = 'default'; } catch(e){}
+                });
+            } else {
+                const p = document.getElementById('prevMonthAdmin'); if (p) p.addEventListener('click', () => changeCalendarMonth(-1));
+                const n = document.getElementById('nextMonthAdmin'); if (n) n.addEventListener('click', () => changeCalendarMonth(1));
+                const s = document.getElementById('saveCalendarBtn'); if (s) s.addEventListener('click', saveCalendar);
+                const r = document.getElementById('resetCalendarBtn'); if (r) r.addEventListener('click', resetCalendar);
+            }
+        });
+    </script>
 </body>
 </html>
