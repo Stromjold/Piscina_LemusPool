@@ -21,8 +21,6 @@
      radial-gradient(circle at 50% 30%, rgba(0,150,200,0.12), transparent 25%),
      linear-gradient(180deg, rgba(0,120,160,0.10), rgba(5,15,25,0.10)),
      repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 10px),
-     url("https://www.fmdos.cl/wp-content/uploads/2025/01/Parque-acuatico-1-1-jpg.webp"), /* imagen oscura ya presente en vendedor/Image */
-     url("../../img/template-arzopa.jpg"); /* fallback local image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

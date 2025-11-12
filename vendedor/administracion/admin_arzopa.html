@@ -187,24 +187,38 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    De: juan.perez@email.com (Tel: +56 9 1234 5678)
+                                    Mensajes de contacto recientes
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionMensajes">
                                 <div class="accordion-body">
-                                    <strong>Mensaje:</strong> Hola, quisiera saber si tienen disponibilidad para un evento corporativo el próximo mes. Gracias.
+                                    <div id="contactMessagesList">
+                                        <div class="mb-3">
+                                            <strong>De:</strong> juan.perez@email.com (Tel: +56 9 1234 5678)
+                                            <p><strong>Mensaje:</strong> Hola, quisiera saber si tienen disponibilidad para un evento corporativo el próximo mes. Gracias.</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>De:</strong> maria.gomez@email.com (Tel: +56 9 8765 4321)
+                                            <p><strong>Mensaje:</strong> ¿Cuáles son los horarios de fin de semana?</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Solicitudes de restablecimiento -->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    De: maria.gomez@email.com (Tel: +56 9 8765 4321)
+                            <h2 class="accordion-header" id="headingReset">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReset" aria-expanded="false" aria-controls="collapseReset">
+                                    Solicitudes de Restablecimiento de Contraseña
                                 </button>
                             </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionMensajes">
+                            <div id="collapseReset" class="accordion-collapse collapse" aria-labelledby="headingReset" data-bs-parent="#accordionMensajes">
                                 <div class="accordion-body">
-                                    <strong>Mensaje:</strong> ¿Cuáles son los horarios de fin de semana?
+                                    <p>A continuación aparecen las solicitudes enviadas por los usuarios. Puedes restablecer la contraseña manualmente desde aquí.</p>
+                                    <div id="passwordResetRequestsList" class="list-group">
+                                        <!-- Renderizado por JS -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -293,6 +307,40 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal para que administrador restablezca contraseña -->
+    <div class="modal fade" id="adminResetModal" tabindex="-1" aria-labelledby="adminResetLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminResetLabel">Restablecer Contraseña (Admin)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminResetForm">
+                        <input type="hidden" id="adminResetRequestId">
+                        <div class="mb-3">
+                            <label for="adminResetEmail" class="form-label">Email del Usuario</label>
+                            <input type="email" class="form-control" id="adminResetEmail" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminNewPassword" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="adminNewPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminNewPasswordConfirm" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="adminNewPasswordConfirm" required>
+                        </div>
+                        <div id="adminResetMessage" class="alert d-none" role="alert"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="adminSavePasswordButton">Guardar contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Calendar Management
         let currentMonth = 10; // Noviembre (0-based)
@@ -413,7 +461,157 @@
                     }
                 });
             }
+
+            // Inicializar listado de solicitudes de restablecimiento
+            try {
+                renderResetRequests();
+            } catch (err) {
+                console.error('Error inicializando solicitudes de restablecimiento', err);
+            }
+
+            // Enlazar botón de guardar del modal admin
+            const adminSavePasswordButton = document.getElementById('adminSavePasswordButton');
+            if (adminSavePasswordButton) {
+                adminSavePasswordButton.addEventListener('click', () => {
+                    saveAdminResetPassword();
+                });
+            }
         });
+
+        // --- Gestión de solicitudes de restablecimiento ---
+        function getResetRequests() {
+            try {
+                const raw = localStorage.getItem('password_reset_requests');
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }
+
+        function saveResetRequests(list) {
+            try {
+                localStorage.setItem('password_reset_requests', JSON.stringify(list));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderResetRequests() {
+            const container = document.getElementById('passwordResetRequestsList');
+            if (!container) return;
+            const list = getResetRequests();
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="text-muted">No hay solicitudes pendientes.</div>';
+                return;
+            }
+
+            list.slice().reverse().forEach(req => {
+                const item = document.createElement('div');
+                item.className = 'list-group-item d-flex justify-content-between align-items-start';
+
+                const left = document.createElement('div');
+                left.className = 'ms-2 me-auto';
+                left.innerHTML = `<div><strong>${req.email}</strong> <small class="text-muted">(${new Date(req.date).toLocaleString()})</small></div>` +
+                                 `<div class="text-muted">ID: ${req.id} ${req.handled ? '<span class="badge bg-success ms-2">Atendido</span>' : ''}</div>`;
+
+                const right = document.createElement('div');
+                if (!req.handled) {
+                    const btnReset = document.createElement('button');
+                    btnReset.className = 'btn btn-sm btn-primary me-2';
+                    btnReset.textContent = 'Restablecer';
+                    btnReset.onclick = () => openAdminResetModal(req.id);
+                    right.appendChild(btnReset);
+
+                    const btnMark = document.createElement('button');
+                    btnMark.className = 'btn btn-sm btn-outline-secondary';
+                    btnMark.textContent = 'Marcar como atendido';
+                    btnMark.onclick = () => { markRequestHandled(req.id); };
+                    right.appendChild(btnMark);
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'text-success';
+                    span.textContent = 'Atendido';
+                    right.appendChild(span);
+                }
+
+                item.appendChild(left);
+                item.appendChild(right);
+                container.appendChild(item);
+            });
+        }
+
+        function openAdminResetModal(requestId) {
+            const list = getResetRequests();
+            const req = list.find(r => r.id === requestId);
+            if (!req) return alert('Solicitud no encontrada');
+
+            document.getElementById('adminResetRequestId').value = req.id;
+            document.getElementById('adminResetEmail').value = req.email;
+            document.getElementById('adminNewPassword').value = '';
+            document.getElementById('adminNewPasswordConfirm').value = '';
+            const msg = document.getElementById('adminResetMessage');
+            msg.classList.add('d-none'); msg.textContent = '';
+
+            const modalEl = document.getElementById('adminResetModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        function saveAdminResetPassword() {
+            const id = Number(document.getElementById('adminResetRequestId').value);
+            const email = document.getElementById('adminResetEmail').value;
+            const p1 = document.getElementById('adminNewPassword').value;
+            const p2 = document.getElementById('adminNewPasswordConfirm').value;
+            const msg = document.getElementById('adminResetMessage');
+
+            if (!p1 || !p2) {
+                msg.className = 'alert alert-danger'; msg.textContent = 'Completa ambos campos de contraseña.'; return;
+            }
+            if (p1 !== p2) {
+                msg.className = 'alert alert-danger'; msg.textContent = 'Las contraseñas no coinciden.'; return;
+            }
+
+            // Guardar la nueva contraseña en localStorage en un objeto 'users' (simulado)
+            try {
+                const raw = localStorage.getItem('users');
+                const users = raw ? JSON.parse(raw) : {};
+                users[email] = { password: p1, updatedAt: new Date().toISOString() };
+                localStorage.setItem('users', JSON.stringify(users));
+
+                // Marcar la solicitud como atendida
+                markRequestHandled(id, false);
+
+                msg.className = 'alert alert-success'; msg.textContent = 'Contraseña restablecida correctamente.';
+
+                // Cerrar modal tras un momento
+                setTimeout(() => {
+                    const modalEl = document.getElementById('adminResetModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                }, 1000);
+            } catch (e) {
+                console.error(e);
+                msg.className = 'alert alert-danger'; msg.textContent = 'Error guardando la contraseña.';
+            }
+        }
+
+        function markRequestHandled(id, rerender=true) {
+            try {
+                const list = getResetRequests();
+                const idx = list.findIndex(r => r.id === id);
+                if (idx !== -1) {
+                    list[idx].handled = true;
+                    list[idx].handledAt = new Date().toISOString();
+                    saveResetRequests(list);
+                }
+                if (rerender) renderResetRequests();
+            } catch (e) {
+                console.error(e);
+            }
+        }
     </script>
 </body>
 </html>

@@ -154,4 +154,62 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+    <!-- Modal y JS para gestionar solicitudes de restablecimiento (admin) -->
+    <div class="modal fade" id="adminResetModal" tabindex="-1" aria-labelledby="adminResetLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminResetLabel">Restablecer Contraseña (Admin)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminResetForm">
+                        <input type="hidden" id="adminResetRequestId">
+                        <div class="mb-3">
+                            <label for="adminResetEmail" class="form-label">Email del Usuario</label>
+                            <input type="email" class="form-control" id="adminResetEmail" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminNewPassword" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="adminNewPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminNewPasswordConfirm" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="adminNewPasswordConfirm" required>
+                        </div>
+                        <div id="adminResetMessage" class="alert d-none" role="alert"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="adminSavePasswordButton">Guardar contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getResetRequests() { try { const raw = localStorage.getItem('password_reset_requests'); return raw ? JSON.parse(raw) : []; } catch (e) { console.error(e); return []; } }
+        function saveResetRequests(list) { try { localStorage.setItem('password_reset_requests', JSON.stringify(list)); } catch (e) { console.error(e); } }
+        function renderResetRequests() {
+            let container = document.getElementById('passwordResetRequestsList');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'passwordResetRequestsList';
+                container.className = 'container my-4';
+                const heading = document.createElement('h4'); heading.textContent = 'Solicitudes de Restablecimiento de Contraseña';
+                container.prepend(heading);
+                const mensajesSection = document.getElementById('mensajes') || document.getElementById('reportes');
+                if (mensajesSection && mensajesSection.parentNode) {
+                    mensajesSection.parentNode.insertBefore(container, mensajesSection.nextSibling);
+                } else {
+                    document.body.appendChild(container);
+                }
+            }
+            const list = getResetRequests(); container.innerHTML = ''; if (list.length === 0) { container.innerHTML = '<div class="text-muted">No hay solicitudes pendientes.</div>'; return; } list.slice().reverse().forEach(req => { const item = document.createElement('div'); item.className = 'list-group-item d-flex justify-content-between align-items-start'; const left = document.createElement('div'); left.className = 'ms-2 me-auto'; left.innerHTML = `<div><strong>${req.email}</strong> <small class="text-muted">(${new Date(req.date).toLocaleString()})</small></div>` + `<div class="text-muted">ID: ${req.id} ${req.handled ? '<span class="badge bg-success ms-2">Atendido</span>' : ''}</div>`; const right = document.createElement('div'); if (!req.handled) { const btnReset = document.createElement('button'); btnReset.className = 'btn btn-sm btn-primary me-2'; btnReset.textContent = 'Restablecer'; btnReset.onclick = () => openAdminResetModal(req.id); right.appendChild(btnReset); const btnMark = document.createElement('button'); btnMark.className = 'btn btn-sm btn-outline-secondary'; btnMark.textContent = 'Marcar como atendido'; btnMark.onclick = () => { markRequestHandled(req.id); }; right.appendChild(btnMark); } else { const span = document.createElement('span'); span.className = 'text-success'; span.textContent = 'Atendido'; right.appendChild(span); } item.appendChild(left); item.appendChild(right); container.appendChild(item); }); }
+        function openAdminResetModal(requestId) { const list = getResetRequests(); const req = list.find(r => r.id === requestId); if (!req) return alert('Solicitud no encontrada'); document.getElementById('adminResetRequestId').value = req.id; document.getElementById('adminResetEmail').value = req.email; document.getElementById('adminNewPassword').value = ''; document.getElementById('adminNewPasswordConfirm').value = ''; const msg = document.getElementById('adminResetMessage'); msg.classList.add('d-none'); msg.textContent = ''; const modalEl = document.getElementById('adminResetModal'); const modal = new bootstrap.Modal(modalEl); modal.show(); }
+        function saveAdminResetPassword() { const id = Number(document.getElementById('adminResetRequestId').value); const email = document.getElementById('adminResetEmail').value; const p1 = document.getElementById('adminNewPassword').value; const p2 = document.getElementById('adminNewPasswordConfirm').value; const msg = document.getElementById('adminResetMessage'); if (!p1 || !p2) { msg.className = 'alert alert-danger'; msg.textContent = 'Completa ambos campos de contraseña.'; return; } if (p1 !== p2) { msg.className = 'alert alert-danger'; msg.textContent = 'Las contraseñas no coinciden.'; return; } try { const raw = localStorage.getItem('users'); const users = raw ? JSON.parse(raw) : {}; users[email] = { password: p1, updatedAt: new Date().toISOString() }; localStorage.setItem('users', JSON.stringify(users)); markRequestHandled(id, false); msg.className = 'alert alert-success'; msg.textContent = 'Contraseña restablecida correctamente.'; setTimeout(() => { const modalEl = document.getElementById('adminResetModal'); const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide(); renderResetRequests(); }, 1000); } catch (e) { console.error(e); msg.className = 'alert alert-danger'; msg.textContent = 'Error guardando la contraseña.'; } }
+        function markRequestHandled(id, rerender=true) { try { const list = getResetRequests(); const idx = list.findIndex(r => r.id === id); if (idx !== -1) { list[idx].handled = true; list[idx].handledAt = new Date().toISOString(); saveResetRequests(list); } if (rerender) renderResetRequests(); } catch (e) { console.error(e); } }
+        document.addEventListener('DOMContentLoaded', () => { try { renderResetRequests(); const btn = document.getElementById('adminSavePasswordButton'); if (btn) btn.addEventListener('click', saveAdminResetPassword); } catch (e) { console.error(e); } });
+    </script>
 </html>

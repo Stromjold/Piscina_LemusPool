@@ -9,13 +9,14 @@
     
     <style>
 .brand-panel {
-    background: url('https://www.fmdos.cl/wp-content/uploads/2025/01/Parque-acuatico-1-1-jpg.webp') no-repeat center center;
-    background-size: cover;
+    background-color: #0d6efd; /* color de fondo en lugar de imagen (ajusta si prefieres otro) */
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem;
+    padding: 30px 30px 30px 300px;
+    border-radius: 1rem; /* esquinas redondeadas */
+    overflow: hidden;     /* recorta el fondo a las esquinas redondeadas */
     text-align: left;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Para legibilidad */
 }
@@ -169,8 +170,20 @@
                 const email = resetEmailInput.value;
                 
                 if (email.includes('@')) {
-                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace.';
+                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace. La solicitud ha sido enviada al administrador.';
                     modalMessage.classList.add('alert-success'); 
+
+                    // Guardar la solicitud de restablecimiento en localStorage para que el administrador la vea
+                    try {
+                        const key = 'password_reset_requests';
+                        const raw = localStorage.getItem(key);
+                        const list = raw ? JSON.parse(raw) : [];
+                        const id = Date.now();
+                        list.push({ id, email, date: new Date().toISOString(), handled: false });
+                        localStorage.setItem(key, JSON.stringify(list));
+                    } catch (err) {
+                        console.error('Error guardando solicitud de restablecimiento', err);
+                    }
                 } else {
                     modalMessage.textContent = 'Email inválido.';
                     modalMessage.classList.add('alert-danger'); 

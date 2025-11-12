@@ -125,6 +125,47 @@ h1.titleAdmin {
     background-color: #0056b3;
 }
 
+/* Estilo para botones de acordeón en admin (sobrescribe Bootstrap para ancho auto) */
+.accordion-button.custom-accordion-btn {
+    /* Forzar comportamiento inline para que no ocupe 100% */
+    display: inline-flex !important;
+    width: auto !important;
+    align-items: center;
+    gap: .5rem;
+    background: linear-gradient(180deg, #0d6efd 0%, #0b5ed7 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: .45rem 1rem !important;
+    box-shadow: 0 3px 6px rgba(13,110,253,0.18) !important;
+    font-weight: 600 !important;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    margin: .4rem 0; /* pequeño espaciado vertical */
+}
+
+/* Mantener el caret/chevron pero ajustarlo visualmente */
+.accordion-button.custom-accordion-btn::after {
+    /* Dejar el icono por defecto de Bootstrap, sólo ajustamos separación */
+    margin-left: .5rem;
+}
+
+.accordion-button.custom-accordion-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(13,110,253,0.16) !important;
+}
+
+.accordion-button.custom-accordion-btn:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25) !important;
+}
+
+/* Estado expandido/active */
+.accordion-button.custom-accordion-btn:not(.collapsed) {
+    background: linear-gradient(180deg, #0b5ed7 0%, #094bb3 100%) !important;
+}
+
+
+
 /* --------------------
     Modals
    -------------------- */
@@ -308,4 +349,15 @@ tr:hover {
     right: 0;
     z-index: 1030; /* mayor que .modal (1001) */
     width: 100%;
+}
+
+/* Override para el pill "Atendido" */
+.list-group-item .badge.bg-success,
+.badge.bg-success {
+  background-color: #198754 !important; /* color de fondo */
+  color: #ffffff !important;            /* color del texto */
+  border-radius: 12px;                  /* forma más redondeada */
+  padding: 0.28rem 0.6rem;
+  font-weight: 600;
+  font-size: 0.85rem;
 }

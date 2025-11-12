@@ -22,7 +22,8 @@ h1, h2, h3 {
 
 /* === HERO SECTION === */
 .hero {
-    background: url('../Image/image3.jpg') no-repeat center center/cover;
+    /* Imagen removida: usamos un color de fondo sólido en su lugar */
+    background-color: #007BFF; /* azul bootstrap - cámbialo si prefieres otro */
     height: 100vh;
     padding: 90px 0;
     display: flex;

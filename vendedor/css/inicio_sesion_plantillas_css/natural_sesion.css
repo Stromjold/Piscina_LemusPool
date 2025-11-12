@@ -6,8 +6,9 @@
 }
 
 body {
-    background: url('https://i.pinimg.com/1200x/42/16/cc/4216ccf53e2bb83c8dd18da5a5d97307.jpg') no-repeat center center fixed;
-    background-size: cover;
+    /* Imagen removida: fondo en degradado (usa 'background' para gradientes) */
+    background: linear-gradient(135deg, #2e8b57 0%, #123d2b 100%);
+    /* Si prefieres un solo color, usa: background-color: #0a192f; */
     display: flex;
     justify-content: center;
     align-items: center;
