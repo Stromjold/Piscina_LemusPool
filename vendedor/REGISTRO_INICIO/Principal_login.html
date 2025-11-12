@@ -3,65 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Principal - AquaLink Devs</title>
+    <title>Acceso Profesional</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        body {
-            background-color: #1a2035;
-            color: #f0f0f0;
+        /* Configuración base para que la altura funcione */
+        html, body {
+            height: 100%;
+            margin: 0;
         }
-        .card {
-            background-color: #2a3450;
-            border: 1px solid #3a4468;
+
+        /* Panel de la Marca (Izquierda) */
+        .brand-panel {
+            /* Un gradiente profesional. Puedes cambiarlo por una imagen:
+            background: url('tu-imagen.jpg') no-repeat center center;
+            background-size: cover;
+            */
+            background: linear-gradient(135deg, #00416A 0%, #001E3C 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: left;
         }
+
+        .brand-content {
+            max-width: 450px;
+        }
+
+        .brand-content h1 {
+            font-weight: 700;
+            font-size: 3rem;
+        }
+
+        /* Panel del Formulario (Derecha) */
+        .form-panel {
+            background-color: #ffffff;
+        }
+
+        /* Ajustes a los elementos del formulario */
         .form-control {
-            background-color: #1a2035;
-            border-color: #3a4468;
-            color: #f0f0f0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem; /* Bordes redondeados sutiles */
+            background-color: #f8f9fa; /* Fondo ligero para el input */
         }
+
         .form-control:focus {
-            background-color: #1a2035;
-            border-color: #007bff;
-            color: #f0f0f0;
-            box-shadow: none;
+            background-color: #ffffff;
+            border-color: #0d6efd; /* Color primario de Bootstrap */
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
+
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            padding: 0.75rem;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center align-items-center vh-100">
-            <div class="col-md-5">
-                <div class="card p-4">
-                    <div class="card-body">
-                        <h2 class="card-title text-center mb-4">AquaLink Devs</h2>
-                        <form id="loginForm">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" id="email" value="admin" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" value="password" required>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Ingresar</button>
-                            </div>
-                        </form>
-                    </div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 vh-100">
+
+            <div class="col-md-6 col-lg-7 d-none d-md-flex brand-panel">
+                <div class="brand-content">
+                    <h1>TuLogo</h1>
+                    <p class="lead">La plataforma líder para gestionar tu negocio.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center form-panel">
+                <div class="col-10 col-lg-8">
+                    
+                    <h2 class="fw-bolder mb-3">Iniciar Sesión</h2>
+                    <p class="text-muted mb-4">Bienvenido de vuelta.</p>
+
+                    <div id="signin-error" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="signInForm" novalidate>
+                        <div class="mb-3">
+                            <label for="signInEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="signInEmail" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signInPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="signInPassword" placeholder="••••••••" required>
+                        </div>
+                        
+                        <div class="text-end mb-3">
+                            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" id="signInSubmitButton">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="button-text">Entrar</span>
+                            </button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Restablecer Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ingresa tu email y simularemos el envío de un enlace.</p>
+                    <form id="resetForm">
+                        <div class="mb-3">
+                            <label for="resetEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resetEmail" placeholder="tu@email.com" required>
+                        </div>
+                    </form>
+                    <div id="modal-message" class="alert d-none" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="sendResetLinkButton" form="resetForm">
+                        <span class="button-text">Enviar enlace</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 1. LÓGICA DE FORMULARIO DE INICIO DE SESIÓN (SIGN-IN) ---
+    const signInForm = document.getElementById('signInForm');
+    const signInEmailInput = document.getElementById('signInEmail');
+    const signInPasswordInput = document.getElementById('signInPassword');
+    const signInSubmitButton = document.getElementById('signInSubmitButton');
+    const signInError = document.getElementById('signin-error');
+
+    if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            window.location.href = '../administracion/admin_principal.html';
+            showLoading(signInSubmitButton, 'Iniciando...');
+            hideError(signInError);
+
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = signInEmailInput.value;
+                const password = signInPasswordInput.value;
+
+                // --- Simulación de Lógica de Validación ---
+                // En una app real, esto se haría en un servidor
+                if (email === "admin@tuapp.com" && password === "1234") {
+                    alert("¡Acceso concedido! Redirigiendo...");
+                    // window.location.href = '/dashboard.html'; // Redirige a la página de admin
+                
+                } else if (email === "" || password === "") {
+                    showError(signInError, "Completa todos los campos.");
+                
+                } else {
+                    showError(signInError, "Email o contraseña incorrectos.");
+                }
+                
+                // Restaura el botón (solo si hubo error)
+                restoreButton(signInSubmitButton, 'Entrar'); // Texto original del botón
+
+            }, 1500); // Simula 1.5 segundos de retraso de red
         });
+    }
+
+    // --- 2. LÓGICA DEL MODAL "OLVIDÉ CONTRASEÑA" ---
+    const resetForm = document.getElementById('resetForm');
+    const resetEmailInput = document.getElementById('resetEmail');
+    const sendResetLinkButton = document.getElementById('sendResetLinkButton');
+    const modalMessage = document.getElementById('modal-message');
+    const modalElement = document.getElementById('forgotPasswordModal');
+
+    if (resetForm && modalElement) {
+        // Obtenemos la instancia del Modal de Bootstrap
+        const forgotPasswordModal = new bootstrap.Modal(modalElement);
+
+        resetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(sendResetLinkButton, 'Enviando...');
+            hideError(modalMessage); // Oculta mensajes previos
+            modalMessage.classList.remove('alert-success', 'alert-danger'); // Quita clases de color
+
+            // SIMULACIÓN DE BACKEND
+            setTimeout(() => {
+                const email = resetEmailInput.value;
+                
+                if (email.includes('@') && email.includes('.')) { // Validación simple
+                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace.';
+                    modalMessage.classList.add('alert-success'); // Fondo verde
+                } else {
+                    modalMessage.textContent = 'Email inválido.';
+                    modalMessage.classList.add('alert-danger'); // Fondo rojo
+                }
+                
+                modalMessage.classList.remove('d-none'); // Muestra el mensaje
+                restoreButton(sendResetLinkButton, 'Enviar enlace'); // Restaura el botón
+
+                // Si fue exitoso, cierra el modal después de 3 segundos
+                if (email.includes('@') && email.includes('.')) {
+                    setTimeout(() => {
+                        forgotPasswordModal.hide();
+                    }, 3000);
+                }
+            }, 1500);
+        });
+
+        // Limpia el modal cuando se cierra
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            hideError(modalMessage);
+            modalMessage.classList.remove('alert-success', 'alert-danger');
+            resetForm.reset();
+        });
+    }
+
+    // --- 3. FUNCIONES AUXILIARES (Para Spinners y Errores) ---
+    
+    /** Muestra el spinner y deshabilita el botón */
+    function showLoading(buttonElement, loadingText) {
+        buttonElement.disabled = true;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+        
+        if (buttonText) buttonText.textContent = loadingText;
+        if (spinner) spinner.classList.remove('d-none');
+    }
+
+    /** Restaura el botón a su estado original */
+    function restoreButton(buttonElement, originalText) {
+        buttonElement.disabled = false;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+
+        if (buttonText) buttonText.textContent = originalText;
+        if (spinner) spinner.classList.add('d-none');
+    }
+
+    /** Muestra un mensaje de error */
+    function showError(errorElement, message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('d-none');
+    }
+
+    /** Oculta el contenedor de error */
+    function hideError(errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.add('d-none');
+    }
+
+}); // Fin del DOMContentLoaded
     </script>
+
 </body>
 </html>
