@@ -441,3 +441,70 @@
                 font-size: 2rem;
             }
         }
+
+/* Modal styling to match admin panels */
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+.modal-header {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.75rem;
+}
+.modal-title {
+    font-weight: 300;
+    font-size: 1.25rem;
+    color: #2c2c2c;
+}
+.modal-body .form-label {
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #2c2c2c;
+}
+.modal-body .form-control {
+    padding: 0.9rem;
+    border: 1px solid #e0e0e0;
+    background: #fafafa;
+}
+.modal-footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.75rem;
+}
+.modal-footer .btn {
+    padding: 0.9rem 1.6rem;
+}
+.modal .btn-close {
+    background: transparent;
+    border: none;
+}
+
+@media (max-width: 576px) {
+    .modal-dialog { margin: 1.5rem; }
+}
+
+/* Modal bottom-panel to match admin sections */
+#adminResetModal .modal-dialog {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 1400px; /* match .admin-container max-width */
+    width: calc(100% - 4rem);
+    margin: 0;
+    z-index: 1100;
+}
+
+/* make backdrop a subtle gray */
+.modal-backdrop.show {
+    background-color: rgba(0,0,0,0.12);
+}
+
+/* Slight pop animation */
+#adminResetModal.show .modal-content {
+    transform: translateY(0);
+    transition: transform 220ms ease-out;
+}

@@ -6,7 +6,8 @@
     <title>Administración - Minimalista</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/vendedor/css/plantillas_admin_css/minimalist_admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/plantillas_admin_css/minimalist_admin.css">
 </head>
 <body>
     <!-- Decorative Elements -->
@@ -61,23 +62,23 @@
         <!-- Calendar Management -->
         <section id="calendar" class="admin-section">
             <h2 class="section-title">Gestión de Calendario</h2>
-            <p style="color: #666; margin-bottom: 2rem;">Haz clic en los días para marcarlos como ocupados o disponibles.</p>
+            <p class="text-muted mb-4">Haz clic en los días para marcarlos como ocupados o disponibles.</p>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <button class="btn-secondary btn" onclick="changeCalendarMonth(-1)">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button class="btn btn-secondary" onclick="changeCalendarMonth(-1)">
                     <i class="fas fa-chevron-left"></i> Anterior
                 </button>
-                <h3 id="calendarAdminTitle" style="font-weight: 300;">Noviembre 2025</h3>
-                <button class="btn-secondary btn" onclick="changeCalendarMonth(1)">
+                <h3 id="calendarAdminTitle" class="fw-light">Noviembre 2025</h3>
+                <button class="btn btn-secondary" onclick="changeCalendarMonth(1)">
                     Siguiente <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
 
             <div class="calendar-admin" id="calendarAdmin"></div>
             
-            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <div class="d-flex gap-3 mt-4">
                 <button class="btn" onclick="saveCalendar()">Guardar Cambios</button>
-                <button class="btn-secondary btn" onclick="resetCalendar()">Restablecer</button>
+                <button class="btn btn-secondary" onclick="resetCalendar()">Restablecer</button>
             </div>
         </section>
 
@@ -85,7 +86,7 @@
         <section id="gallery" class="admin-section">
             <h2 class="section-title">Gestión de Galería</h2>
             
-            <div class="form-group" style="margin-bottom: 2rem;">
+            <div class="form-group mb-4">
                 <label>Agregar Nueva Imagen</label>
                 <div style="display: flex; gap: 1rem;">
                     <input type="url" id="newImageUrl" placeholder="URL de la imagen">
@@ -134,9 +135,9 @@
                     <textarea id="aboutDesc" rows="4">Nos enfocamos en la creación de espacios que reflejan la personalidad y necesidades de nuestros clientes. Cada proyecto es una oportunidad para innovar y superar expectativas.</textarea>
                 </div>
 
-                <div style="display: flex; gap: 1rem;">
+                <div class="d-flex gap-3">
                     <button type="button" class="btn" onclick="saveContent()">Guardar Cambios</button>
-                    <button type="button" class="btn-secondary btn">Vista Previa</button>
+                    <button type="button" class="btn btn-secondary">Vista Previa</button>
                 </div>
             </form>
         </section>
@@ -161,10 +162,10 @@
                         <td>cliente@example.com</td>
                         <td>+56 9 1234 5678</td>
                         <td><span class="status-badge status-pending">Pendiente</span></td>
-                        <td>
-                            <button class="icon-btn" onclick="viewMessage(1)"><i class="fas fa-eye"></i></button>
-                            <button class="icon-btn delete" onclick="deleteMessage(1)"><i class="fas fa-trash"></i></button>
-                        </td>
+                                <td>
+                                    <button class="icon-btn" title="Ver mensaje" aria-label="Ver mensaje" onclick="viewMessage(1)"><i class="fas fa-eye"></i></button>
+                                    <button class="icon-btn delete" title="Eliminar mensaje" aria-label="Eliminar mensaje" onclick="deleteMessage(1)"><i class="fas fa-trash"></i></button>
+                                </td>
                     </tr>
                     <tr>
                         <td>07/11/2025</td>
@@ -172,8 +173,8 @@
                         <td>+56 9 8765 4321</td>
                         <td><span class="status-badge status-confirmed">Respondido</span></td>
                         <td>
-                            <button class="icon-btn" onclick="viewMessage(2)"><i class="fas fa-eye"></i></button>
-                            <button class="icon-btn delete" onclick="deleteMessage(2)"><i class="fas fa-trash"></i></button>
+                            <button class="icon-btn" title="Ver mensaje" aria-label="Ver mensaje" onclick="viewMessage(2)"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn delete" title="Eliminar mensaje" aria-label="Eliminar mensaje" onclick="deleteMessage(2)"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 </tbody>
@@ -181,46 +182,49 @@
         </section>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Minimalista Admin. Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="/vendedor/js/pantillas js/minimalist_admin.js"></script>
-    <!-- Modal y JS para gestionar solicitudes de restablecimiento (admin) -->
     <div class="modal fade" id="adminResetModal" tabindex="-1" aria-labelledby="adminResetLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border:3px solid #2c2c2c; background: #fff;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="adminResetLabel">Restablecer Contraseña (Admin)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
                 <div class="modal-body">
                     <form id="adminResetForm">
                         <input type="hidden" id="adminResetRequestId">
                         <div class="mb-3">
                             <label for="adminResetEmail" class="form-label">Email del Usuario</label>
-                            <input type="email" class="form-control" id="adminResetEmail" readonly>
+                            <input type="email" class="form-control" id="adminResetEmail" readonly placeholder="usuario@ejemplo.com">
                         </div>
                         <div class="mb-3">
                             <label for="adminNewPassword" class="form-label">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="adminNewPassword" required>
+                            <input type="password" class="form-control" id="adminNewPassword" required placeholder="Nueva contraseña">
                         </div>
                         <div class="mb-3">
                             <label for="adminNewPasswordConfirm" class="form-label">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" id="adminNewPasswordConfirm" required>
+                            <input type="password" class="form-control" id="adminNewPasswordConfirm" required placeholder="Repite la contraseña">
                         </div>
                         <div id="adminResetMessage" class="alert d-none" role="alert"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="adminSavePasswordButton">Guardar contraseña</button>
+                    <button type="button" class="btn" id="adminSavePasswordButton">Guardar contraseña</button>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Minimalista Admin. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/pantillas js/minimalist_admin.js"></script>
+    <!-- Modal y JS para gestionar solicitudes de restablecimiento (admin) -->
+    
     <script>
         function getResetRequests() { try { const raw = localStorage.getItem('password_reset_requests'); return raw ? JSON.parse(raw) : []; } catch (e) { console.error(e); return []; } }
         function saveResetRequests(list) { try { localStorage.setItem('password_reset_requests', JSON.stringify(list)); } catch (e) { console.error(e); } }
@@ -240,7 +244,7 @@
                 }
             }
             const list = getResetRequests(); container.innerHTML = ''; if (list.length === 0) { container.innerHTML = '<div class="text-muted">No hay solicitudes pendientes.</div>'; return; } list.slice().reverse().forEach(req => { const item = document.createElement('div'); item.className = 'list-group-item d-flex justify-content-between align-items-start'; const left = document.createElement('div'); left.className = 'ms-2 me-auto'; left.innerHTML = `<div><strong>${req.email}</strong> <small class="text-muted">(${new Date(req.date).toLocaleString()})</small></div>` + `<div class="text-muted">ID: ${req.id} ${req.handled ? '<span class="badge bg-success ms-2">Atendido</span>' : ''}</div>`; const right = document.createElement('div'); if (!req.handled) { const btnReset = document.createElement('button'); btnReset.className = 'btn btn-sm btn-primary me-2'; btnReset.textContent = 'Restablecer'; btnReset.onclick = () => openAdminResetModal(req.id); right.appendChild(btnReset); const btnMark = document.createElement('button'); btnMark.className = 'btn btn-sm btn-outline-secondary'; btnMark.textContent = 'Marcar como atendido'; btnMark.onclick = () => { markRequestHandled(req.id); }; right.appendChild(btnMark); } else { const span = document.createElement('span'); span.className = 'text-success'; span.textContent = 'Atendido'; right.appendChild(span); } item.appendChild(left); item.appendChild(right); container.appendChild(item); }); }
-        function openAdminResetModal(requestId) { const list = getResetRequests(); const req = list.find(r => r.id === requestId); if (!req) return alert('Solicitud no encontrada'); document.getElementById('adminResetRequestId').value = req.id; document.getElementById('adminResetEmail').value = req.email; document.getElementById('adminNewPassword').value = ''; document.getElementById('adminNewPasswordConfirm').value = ''; const msg = document.getElementById('adminResetMessage'); msg.classList.add('d-none'); msg.textContent = ''; const modalEl = document.getElementById('adminResetModal'); const modal = new bootstrap.Modal(modalEl); modal.show(); }
+        function openAdminResetModal(requestId) { const list = getResetRequests(); const req = list.find(r => r.id === requestId); if (!req) return alert('Solicitud no encontrada'); document.getElementById('adminResetRequestId').value = req.id; document.getElementById('adminResetEmail').value = req.email; document.getElementById('adminNewPassword').value = ''; document.getElementById('adminNewPasswordConfirm').value = ''; const msg = document.getElementById('adminResetMessage'); msg.classList.add('d-none'); msg.textContent = ''; const modalEl = document.getElementById('adminResetModal'); const modal = new bootstrap.Modal(modalEl, { backdrop: false }); modal.show(); }
         function saveAdminResetPassword() { const id = Number(document.getElementById('adminResetRequestId').value); const email = document.getElementById('adminResetEmail').value; const p1 = document.getElementById('adminNewPassword').value; const p2 = document.getElementById('adminNewPasswordConfirm').value; const msg = document.getElementById('adminResetMessage'); if (!p1 || !p2) { msg.className = 'alert alert-danger'; msg.textContent = 'Completa ambos campos de contraseña.'; return; } if (p1 !== p2) { msg.className = 'alert alert-danger'; msg.textContent = 'Las contraseñas no coinciden.'; return; } try { const raw = localStorage.getItem('users'); const users = raw ? JSON.parse(raw) : {}; users[email] = { password: p1, updatedAt: new Date().toISOString() }; localStorage.setItem('users', JSON.stringify(users)); markRequestHandled(id, false); msg.className = 'alert alert-success'; msg.textContent = 'Contraseña restablecida correctamente.'; setTimeout(() => { const modalEl = document.getElementById('adminResetModal'); const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide(); renderResetRequests(); }, 1000); } catch (e) { console.error(e); msg.className = 'alert alert-danger'; msg.textContent = 'Error guardando la contraseña.'; } }
         function markRequestHandled(id, rerender=true) { try { const list = getResetRequests(); const idx = list.findIndex(r => r.id === id); if (idx !== -1) { list[idx].handled = true; list[idx].handledAt = new Date().toISOString(); saveResetRequests(list); } if (rerender) renderResetRequests(); } catch (e) { console.error(e); } }
         document.addEventListener('DOMContentLoaded', () => { try { renderResetRequests(); const btn = document.getElementById('adminSavePasswordButton'); if (btn) btn.addEventListener('click', saveAdminResetPassword); } catch (e) { console.error(e); } });
