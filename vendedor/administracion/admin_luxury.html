@@ -47,12 +47,12 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1a1a1a;">
         <div class="container">
-            <a class="navbar-brand" style="font-family: 'Playfair Display', serif;" href="template_luxury.html">LUXURY (Admin)</a>
+            <a class="navbar-brand" style="font-family: 'Playfair Display', serif;" href="#" data-site="luxury" data-type="publica">LUXURY (Admin)</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="template_luxury.html">Ver Sitio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-site="luxury" data-type="publica">Ver Sitio</a></li>
                     <li class="nav-item"><a class="nav-link active" href="admin.html">Administración</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" href="template_luxury.html">Salir (Simulado)</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" href="#" data-site="luxury" data-type="publica">Salir (Simulado)</a></li>
                 </ul>
             </div>
         </div>
@@ -189,6 +189,7 @@
     </div>
 
     <script>
+    <script src="/vendedor/Direccion/controlador.js"></script>
         function getResetRequests() { try { const raw = localStorage.getItem('password_reset_requests'); return raw ? JSON.parse(raw) : []; } catch (e) { console.error(e); return []; } }
         function saveResetRequests(list) { try { localStorage.setItem('password_reset_requests', JSON.stringify(list)); } catch (e) { console.error(e); } }
         function renderResetRequests() {

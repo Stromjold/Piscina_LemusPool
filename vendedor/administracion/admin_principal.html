@@ -395,7 +395,7 @@
                     <li><a href="#" class="nav-link" data-page="clientes">👤 Clientes y Pagos</a></li>
                     <li><a href="#" class="nav-link" data-page="plantillas">📑 Gest. Plantillas</a></li>
                     <li><a href="#" class="nav-link" data-page="configuracion">⚙️ Configuración</a></li>
-                    <li><a href="../pagina_principal.html" class="nav-link" data-page="logout">Volver</a></li>
+                    <a href="#" data-site="principal" data-type="publica" class="nav-link" data-page="logout">Volver</a>
                 </ul>
             </nav>
         </aside>
@@ -624,6 +624,7 @@
     </div>
 
     <script>
+    <script src="/vendedor/Direccion/controlador.js"></script>
         // Espera a que el DOM esté completamente cargado
         document.addEventListener('DOMContentLoaded', function() {
             
@@ -660,8 +661,12 @@
             // Añadir 'click' listener a cada link de navegación
             navLinks.forEach(link => {
                 link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Evita que la página recargue
                     const pageId = this.getAttribute('data-page');
+                    // Si el link es 'logout' dejamos que el <a> haga la navegación normal
+                    if (pageId === 'logout') {
+                        return; // permite comportamiento por defecto (seguirá href)
+                    }
+                    event.preventDefault(); // Evita que la página recargue
                     changePage(pageId);
                 });
             });

@@ -621,7 +621,7 @@
             <li><a href="#clientes"><i class="fas fa-users"></i> Clientes</a></li>
             <li><a href="#ventas"><i class="fas fa-chart-line"></i> Ventas</a></li>
             <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
-            <li><a href="../template_retro.html"><i class="fas fa-home"></i> Volver al Sitio</a></li>
+            <li><a href="#" data-site="retro" data-type="publica"><i class="fas fa-home"></i> Volver al Sitio</a></li>
         </ul>
     </aside>
 
@@ -1188,5 +1188,6 @@
         document.addEventListener('DOMContentLoaded', () => { try { renderResetRequests(); const btn = document.getElementById('adminSavePasswordButton'); if (btn) btn.addEventListener('click', saveAdminResetPassword); } catch (e) { console.error(e); } });
     </script>
     </script>
+    <script src="/vendedor/Direccion/controlador.js"></script>
 </body>
 </html>

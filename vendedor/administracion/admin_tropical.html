@@ -609,7 +609,7 @@
             <li><a href="#ventas"><i class="fas fa-dollar-sign"></i> Ventas</a></li>
             <li><a href="#calendario"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
             <li><a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
-            <li><a href="../template_tropical.html"><i class="fas fa-home"></i> Volver al Sitio</a></li>
+            <li><a href="#" data-site="tropical" data-type="publica"><i class="fas fa-home"></i> Volver al Sitio</a></li>
         </ul>
     </aside>
 
@@ -1268,5 +1268,6 @@
         function markRequestHandled(id, rerender=true) { try { const list = getResetRequests(); const idx = list.findIndex(r => r.id === id); if (idx !== -1) { list[idx].handled = true; list[idx].handledAt = new Date().toISOString(); saveResetRequests(list); } if (rerender) renderResetRequests(); } catch (e) { console.error(e); } }
         document.addEventListener('DOMContentLoaded', () => { try { renderResetRequests(); const btn = document.getElementById('adminSavePasswordButton'); if (btn) btn.addEventListener('click', saveAdminResetPassword); } catch (e) { console.error(e); } });
     </script>
+    <script src="/vendedor/Direccion/controlador.js"></script>
 </body>
 </html>

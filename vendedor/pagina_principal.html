@@ -133,7 +133,7 @@
                         <h5 class="card-title">Plantilla LemusPool</h5>
                         <p class="card-text">Un diseño elegante y completo, ideal para mostrar tus instalaciones, servicios y permitir reservas online. Incluye galería de imágenes y calendario de eventos.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_lemuspool.html" onclick="openDemo('templateLemuspool.html', 'LemusPool')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('templateLemuspool.html', 'LemusPool', 'lemuspool')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         <h5 class="card-title">Plantilla Arzopa Aqua</h5>
                         <p class="card-text">Un diseño vibrante y moderno inspirado en la naturaleza, con secciones alternadas de imagen y texto para un gran impacto visual.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_arzopa.html" onclick="openDemo('template_arzopa_aqua.html', 'Arzopa Aqua')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_arzopa_aqua.html', 'Arzopa Aqua', 'arzopa')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                         <h5 class="card-title">Plantilla Minimalista</h5>
                         <p class="card-text">Un diseño limpio y moderno con mucho espacio en blanco, enfocado en la tipografía y la simplicidad para un look elegante.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_minimalist.html" onclick="openDemo('template_minimalist.html', 'Minimalist')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_minimalist.html', 'Minimalist', 'minimalist')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                         <h5 class="card-title">Plantilla Tropical</h5>
                         <p class="card-text">Vibrante y divertida, con colores vivos y un diseño orgánico y redondeado. Perfecta para un ambiente de paraíso y diversión.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_tropical.html" onclick="openDemo('template_tropical.html', 'Tropical')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_tropical.html', 'Tropical', 'tropical')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                         <h5 class="card-title">Plantilla Resort de Lujo</h5>
                         <p class="card-text">Un tema oscuro y sofisticado que usa tipografía serif y detalles en tonos dorados para una máxima sensación de exclusividad.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_luxury.html" onclick="openDemo('template_luxury.html', 'Luxury')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_luxury.html', 'Luxury', 'luxury')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -198,7 +198,7 @@
                         <h5 class="card-title">Plantilla Familiar</h5>
                         <p class="card-text">Diseño alegre con colores primarios, íconos y una estructura clara, pensada para ser atractiva y fácil de usar para padres y niños.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_family.html" onclick="openDemo('template_family.html', 'Family')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_family.html', 'Family', 'family')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                         <h5 class="card-title">Plantilla Retro</h5>
                         <p class="card-text">Un diseño nostálgico con tipografía pixelada y colores vibrantes que evocan la era de los 80. Ideal para un look divertido y único.</p>
                         <div class="mt-auto">
-                            <a href="/vendedor/intermedio/acceso_retro.html" onclick="openDemo('template_retro.html', 'Retro')" class="btn btn-secondary">Ver Demo</a>
+                            <a href="#" onclick="openDemo('template_retro.html', 'Retro', 'retro')" class="btn btn-secondary">Ver Demo</a>
                             <a href="#contacto" class="btn btn-primary">Solicitar</a>
                         </div>
                     </div>
@@ -269,10 +269,34 @@
     <footer id="footer">
         <p>&copy; 2025 AquaLink Devs - Todos los derechos reservados.</p>
     <div class="admin-link">
-        <a href="administracion/admin_principal.html" title="Acceso Administración">⚙️</a>
+        <a href="#" data-site="principal" data-type="login" title="Acceso Administración">⚙️</a>
     </div>
     </footer>
 
     <script src="../vendedor/js/prinsipal_page.js"></script>
+    <!-- Cargar controlador de rutas/usuario para permitir redirección al admin/login -->
+    <script src="Direccion/controlador.js"></script>
+    <!-- Función helper para abrir demos desde los botones "Ver Demo" -->
+    <script>
+        function openDemo(templateFile, name) {
+            try {
+                if (window.Enrutador && typeof Enrutador.openDemo === 'function') {
+                    // Delegar a Enrutador.openDemo para que pase por la página intermedia
+                    Enrutador.openDemo(templateFile, name);
+                    return false;
+                }
+            } catch (e) {
+                console.warn('openDemo delegate failed', e);
+            }
+            // Fallback: abrir en nueva pestaña la plantilla directamente
+            try {
+                const fallback = '/vendedor/' + templateFile.replace(/^\/+/, '');
+                window.open(fallback, '_blank');
+            } catch (err) {
+                window.open(templateFile, '_blank');
+            }
+            return false;
+        }
+    </script>
 </body>
 </html>
