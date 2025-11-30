@@ -9,75 +9,272 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/family.css">
-    <style>
-        /* Calendario - estilos para plantilla Family */
-        #calendario .calendar-header { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:16px; }
-        #calendario .calendar-title { font-weight:700; margin:0; color:#0d6efd; }
-        #calendario .nav-btn { background:#fff; border:1px solid #dee2e6; padding:8px 12px; border-radius:6px; color:#0d6efd; }
-        #calendario .nav-btn:hover { background:#e9f2ff; }
-        #calendario .calendar-container { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; padding:8px; }
-        #calendario .calendar-day-header { text-align:center; font-weight:700; padding:8px 0; color:#6c757d; }
-        #calendario .calendar-admin-day { min-height:72px; border-radius:8px; padding:8px; background:#ffffff; border:1px solid #f1f3f5; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; }
-        #calendario .calendar-admin-day .day-number { font-weight:700; color:#212529; }
-        #calendario .calendar-admin-day .day-status { font-size:12px; color:#6c757d; }
-        #calendario .calendar-admin-day.occupied { background:linear-gradient(90deg,#ffecec,#fff7f7); border-color:#ffb3b3; }
-        @media (max-width:768px) { #calendario .calendar-container { grid-template-columns:repeat(7,1fr); } }
-    </style>
+    <link rel="stylesheet" href="../vendedor/css/plantillas_css/family.css">
 </head>
 <body class="template-family">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f0f8ff;">
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background: linear-gradient(135deg, #FFF9E6 0%, #FFE5CC 100%);">
         <div class="container">
-            <a class="navbar-brand fw-bolder" href="#!"><i class="bi bi-sun-fill text-warning"></i> AquaFun</a>
-            <div class="ms-auto">
-                <a href="#!" class="btn btn-primary rounded-pill px-4">¡Reservar!</a>
-                <a href="#" data-site="family" data-type="admin" class="btn btn-secondary rounded-pill px-4">Administración</a>
+            <a class="navbar-brand fw-bolder fs-3" href="#!" style="color: #FF6B35;">
+                <i class="bi bi-hearts fs-2 me-2"></i> AquaFun Family
+            </a>
+            <div class="ms-auto d-flex gap-2">
+                <a href="#!" class="btn btn-lg rounded-pill px-4 shadow-sm" style="background: linear-gradient(135deg, #FF6B35, #FF8C42); color: white; border: none;">
+                    <i class="bi bi-calendar-heart me-2"></i>¡Reservar!
+                </a>
+                <a href="#" data-site="family" data-type="admin" class="btn btn-outline-secondary rounded-pill px-4">
+                    <i class="bi bi-gear-fill me-1"></i>Admin
+                </a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="container text-center py-5">
-        <h1 class="display-2 fw-bolder">¡Un Día Genial en Familia!</h1>
-        <p class="lead text-muted">Diversión garantizada para todas las edades.</p>
-        <img src="Image/image2.jpg" class="img-fluid rounded-5 my-4" alt="Familia feliz en la piscina">
+    <header class="text-center py-5" style="background: linear-gradient(180deg, #FFF9E6 0%, #FFFFFF 100%);">
+        <div class="container">
+            <div class="mb-4">
+                <span class="badge rounded-pill px-4 py-2 fs-6" style="background-color: #FFE5CC; color: #FF6B35;">
+                    <i class="bi bi-star-fill me-1"></i>Experiencia Familiar
+                </span>
+            </div>
+            <h1 class="display-1 fw-bolder mb-3" style="color: #2C3E50; text-shadow: 2px 2px 4px rgba(0,0,0,0.05);">
+                ¡Un Día Mágico<br>
+                <span style="color: #FF6B35;">en Familia!</span>
+            </h1>
+            <p class="lead fs-3 mb-4" style="color: #6C757D;">
+                <i class="bi bi-emoji-smile me-2" style="color: #FFC107;"></i>
+                Diversión, risas y recuerdos inolvidables para todas las edades
+            </p>
+            <div class="position-relative mx-auto" style="max-width: 900px;">
+                <img src="Image/image2.jpg" class="img-fluid rounded-5 shadow-lg my-4" alt="Familia feliz en la piscina" style="border: 8px solid white;">
+                <div class="position-absolute bottom-0 start-50 translate-middle-x mb-n3">
+                    <div class="d-inline-flex gap-3 bg-white rounded-pill px-4 py-3 shadow">
+                        <div class="text-center">
+                            <i class="bi bi-people-fill fs-4" style="color: #FF6B35;"></i>
+                            <div class="small fw-bold mt-1">Para Todos</div>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-shield-check fs-4" style="color: #28A745;"></i>
+                            <div class="small fw-bold mt-1">100% Seguro</div>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-balloon-heart-fill fs-4" style="color: #E91E63;"></i>
+                            <div class="small fw-bold mt-1">Pura Diversión</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Features Section -->
-    <main class="container my-5">
-        <section class="row text-center">
-            <div class="col-md-4 mb-4">
-                <div class="p-4">
-                    <i class="bi bi-droplet-half fs-1 text-primary"></i>
-                    <h3 class="fw-bolder my-3">Piscinas Seguras</h3>
-                    <p>Zonas de poca profundidad y vigilancia constante para la tranquilidad de los padres.</p>
+    <main class="container my-5 py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bolder mb-3" style="color: #2C3E50;">
+                ¿Por qué las familias nos aman?
+            </h2>
+            <p class="lead text-muted">Todo lo que necesitas para un día perfecto</p>
+        </div>
+        <section class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift" style="background: linear-gradient(135deg, #E3F2FD 0%, #FFFFFF 100%); transition: transform 0.3s;">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                                 style="width: 100px; height: 100px; background: linear-gradient(135deg, #2196F3, #1976D2);">
+                                <i class="bi bi-droplet-half fs-1 text-white"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bolder mb-3" style="color: #1976D2;">Piscinas Seguras</h3>
+                        <p class="text-muted mb-0">Zonas de poca profundidad con salvavidas profesionales. Tu tranquilidad es nuestra prioridad.</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-primary px-3 py-2">Supervisión 24/7</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="p-4">
-                    <i class="bi bi-joystick fs-1 text-danger"></i>
-                    <h3 class="fw-bolder my-3">Juegos y Actividades</h3>
-                    <p>Animadores, juegos en el agua y muchas sorpresas para que no pare la diversión.</p>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift" style="background: linear-gradient(135deg, #FFEBEE 0%, #FFFFFF 100%); transition: transform 0.3s;">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                                 style="width: 100px; height: 100px; background: linear-gradient(135deg, #FF6B35, #F44336);">
+                                <i class="bi bi-joystick fs-1 text-white"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bolder mb-3" style="color: #F44336;">Juegos y Actividades</h3>
+                        <p class="text-muted mb-0">Animadores expertos, juegos acuáticos y sorpresas que mantendrán a todos sonriendo.</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-danger px-3 py-2">Diversión Sin Parar</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="p-4">
-                    <i class="bi bi-egg-fried fs-1 text-success"></i>
-                    <h3 class="fw-bolder my-3">Menú para Niños</h3>
-                    <p>Opciones deliciosas y saludables que les encantarán a los más pequeños de la casa.</p>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift" style="background: linear-gradient(135deg, #E8F5E9 0%, #FFFFFF 100%); transition: transform 0.3s;">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                                 style="width: 100px; height: 100px; background: linear-gradient(135deg, #66BB6A, #4CAF50);">
+                                <i class="bi bi-egg-fried fs-1 text-white"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bolder mb-3" style="color: #4CAF50;">Menú para Niños</h3>
+                        <p class="text-muted mb-0">Opciones deliciosas, nutritivas y divertidas que encantarán a los pequeños de la casa.</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-success px-3 py-2">Comida Saludable</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <style>
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+        }
+    </style>
+
     <!-- CTA Section -->
-    <section class="py-5" style="background-color: #fffbe6;">
-        <div class="container text-center">
-            <h2 class="fw-bolder">¿Listos para la Aventura?</h2>
-            <p>Consulta nuestros pases de día y ofertas especiales.</p>
-            <a href="#!" class="btn btn-warning btn-lg rounded-pill px-5">Ver Precios</a>
+    <section class="py-5" style="background: linear-gradient(135deg, #FFF9E6 0%, #FFE5CC 50%, #FFD6B8 100%); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.3); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -80px; left: -80px; width: 300px; height: 300px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+        
+        <div class="container text-center position-relative">
+            <div class="mb-4">
+                <i class="bi bi-stars fs-1" style="color: #FF6B35;"></i>
+            </div>
+            <h2 class="display-3 fw-bolder mb-3" style="color: #2C3E50;">
+                ¿Listos para la Aventura?
+            </h2>
+            <p class="lead fs-4 mb-5" style="color: #6C757D;">
+                Elige el pase perfecto para tu familia y comienza la diversión
+            </p>
+            
+            <div class="row justify-content-center g-4 my-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 border-0 shadow-lg" style="border-radius: 20px; overflow: hidden; transition: transform 0.3s;">
+                        <div class="card-header text-white text-center py-3" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
+                            <i class="bi bi-person-fill fs-2"></i>
+                            <h5 class="card-title mb-0 mt-2 fw-bold">Adulto</h5>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <span class="display-4 fw-bolder" style="color: #2196F3;">$12</span>
+                                <span class="fs-5 text-muted">.00</span>
+                            </div>
+                            <p class="text-muted mb-4">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                13+ años
+                            </p>
+                            <p class="small text-muted mb-4">Acceso completo a todas las atracciones</p>
+                            <a href="#contacto" class="btn btn-lg w-100 rounded-pill shadow-sm" style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; border: none;">
+                                <i class="bi bi-cart-plus me-2"></i>Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 border-0 shadow-lg" style="border-radius: 20px; overflow: hidden; transition: transform 0.3s;">
+                        <div class="card-header text-white text-center py-3" style="background: linear-gradient(135deg, #FF6B35, #F44336);">
+                            <i class="bi bi-balloon-heart-fill fs-2"></i>
+                            <h5 class="card-title mb-0 mt-2 fw-bold">Niño</h5>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <span class="display-4 fw-bolder" style="color: #FF6B35;">$8</span>
+                                <span class="fs-5 text-muted">.00</span>
+                            </div>
+                            <p class="text-muted mb-4">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                3-12 años
+                            </p>
+                            <p class="small text-muted mb-4">Diversión especial para los pequeños</p>
+                            <a href="#contacto" class="btn btn-lg w-100 rounded-pill shadow-sm" style="background: linear-gradient(135deg, #FF6B35, #F44336); color: white; border: none;">
+                                <i class="bi bi-cart-plus me-2"></i>Reservar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-8">
+                    <div class="card h-100 border-0 shadow-lg position-relative" style="border-radius: 20px; overflow: hidden; transition: transform 0.3s; border: 3px solid #FFD700;">
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <span class="badge rounded-pill px-3 py-2" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white; font-size: 0.8rem;">
+                                <i class="bi bi-star-fill me-1"></i>MÁS POPULAR
+                            </span>
+                        </div>
+                        <div class="card-header text-white text-center py-3" style="background: linear-gradient(135deg, #66BB6A, #4CAF50);">
+                            <i class="bi bi-people-fill fs-2"></i>
+                            <h5 class="card-title mb-0 mt-2 fw-bold">Pase Familiar</h5>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <span class="display-4 fw-bolder" style="color: #4CAF50;">$30</span>
+                                <span class="fs-5 text-muted">.00</span>
+                            </div>
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                2 adultos + 2 niños
+                            </p>
+                            <div class="alert alert-success py-2 mb-4" role="alert">
+                                <small><i class="bi bi-piggy-bank-fill me-1"></i>¡Ahorra $8.00!</small>
+                            </div>
+                            <p class="small text-muted mb-4">El mejor valor para familias</p>
+                            <a href="#contacto" class="btn btn-lg w-100 rounded-pill shadow-sm" style="background: linear-gradient(135deg, #66BB6A, #4CAF50); color: white; border: none;">
+                                <i class="bi bi-cart-plus me-2"></i>Reservar Ahora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 p-4 bg-white rounded-4 shadow-sm d-inline-block">
+                <p class="mb-0 text-muted">
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                    <strong>Importante:</strong> Los precios incluyen todos los impuestos. Pueden variar en temporada alta.
+                </p>
+            </div>
+        </div>
+
+        <style>
+            .card:hover {
+                transform: scale(1.05);
+            }
+        </style>
+
+        <!-- Pricing Modal -->
+        <div class="modal fade" id="pricingModal" tabindex="-1" aria-labelledby="pricingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pricingModalLabel">Tarifas y Pases</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Adulto (13+): <span class="fw-bolder">$12.00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Niño (3-12): <span class="fw-bolder">$8.00</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Pase Familiar (2 adultos + 2 niños): <span class="fw-bolder">$30.00</span>
+                            </li>
+                        </ul>
+                        <p class="mt-3 small text-muted">Los precios son referenciales y pueden variar en temporada alta. Impuestos incluidos.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="REGISTRO_INICIO/Principal_login.html" class="btn btn-primary">Reservar</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -93,6 +290,66 @@
             </div>
             
             <div id="calendarAdmin" class="calendar-container" aria-live="polite">
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4">
+                    <h2 class="fw-bolder">Contáctanos</h2>
+                    <p class="text-muted">¿Tienes preguntas sobre reservas, grupos o eventos? Escríbenos y te responderemos pronto.</p>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form id="contactForm" onsubmit="window.location.href='REGISTRO_INICIO/Principal_login.html'; return false;">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Tu nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo electrónico</label>
+                                    <input type="email" class="form-control" id="email" placeholder="tu@ejemplo.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Asunto</label>
+                                    <select id="subject" class="form-select">
+                                        <option>Reservas</option>
+                                        <option>Eventos y cumpleaños</option>
+                                        <option>Grupos escolares</option>
+                                        <option>Otros</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Mensaje</label>
+                                    <textarea id="message" class="form-control" rows="4" placeholder="Cuéntanos más..." required></textarea>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                                    <a href="REGISTRO_INICIO/Principal_login.html" class="btn btn-outline-primary">Iniciar sesión / Reservar</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <h5 class="fw-bolder">Nuestra ubicación</h5>
+                    <p class="text-muted">AquaFun Park – Avenida Ejemplo 123, Ciudad</p>
+
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Teléfono:</strong> <a href="tel:+34123456789">+34 123 456 789</a></p>
+                            <p class="mb-1"><strong>Correo:</strong> <a href="mailto:info@aquafun.example">info@aquafun.example</a></p>
+                            <p class="mb-0"><strong>Horario:</strong> Lun-Dom 10:00 - 19:00</p>
+                        </div>
+                    </div>
+
+                    <div class="ratio ratio-16x9 shadow-sm">
+                        <iframe title="Mapa de AquaFun Park" src="https://www.google.com/maps?q=centro&output=embed" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

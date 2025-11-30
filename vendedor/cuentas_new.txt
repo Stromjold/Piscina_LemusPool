@@ -1,0 +1,67 @@
+--- Correos electrónicos y credenciales extraídas del repositorio ---
+
+Sección: Correos electrónicos (únicos)
+- info@naturepool.cl
+- info@aquafun.example
+- admin@tuapp.com
+- admin@lemus.com
+- admin@arzopa.com
+- admin@family.com
+- admin@luxury.com
+- admin@nature.com
+- admin@retro.com
+- admin@tropical.com
+- adminAqua@correolink.es
+- admin@lemuspool.com
+- admin@minimalist.com
+- admin@aqualink.com
+- martinez@email.com
+- carlos@email.com
+- ana@email.com
+- pedro@email.com
+- maria.p@email.com
+- maria@email.com
+- juan.perez@email.com
+- maria.gomez@email.com
+- cliente@example.com
+- contacto@empresa.com
+
+Sección: Credenciales (usuario/email -> contraseña) con archivos origen
+- adminAqua@correolink.es -> 123456
+  Origen: `vendedor/php/schema.sql` (INSERT), `vendedor/Direccion/controlador.js` (objeto con `pass`)
+- admin (usuario) -> password
+  Origen: `vendedor/php/schema.sql` (INSERT INTO usuarios ... 'admin', 'password', ...)
+- admin@lemus.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@arzopa.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@family.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@luxury.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@nature.com -> password = (contraseña poner)
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@retro.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- admin@tropical.com -> password
+  Origen: `vendedor/php/schema.sql` (INSERT)
+- Varios usuarios admin (p. ej. admin@arzopa.com, admin@lemuspool.com, admin@family.com, admin@tropical.com, admin@retro.com, admin@nature.com, admin@luxury.com, admin@minimalist.com, admin@aqualink.com) -> 1234
+  Origen: `vendedor/Direccion/controlador.js` (muchas entradas con `pass: '1234'`)
+- admin@tuapp.com -> 1234 (usado en validación del lado cliente)
+  Origen: varios archivos en `vendedor/REGISTRO_INICIO/*.html` (condicionales JS hardcodeados)
+
+Notas:
+- El repositorio contiene contraseñas en texto plano dentro de `vendedor/php/schema.sql` y `vendedor/Direccion/controlador.js`.
+- También hay comprobaciones hardcodeadas del lado cliente en `vendedor/REGISTRO_INICIO/*.html` (por ejemplo `if (email === "admin@tuapp.com" && password === "1234")`).
+
+Recomendaciones:
+- Eliminar las credenciales del código fuente y del historial del repositorio.
+- Reemplazarlas por variables de entorno o un gestor de secretos.
+- Hashear las contraseñas (bcrypt/argon2) antes de almacenarlas en la base de datos; no guardar contraseñas en texto plano.
+
+Si quieres, puedo:
+- Generar un `cuentas.csv` o `cuentas.json` con estas entradas y las rutas exactas.
+- Reemplazar automáticamente los valores sensibles por `REDACTED_SECRET` en los archivos detectados (haré un commit separado si lo deseas).
+- Mostrar las líneas completas de cada archivo donde aparece cada credencial para revisión manual.
+
+*** Fin del reporte en español ***

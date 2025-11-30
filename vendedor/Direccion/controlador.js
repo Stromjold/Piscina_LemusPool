@@ -9,7 +9,11 @@ const Enrutador = {
             admin: 'administracion/admin_arzopa.html',
             publica: 'intermedio/acceso_arzopa.html',
             user: 'admin@arzopa.com',
-            pass: '1234'
+            pass: '1234',
+            // Credenciales adicionales (soporte para múltiples cuentas por plantilla)
+            additionalLogins: [
+                { user: 'adminAqua@correolink.es', pass: '123456', is_admin: true }
+            ]
         },
         'lemuspool': {
             login: 'REGISTRO_INICIO/login_cliente_lemuspool.html',
@@ -206,6 +210,66 @@ const Enrutador = {
 
             return false;
         } catch (e) {
+            return false;
+        }
+    },
+
+    /**
+     * login(email, password, errorElement)
+     * Valida las credenciales contra las rutas configuradas.
+     * - Si encuentra coincidencia redirige a la página `admin` correspondiente.
+     * - Devuelve true si autenticación correcta; false en otro caso.
+     */
+    login: function(email, password, errorElement) {
+        try {
+            email = (email || '').toString().trim();
+            password = (password || '').toString();
+
+            if (!email || !password) {
+                if (errorElement) {
+                    errorElement.textContent = 'Ingresa email y contraseña.';
+                    errorElement.classList.remove('d-none');
+                }
+                return false;
+            }
+
+            // Buscar en el mapa de rutas una coincidencia de credenciales
+            for (const site in this.rutas) {
+                if (!Object.prototype.hasOwnProperty.call(this.rutas, site)) continue;
+                const r = this.rutas[site] || {};
+
+                // credencial primaria
+                if (r.user && r.pass && r.user === email && r.pass === password) {
+                    try { sessionStorage.setItem('al_logged_user', email); sessionStorage.setItem('al_site', site); } catch (e) {}
+                    const url = this.resolveUrl(r.admin);
+                    window.location.href = url;
+                    return true;
+                }
+
+                // credenciales adicionales
+                if (r.additionalLogins && Array.isArray(r.additionalLogins)) {
+                    for (const cred of r.additionalLogins) {
+                        if (cred && cred.user === email && cred.pass === password) {
+                            try { sessionStorage.setItem('al_logged_user', email); sessionStorage.setItem('al_site', site); } catch (e) {}
+                            const url = this.resolveUrl(r.admin);
+                            window.location.href = url;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (errorElement) {
+                errorElement.textContent = 'Credenciales inválidas.';
+                errorElement.classList.remove('d-none');
+            }
+            return false;
+        } catch (e) {
+            if (errorElement) {
+                errorElement.textContent = 'Error en el proceso de autenticación.';
+                errorElement.classList.remove('d-none');
+            }
+            console.error('Enrutador.login error', e);
             return false;
         }
     },

@@ -71,6 +71,9 @@ INSERT INTO usuarios (username, password, template_id) VALUES
 ('admin@retro.com', 'password', 'retro'),
 ('admin@tropical.com', 'password', 'tropical');
 
+-- Usuario adicional solicitado
+INSERT INTO usuarios (username, password, template_id) VALUES ('adminAqua@correolink.es', '123456', 'arzopa');
+
 -- Insertar plantillas
 INSERT INTO plantillas (id, nombre) VALUES
 ('principal', 'AquaLink Devs'),

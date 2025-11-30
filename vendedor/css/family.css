@@ -1,0 +1,47 @@
+/* Estilos específicos para la plantilla Family - sección Contacto */
+
+/* Sección contacto */
+#contacto {
+  background-color: #f8fdff;
+}
+
+#contacto .card {
+  border-radius: 10px;
+}
+
+#contacto h2, #contacto h5 {
+  color: #0d6efd;
+}
+
+#contacto .text-muted {
+  color: #6c757d;
+}
+
+#contacto .btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+#contacto .btn-outline-primary {
+  color: #0d6efd;
+  border-color: rgba(13,110,253,.25);
+}
+
+/* Mapa responsive y accesible */
+#contacto .ratio {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#contacto iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Pequeños ajustes para móviles */
+@media (max-width: 767.98px) {
+  #contacto .card-body { padding: 1rem; }
+  #contacto .mb-4 { margin-bottom: 1.25rem !important; }
+}

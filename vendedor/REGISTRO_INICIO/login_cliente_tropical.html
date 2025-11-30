@@ -2,110 +2,111 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso - TropicalVibes</title>
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>Acceso Profesional</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f7f6; /* Fondo más limpio */
-    color: #333;
+        /* Configuración base para que la altura funcione */
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
-.login-container {
-    min-height: 100vh;
+/* Panel de la Marca (Izquierda) */
+.brand-panel {
+    /* Un gradiente profesional. Puedes cambiarlo por una imagen:
+       background: url('tu-imagen.jpg') no-repeat center center;
+       background-size: cover;
+    */
+    background: linear-gradient(135deg, #041c2b 0%, #048f3e 100%);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 3rem;
+    text-align: left;
 }
 
-.login-card {
-    border-radius: 1rem; /* Bordes más redondeados */
+.brand-content {
+    max-width: 450px;
+}
+
+.brand-content h1 {
+    font-weight: 700;
+    font-size: 3rem;
+}
+
+/* Panel del Formulario (Derecha) */
+.form-panel {
     background-color: #ffffff;
 }
 
-.card-title {
-    color: #00796b; /* Un verde-azulado tropical */
-}
-
+/* Ajustes a los elementos del formulario */
 .form-control {
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
     padding: 0.75rem 1rem;
-    border-radius: 0.5rem; /* Bordes redondeados para inputs */
+    border-radius: 0.5rem; /* Bordes redondeados sutiles */
+    background-color: #f8f9fa; /* Fondo ligero para el input */
 }
 
 .form-control:focus {
     background-color: #ffffff;
-    border-color: #00796b;
-    box-shadow: 0 0 10px rgba(0, 121, 107, 0.2);
-    color: #333;
+    border-color: #0d6efd; /* Color primario de Bootstrap */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .btn-primary {
-    background-color: #00796b; /* Color principal */
-    border: none;
-    font-weight: 600;
     padding: 0.75rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #004d40; /* Un tono más oscuro al pasar el ratón */
-    box-shadow: 0 4px 15px rgba(0, 77, 64, 0.3);
-}
-
-.btn-primary:disabled {
-    background-color: #a5d6a7;
-}
-
-.form-text {
-    color: #00796b;
-}
-
-.form-text:hover {
-    color: #004d40;
+    font-weight: 600;
 }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="col-md-5 col-lg-4 col-xl-3">
-            <div class="card login-card shadow-lg border-0">
-                <div class="card-body p-4 p-md-5">
+    <div class="container-fluid p-0">
+        <div class="row g-0 vh-100">
+
+            <div class="col-md-6 col-lg-7 d-none d-md-flex brand-panel">
+                <div class="brand-content">
+                    <h1>Tropical</h1>
+                    <p class="lead">La plataforma líder para gestionar tu negocio.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center form-panel">
+                <div class="col-10 col-lg-8">
                     
-                    <h2 class="card-title text-center fw-bolder mb-2 text-primary">
-                        🌴 TropicalVibes
-                    </h2>
-                    <p class="text-center text-muted mb-4">Acceso al panel</p>
+                    <h2 class="fw-bolder mb-3">Iniciar Sesión</h2>
+                    <p class="text-muted mb-4">Bienvenido de vuelta.</p>
 
-                    <div id="error-message" class="alert alert-danger d-none" role="alert">
-                        </div>
+                    <div id="signin-error" class="alert alert-danger d-none" role="alert"></div>
 
-                    <form id="loginForm" novalidate>
+                    <form id="signInForm" novalidate>
                         <div class="mb-3">
-                            <label for="email" class="form-label fw-semibold">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="tu@email.com" required>
+                            <label for="signInEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="signInEmail" placeholder="tu@email.com" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label fw-semibold">Contraseña</label>
-                            <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                            <label for="signInPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="signInPassword" placeholder="••••••••" required>
                         </div>
+                        
                         <div class="text-end mb-3">
-                            <a href="#" class="form-text text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
                                 ¿Olvidaste tu contraseña?
                             </a>
                         </div>
+                        
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold" id="submitButton">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" id="signInSubmitButton">
                                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                 <span class="button-text">Entrar</span>
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -119,18 +120,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-muted">Ingresa tu email y simularemos el envío de un enlace para restablecer tu contraseña.</p>
-                    
+                    <p>Ingresa tu email y simularemos el envío de un enlace.</p>
                     <form id="resetForm">
                         <div class="mb-3">
                             <label for="resetEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="resetEmail" placeholder="tu@email.com" required>
                         </div>
                     </form>
-
-                    <div id="modal-message" class="alert d-none" role="alert">
-                        </div>
-
+                    <div id="modal-message" class="alert d-none" role="alert"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -145,139 +142,131 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+    <script src="/vendedor/Direccion/controlador.js"></script>
         document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- Lógica para el Formulario de Login ---
-    
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const submitButton = document.getElementById('submitButton');
-    const errorMessage = document.getElementById('error-message');
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Evitar envío tradicional
-            
-            // Ocultar errores previos
-            errorMessage.classList.add('d-none');
-            
-            // 1. Mostrar estado de "Cargando"
-            const buttonText = submitButton.querySelector('.button-text');
-            const spinner = submitButton.querySelector('.spinner-border');
-            
-            buttonText.textContent = 'Verificando...';
-            spinner.classList.remove('d-none');
-            submitButton.disabled = true;
+    // --- 1. LÓGICA DE FORMULARIO DE INICIO DE SESIÓN (SIGN-IN) ---
+    const signInForm = document.getElementById('signInForm');
+    const signInEmailInput = document.getElementById('signInEmail');
+    const signInPasswordInput = document.getElementById('signInPassword');
+    const signInSubmitButton = document.getElementById('signInSubmitButton');
+    const signInError = document.getElementById('signin-error');
 
-            // --- SIMULACIÓN DE LLAMADA AL SERVIDOR (LOGIN) ---
+    if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading(signInSubmitButton, 'Iniciando...');
+            hideError(signInError);
+
+            // SIMULACIÓN DE BACKEND
             setTimeout(() => {
-                const email = emailInput.value;
-                const password = passwordInput.value;
+                const email = signInEmailInput.value;
+                const password = signInPasswordInput.value;
 
-                // Simulación de lógica de validación
-                if (email === "admin@tropical.com" && password === "1234") {
-                    // ÉXITO: Redirigir
-                    window.location.href = '../administracion/admin_tropical.html';
+                // --- Simulación de Lógica de Validación ---
+                // En una app real, esto se haría en un servidor
+                if (email === "admin@tuapp.com" && password === "1234") {
+                    alert("¡Acceso concedido! Redirigiendo...");
+                    // window.location.href = '/dashboard.html'; // Redirige a la página de admin
                 
                 } else if (email === "" || password === "") {
-                    // ERROR: Campos vacíos
-                    showError('Por favor, completa ambos campos.');
-                    restoreButton(); // Restaurar botón en caso de error
+                    showError(signInError, "Completa todos los campos.");
                 
                 } else {
-                    // ERROR: Datos incorrectos
-                    showError('Email o contraseña incorrectos.');
-                    restoreButton(); // Restaurar botón en caso de error
+                    showError(signInError, "Email o contraseña incorrectos.");
                 }
+                
+                // Restaura el botón (solo si hubo error)
+                restoreButton(signInSubmitButton, 'Iniciar Sesión');
 
             }, 1500); // Simula 1.5 segundos de retraso de red
         });
     }
 
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorMessage.classList.remove('d-none');
-    }
-
-    function restoreButton() {
-        const buttonText = submitButton.querySelector('.button-text');
-        const spinner = submitButton.querySelector('.spinner-border');
-
-        buttonText.textContent = 'Entrar';
-        spinner.classList.add('d-none');
-        submitButton.disabled = false;
-    }
-
-
-    // --- Lógica para el Modal de Olvidé Contraseña ---
-    
+    // --- 2. LÓGICA DEL MODAL "OLVIDÉ CONTRASEÑA" ---
     const resetForm = document.getElementById('resetForm');
     const resetEmailInput = document.getElementById('resetEmail');
     const sendResetLinkButton = document.getElementById('sendResetLinkButton');
     const modalMessage = document.getElementById('modal-message');
     const modalElement = document.getElementById('forgotPasswordModal');
-    
-    // Asegurarse de que los elementos existen antes de añadir listeners
+
     if (resetForm && modalElement) {
-        
         // Obtenemos la instancia del Modal de Bootstrap
         const forgotPasswordModal = new bootstrap.Modal(modalElement);
 
-        resetForm.addEventListener('submit', function(e) {
+        resetForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // 1. Mostrar estado de "Cargando" en el botón del modal
-            const buttonText = sendResetLinkButton.querySelector('.button-text');
-            const spinner = sendResetLinkButton.querySelector('.spinner-border');
+            showLoading(sendResetLinkButton, 'Enviando...');
+            hideError(modalMessage); // Oculta mensajes previos
+            modalMessage.classList.remove('alert-success', 'alert-danger'); // Quita clases de color
 
-            buttonText.textContent = 'Enviando...';
-            spinner.classList.remove('d-none');
-            sendResetLinkButton.disabled = true;
-            
-            // Ocultar mensajes previos del modal
-            modalMessage.classList.add('d-none');
-            modalMessage.classList.remove('alert-success', 'alert-danger');
-
-            // --- SIMULACIÓN DE LLAMADA AL BACKEND (RESET) ---
+            // SIMULACIÓN DE BACKEND
             setTimeout(() => {
                 const email = resetEmailInput.value;
-
-                if (email.includes('@') && email.includes('.')) {
-                    // ÉXITO (Simulado)
-                    modalMessage.textContent = 'Si esta cuenta existe, hemos enviado un enlace a tu email.';
+                
+                if (email.includes('@')) {
+                    modalMessage.textContent = 'Si esta cuenta existe, enviamos un enlace.';
                     modalMessage.classList.add('alert-success'); // Fondo verde
-                    modalMessage.classList.remove('d-none');
-                    
-                    // Ocultar el modal después de 3 segundos
+                } else {
+                    modalMessage.textContent = 'Email inválido.';
+                    modalMessage.classList.add('alert-danger'); // Fondo rojo
+                }
+                
+                modalMessage.classList.remove('d-none'); // Muestra el mensaje
+                restoreButton(sendResetLinkButton, 'Enviar enlace'); // Restaura el botón
+
+                // Si fue exitoso, cierra el modal después de 3 segundos
+                if (email.includes('@')) {
                     setTimeout(() => {
                         forgotPasswordModal.hide();
                     }, 3000);
-
-                } else {
-                    // ERROR (Email inválido)
-                    modalMessage.textContent = 'Por favor, ingresa un email válido.';
-                    modalMessage.classList.add('alert-danger'); // Fondo rojo
-                    modalMessage.classList.remove('d-none');
                 }
-
-                // 3. Restaurar el botón del modal
-                buttonText.textContent = 'Enviar enlace';
-                spinner.classList.add('d-none');
-                sendResetLinkButton.disabled = false;
-
-            }, 1500); // Simula 1.5 segundos
+            }, 1500);
         });
 
-        // Limpia el formulario y mensajes cuando el modal se cierra
-        modalElement.addEventListener('hidden.bs.modal', function () {
-            modalMessage.classList.add('d-none');
+        // Limpia el modal cuando se cierra
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            hideError(modalMessage);
             resetForm.reset();
         });
     }
 
+    // --- 3. FUNCIONES AUXILIARES (Para Spinners y Errores) ---
+    
+    /** Muestra el spinner y deshabilita el botón */
+    function showLoading(buttonElement, loadingText) {
+        buttonElement.disabled = true;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+        
+        if (buttonText) buttonText.textContent = loadingText;
+        if (spinner) spinner.classList.remove('d-none');
+    }
+
+    /** Restaura el botón a su estado original */
+    function restoreButton(buttonElement, originalText) {
+        buttonElement.disabled = false;
+        const buttonText = buttonElement.querySelector('.button-text');
+        const spinner = buttonElement.querySelector('.spinner-border');
+
+        if (buttonText) buttonText.textContent = originalText;
+        if (spinner) spinner.classList.add('d-none');
+    }
+
+    /** Muestra un mensaje de error */
+    function showError(errorElement, message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('d-none');
+    }
+
+    /** Oculta el contenedor de error */
+    function hideError(errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.add('d-none');
+    }
+
 }); // Fin del DOMContentLoaded
     </script>
-    <script src="/vendedor/Direccion/controlador.js"></script>
+
 </body>
 </html>
