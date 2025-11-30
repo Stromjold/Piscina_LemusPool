@@ -65,7 +65,7 @@
         <div class="feature-card">
             <div class="feature-icon">💼</div>
             <h3>Soluciones Empresariales</h3>
-            <p>Desarrollamos plataformas completas con paneles de administración, sistemas de reservas, integración con redes sociales y todas las herramientas que tu negocio de piscinas necesita.</p>
+            <p>Desarrollamos plataformas completas con paneles de administración, sistemas de reservas, integración con redes sociales y todas las herramientas que tu negocio necesita.</p>
             <ul class="feature-list">
                 <li>Panel de Gestión</li>
                 <li>Formularios de Contacto</li>
@@ -239,6 +239,11 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
+                            <label for="phone" class="form-label">Teléfono </label>
+                            <input type="tel" pattern="[0-9+\-()\s]{6,20}" class="form-control" id="phone" name="phone" placeholder="Ej: +56912345678">
+                        </div>
+                        
+                        <div class="mb-3">
                             <label for="template" class="form-label">Plantilla de Interés</label>
                             <select class="form-select" id="template" name="template">
                                 <option value="LemusPool">Plantilla LemusPool</option>
@@ -269,7 +274,7 @@
     <footer id="footer">
         <p>&copy; 2025 AquaLink Devs - Todos los derechos reservados.</p>
     <div class="admin-link">
-        <a href="#" data-site="principal" data-type="login" title="Acceso Administración">⚙️</a>
+        <a href="../vendedor/REGISTRO_INICIO/Principal_login.html" data-site="principal" data-type="login" title="Acceso Administración">⚙️</a>
     </div>
     </footer>
 
@@ -297,6 +302,142 @@
             }
             return false;
         }
+    </script>
+    <script>
+        // Sincroniza la vista pública con los cambios hechos en el admin (localStorage.templates)
+        (function(){
+            function applyTemplatesToPublic() {
+                try {
+                    const raw = localStorage.getItem('templates');
+                    if (!raw) return;
+                    const templates = JSON.parse(raw);
+                    if (!templates) return;
+
+                    // Mapa por título visible -> template id
+                    const titleToId = {
+                        'Plantilla LemusPool': 'tmpl-lemuspool',
+                        'Plantilla Arzopa Aqua': 'tmpl-arzopa',
+                        'Plantilla Minimalista': 'tmpl-minimalist',
+                        'Plantilla Tropical': 'tmpl-tropical',
+                        'Plantilla Resort de Lujo': 'tmpl-luxury',
+                        'Plantilla Familiar': 'tmpl-family',
+                        'Plantilla Retro': 'tmpl-retro'
+                    };
+
+                    document.querySelectorAll('#plantilla .card.h-100').forEach(card => {
+                        const titleEl = card.querySelector('.card-title');
+                        if (!titleEl) return;
+                        const title = titleEl.textContent.trim();
+                        const tid = titleToId[title];
+                        if (!tid) return;
+                        const tpl = templates[tid] || templates[tid.replace(/^tmpl-/, '')] || null;
+                        if (!tpl) return;
+
+                        // Actualizar imagen
+                        const img = card.querySelector('img.card-img-top');
+                        if (img && tpl.image) img.src = tpl.image;
+
+                        // Actualizar texto
+                        if (tpl.name && titleEl) titleEl.textContent = tpl.name;
+                        const descEl = card.querySelector('.card-text');
+                        if (descEl && tpl.description) descEl.textContent = tpl.description;
+
+                        // Actualizar botón Ver Demo: si tpl.demos.main existe, abrir en nueva pestaña
+                        const demoBtn = card.querySelector('a.btn.btn-secondary');
+                        if (demoBtn) {
+                            if (tpl.demos && tpl.demos.main) {
+                                demoBtn.removeAttribute('onclick');
+                                demoBtn.addEventListener('click', function(ev){ ev.preventDefault(); window.open(tpl.demos.main, '_blank'); return false; });
+                            }
+                        }
+                    });
+                } catch (e) { console.error('applyTemplatesToPublic', e); }
+            }
+
+            document.addEventListener('DOMContentLoaded', applyTemplatesToPublic);
+            // También exponer una función para forzar la sincronización desde consola
+            window.syncTemplatesFromAdmin = applyTemplatesToPublic;
+        })();
+    </script>
+    <script>
+        // Aplicar contenidos guardados desde el admin (public_section_<id>)
+        (function(){
+            const mapping = {
+                hero_title: { selector: '#inicio h1' },
+                hero_subtitle: { selector: '#inicio .subtitle' },
+                hero_text: { selector: '#inicio p' },
+                features: { selector: '.features' },
+                plans: { selector: '.plans-grid' },
+                plantilla_intro: { selector: '#plantilla .display-5' },
+                contact_form: { selector: '#contacto .card-form' }
+                ,
+                plantillas_images: { selector: '#plantilla img.card-img-top' },
+                plantillas_demo_links: { selector: '#plantilla a.btn.btn-secondary' },
+                cta_consulta: { selector: '.cta-button' },
+                contact_form_action: { selector: '#contacto form' }
+            };
+
+            function applyPublicSections(){
+                try {
+                    Object.keys(mapping).forEach(key => {
+                        const cfgKey = 'public_section_' + key;
+                        const raw = localStorage.getItem(cfgKey);
+                        if (!raw) return;
+                        const m = mapping[key];
+                        if (!m) return;
+                        const els = document.querySelectorAll(m.selector);
+                        if (!els || els.length === 0) return;
+                        els.forEach(el => {
+                                    // intentar parsear JSON que represente un atributo o estructura
+                                    try {
+                                        const parsed = JSON.parse(raw);
+                                        if (parsed) {
+                                            if (parsed.__attr) { el.setAttribute(parsed.attr, parsed.value); return; }
+                                            if (parsed.__structured) {
+                                                // manejar estructuras conocidas
+                                                if (parsed.type === 'features') {
+                                                    // aplicar a todos los feature-card dentro del selector
+                                                    const cards = document.querySelectorAll(m.selector + ' .feature-card');
+                                                    parsed.items.forEach((it, idx) => { const c = cards[idx]; if (!c) return; const h = c.querySelector('h3'); if (h) h.textContent = it.title || ''; const ul = c.querySelector('.feature-list'); if (ul){ ul.innerHTML = ''; (it.bullets||[]).forEach(b => { const li = document.createElement('li'); li.textContent = b; ul.appendChild(li); }); } });
+                                                    return;
+                                                }
+                                                if (parsed.type === 'plans') {
+                                                    const plans = document.querySelectorAll(m.selector + ' .plan-card');
+                                                    parsed.items.forEach((it, idx) => { const p = plans[idx]; if (!p) return; const h = p.querySelector('h3'); if (h) h.textContent = it.title || ''; const pr = p.querySelector('.plan-price'); if (pr) pr.textContent = it.price || ''; const pd = p.querySelector('.plan-period'); if (pd) pd.textContent = it.period || ''; const ul = p.querySelector('.plan-features'); if (ul){ ul.innerHTML=''; (it.features||[]).forEach(f=>{ const li = document.createElement('li'); li.textContent = f; ul.appendChild(li); }); } });
+                                                    return;
+                                                }
+                                                if (parsed.type === 'contact_form') {
+                                                    // aplicar action y labels/placeholders
+                                                    const form = document.querySelector(m.selector);
+                                                    if (form && parsed.action) form.setAttribute('action', parsed.action);
+                                                    (parsed.fields || {}).forEach ? null : null;
+                                                    Object.keys(parsed.fields || {}).forEach(fname => {
+                                                        const elField = form ? form.querySelector('[name="' + fname + '"]') : null;
+                                                        if (!elField) return;
+                                                        const wrapper = elField.closest('.mb-3'); if (wrapper && wrapper.querySelector('label')) wrapper.querySelector('label').textContent = parsed.fields[fname].label || wrapper.querySelector('label').textContent;
+                                                        if (parsed.fields[fname].placeholder !== undefined) elField.setAttribute('placeholder', parsed.fields[fname].placeholder);
+                                                    });
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    } catch (e) { /* no JSON, proceder como HTML */ }
+                                    // aplicar como HTML (por defecto)
+                                    el.innerHTML = raw;
+                            });
+                    });
+                } catch (e) { console.error('applyPublicSections', e); }
+            }
+
+            // Aplicar al cargar
+            document.addEventListener('DOMContentLoaded', applyPublicSections);
+
+            // Escuchar storage para aplicar cambios desde la ventana admin (se disparará en otras pestañas)
+            window.addEventListener('storage', function(ev){ if (ev.key && ev.key.startsWith('public_section_')) applyPublicSections(); });
+
+            // Exponer función para forzar aplicación
+            window.applyPublicSections = applyPublicSections;
+        })();
     </script>
 </body>
 </html>
