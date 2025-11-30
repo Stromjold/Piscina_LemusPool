@@ -311,6 +311,9 @@
             border: 2px solid rgba(0, 212, 255, 0.3);
             border-radius: 16px;
             padding: 2.5rem;
+            max-width: 820px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .form-label {
@@ -452,6 +455,7 @@
         }
 
         .plan-button {
+            display: block;
             width: 100%;
             padding: 1rem;
             background: linear-gradient(135deg, #00d4ff, #7b2ff7);
@@ -461,6 +465,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s;
+            text-decoration: none;
+            text-align: center;
         }
 
         .plan-button:hover {
@@ -525,5 +531,10 @@
 
             .plans-grid {
                 grid-template-columns: 1fr;
+            }
+            /* Ajuste de formulario en móviles: menos padding y margen lateral */
+            .card-form {
+                padding: 1.25rem;
+                margin: 0 1rem;
             }
         }
