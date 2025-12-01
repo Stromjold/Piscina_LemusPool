@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS AquaLink_db;
 USE AquaLink_db;
 
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE usuarios (
     is_admin BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE plantillas (
+CREATE TABLE IF NOT EXISTS plantillas (
     id VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     img_url VARCHAR(255)
 );
 
-CREATE TABLE solicitudes (
+CREATE TABLE IF NOT EXISTS solicitudes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE solicitudes (
     leido BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE reservas (
+CREATE TABLE IF NOT EXISTS reservas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     template_id VARCHAR(50) NOT NULL,
     nombre_cliente VARCHAR(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE reservas (
     FOREIGN KEY (template_id) REFERENCES plantillas(id)
 );
 
-CREATE TABLE mensajes (
+CREATE TABLE IF NOT EXISTS mensajes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     template_id VARCHAR(50) NOT NULL,
     nombre VARCHAR(255) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE mensajes (
     FOREIGN KEY (template_id) REFERENCES plantillas(id)
 );
 
-CREATE TABLE transacciones (
+CREATE TABLE IF NOT EXISTS transacciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     template_id VARCHAR(50) NOT NULL,
     tipo ENUM('ingreso', 'gasto') NOT NULL,
@@ -59,10 +59,10 @@ CREATE TABLE transacciones (
 );
 
 -- Insertar usuario administrador principal
-INSERT INTO usuarios (username, password, template_id, is_admin) VALUES ('admin', 'password', 'principal', TRUE);
+INSERT IGNORE INTO usuarios (username, password, template_id, is_admin) VALUES ('admin', 'password', 'principal', TRUE);
 
 -- Insertar usuarios para cada plantilla
-INSERT INTO usuarios (username, password, template_id) VALUES 
+INSERT IGNORE INTO usuarios (username, password, template_id) VALUES 
 ('admin@lemus.com', 'password', 'lemuspool'),
 ('admin@arzopa.com', 'password', 'arzopa'),
 ('admin@family.com', 'password', 'family'),
@@ -72,10 +72,16 @@ INSERT INTO usuarios (username, password, template_id) VALUES
 ('admin@tropical.com', 'password', 'tropical');
 
 -- Usuario adicional solicitado
-INSERT INTO usuarios (username, password, template_id) VALUES ('adminAqua@correolink.es', '123456', 'arzopa');
+INSERT IGNORE INTO usuarios (username, password, template_id) VALUES ('adminAqua@correolink.es', '123456', 'arzopa');
+
+-- Insertar/actualizar administrador global solicitado: admin@aqualink.com / 123456
+-- Usamos ON DUPLICATE KEY UPDATE para evitar errores si ya existe el usuario
+INSERT INTO usuarios (username, password, template_id, is_admin) VALUES
+('admin@aqualink.com', '123456', 'principal', TRUE)
+ON DUPLICATE KEY UPDATE password = VALUES(password), template_id = VALUES(template_id), is_admin = VALUES(is_admin);
 
 -- Insertar plantillas
-INSERT INTO plantillas (id, nombre) VALUES
+INSERT IGNORE INTO plantillas (id, nombre) VALUES
 ('principal', 'AquaLink Devs'),
 ('lemuspool', 'LemusPool'),
 ('arzopa', 'Arzopa Aqua'),
@@ -84,3 +90,23 @@ INSERT INTO plantillas (id, nombre) VALUES
 ('nature', 'Nature Pool'),
 ('retro', 'Pool Discoteca'),
 ('tropical', 'TropicalVibes');
+
+-- Tabla para registrar intentos de login (auditoría)
+CREATE TABLE IF NOT EXISTS login_attempts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255),
+    ip VARCHAR(45),
+    user_agent TEXT,
+    success BOOLEAN,
+    payload TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla para guardar cualquier envío de formulario (datos en JSON)
+CREATE TABLE IF NOT EXISTS form_submissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    page VARCHAR(255),
+    data JSON,
+    ip VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

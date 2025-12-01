@@ -120,25 +120,19 @@
             showLoading(signInSubmitButton, 'Iniciando...');
             hideError(signInError);
 
-            // SIMULACIÓN DE BACKEND
-            setTimeout(() => {
-                const email = signInEmailInput.value;
-                const password = signInPasswordInput.value;
+            const email = signInEmailInput.value.trim();
+            const password = signInPasswordInput.value;
 
-                if (email === "admin@tuapp.com" && password === "1234") {
-                    alert("¡Acceso concedido! Redirigiendo...");
-                    // window.location.href = '/dashboard.html'; 
-                
-                } else if (email === "" || password === "") {
-                    showError(signInError, "Completa todos los campos.");
-                
-                } else {
-                    showError(signInError, "Email o contraseña incorrectos.");
+            try {
+                const ok = (typeof Enrutador !== 'undefined') ? Enrutador.login(email, password, signInError) : false;
+                if (!ok) {
+                    restoreButton(signInSubmitButton, 'Entrar');
                 }
-                
-                restoreButton(signInSubmitButton, 'Iniciar Sesión');
-
-            }, 1500); 
+            } catch (err) {
+                showError(signInError, 'Error interno. Intenta nuevamente.');
+                restoreButton(signInSubmitButton, 'Entrar');
+                console.error(err);
+            }
         });
     }
 
@@ -220,6 +214,6 @@
 }); // Fin del DOMContentLoaded
     </script>
 </script>
-    <script src="/vendedor/Direccion/controlador.js"></script>
+    <script src="../Direccion/controlador.js"></script>
 </body>
 </html>

@@ -233,7 +233,52 @@ const Enrutador = {
                 return false;
             }
 
-            // Buscar en el mapa de rutas una coincidencia de credenciales
+            // Intentar autenticación en servidor PHP primero (síncrono para mantener compatibilidad con el código existente)
+            try {
+                const url = this.resolveUrl('php/handle_login.php');
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', url, false); // synchronous request
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                // Intentar detectar el 'site' desde la ruta del login para que el servidor pueda redirigir correctamente
+                let detectedSite = '';
+                try {
+                    const curPath = (window.location.pathname || '').toLowerCase();
+                    for (const s in this.rutas) {
+                        if (!Object.prototype.hasOwnProperty.call(this.rutas, s)) continue;
+                        const rlogin = (this.rutas[s].login || '').replace(/^\/+/, '').toLowerCase();
+                        if (!rlogin) continue;
+                        if (curPath.indexOf(rlogin) !== -1 || curPath.endsWith('/' + rlogin)) { detectedSite = s; break; }
+                    }
+                } catch (e) { detectedSite = ''; }
+
+                let body = 'email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password);
+                if (detectedSite) body += '&site=' + encodeURIComponent(detectedSite);
+                xhr.send(body);
+
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    let resp = null;
+                    try { resp = JSON.parse(xhr.responseText); } catch (e) { resp = null; }
+                    if (resp && resp.success) {
+                        try { sessionStorage.setItem('al_logged_user', email); sessionStorage.setItem('al_site', resp.site || ''); } catch (e) {}
+                        const redirect = resp.redirect || (this.rutas[resp.site] ? this.rutas[resp.site].admin : null);
+                        if (redirect) {
+                            window.location.href = this.resolveUrl(redirect);
+                            return true;
+                        }
+                    } else {
+                        if (resp && resp.message && errorElement) {
+                            errorElement.textContent = resp.message;
+                            errorElement.classList.remove('d-none');
+                        }
+                        // fallthrough to client-side fallback below
+                    }
+                }
+            } catch (err) {
+                // si falla la petición al servidor, continúa con el fallback local
+                console.warn('Login via PHP failed, using local fallback', err);
+            }
+
+            // Fallback: Buscar en el mapa de rutas una coincidencia de credenciales (compatibilidad histórica)
             for (const site in this.rutas) {
                 if (!Object.prototype.hasOwnProperty.call(this.rutas, site)) continue;
                 const r = this.rutas[site] || {};

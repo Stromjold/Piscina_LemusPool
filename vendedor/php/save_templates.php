@@ -37,23 +37,53 @@ try {
 
     // Procesar imagen si se subió
     $imagePath = isset($templates[$id]['image']) ? $templates[$id]['image'] : '';
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    if (isset($_FILES['image'])) {
+        $fileError = $_FILES['image']['error'];
+        if ($fileError !== UPLOAD_ERR_OK) {
+            $errMessages = [
+                UPLOAD_ERR_INI_SIZE => 'El archivo excede upload_max_filesize en php.ini',
+                UPLOAD_ERR_FORM_SIZE => 'El archivo excede el MAX_FILE_SIZE en el formulario',
+                UPLOAD_ERR_PARTIAL => 'El archivo fue subido parcialmente',
+                UPLOAD_ERR_NO_FILE => 'No se subió ningún archivo',
+                UPLOAD_ERR_NO_TMP_DIR => 'Falta carpeta temporal',
+                UPLOAD_ERR_CANT_WRITE => 'Fallo al escribir el archivo en disco',
+                UPLOAD_ERR_EXTENSION => 'Subida detenida por extensión'
+            ];
+            $msg = isset($errMessages[$fileError]) ? $errMessages[$fileError] : ('Error de subida: ' . $fileError);
+            throw new Exception('Error en subida de imagen: ' . $msg);
+        }
+
         $f = $_FILES['image'];
         $allowed = ['image/jpeg','image/png','image/webp','image/gif'];
-        if (!in_array($f['type'], $allowed)) throw new Exception('Tipo de imagen no permitido');
+        if (!in_array($f['type'], $allowed)) throw new Exception('Tipo de imagen no permitido: ' . $f['type']);
         // nombre único
         $ext = pathinfo($f['name'], PATHINFO_EXTENSION);
         $filename = $id . '_' . time() . '.' . $ext;
         $dst = $uploadsDir . DIRECTORY_SEPARATOR . $filename;
-        if (!move_uploaded_file($f['tmp_name'], $dst)) throw new Exception('No se pudo mover la imagen');
+        // intentar mover el archivo; si falla, intentar copy como fallback
+        if (!move_uploaded_file($f['tmp_name'], $dst)) {
+            if (!@copy($f['tmp_name'], $dst)) throw new Exception('No se pudo mover la imagen');
+        }
+        // asegurar permisos (Windows/Unix compatibles)
+        @chmod($dst, 0644);
         $imagePath = $dst;
+    }
+
+    // Convertir ruta de sistema a URL pública antes de guardar
+    $publicImage = '';
+    if (!empty($imagePath)) {
+        if (preg_match('#^https?://#', $imagePath)) {
+            $publicImage = $imagePath;
+        } else {
+            $publicImage = '/vendedor/php/uploads/' . basename($imagePath);
+        }
     }
 
     $templates[$id] = [
         'id' => $id,
         'name' => $name,
         'description' => $description,
-        'image' => $imagePath,
+        'image' => $publicImage,
         'demos' => $demos
     ];
 
@@ -63,9 +93,6 @@ try {
 
     // Preparar respuesta (ajustar ruta de imagen para público)
     $tplResp = $templates[$id];
-    if (!empty($tplResp['image']) && !preg_match('#^https?://#', $tplResp['image'])) {
-        $tplResp['image'] = '/vendedor/php/uploads/' . basename($tplResp['image']);
-    }
 
     $resp['success'] = true;
     $resp['message'] = 'Plantilla guardada';

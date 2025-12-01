@@ -1,0 +1,13 @@
+[
+    {
+        "id": "tmpl-lemuspool",
+        "name": "Plantilla LemusPool",
+        "description": "Un dise\u00f1o elegante y completo, ideal para mostrar tus instalaciones.",
+        "image": "/vendedor/php/uploads/tmpl-lemuspool_1764555621.jfif",
+        "demos": {
+            "login": "",
+            "main": "",
+            "admin": ""
+        }
+    }
+]

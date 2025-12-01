@@ -189,7 +189,7 @@
     </div>
 
     <script>
-    <script src="/vendedor/Direccion/controlador.js"></script>
+    <script src="../Direccion/controlador.js"></script>
         function getResetRequests() { try { const raw = localStorage.getItem('password_reset_requests'); return raw ? JSON.parse(raw) : []; } catch (e) { console.error(e); return []; } }
         function saveResetRequests(list) { try { localStorage.setItem('password_reset_requests', JSON.stringify(list)); } catch (e) { console.error(e); } }
         function renderResetRequests() {
